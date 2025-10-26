@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,6 +11,10 @@
     .price { font-size: 18px; font-weight: bold; color: #e4393c; margin: 15px 0; }
     .controls { display: flex; flex-direction: column; gap: 15px; margin: 20px 0; }
     select, button { padding: 10px; border-radius: 6px; border: 1px solid #ddd; }
+    .color-container { position: relative; margin-top: 10px; }
+    .color-swatch-img { max-width: 100%; border: 1px solid #eee; border-radius: 4px; }
+    .color-hotspot { position: absolute; width: 24px; height: 24px; border: 2px solid #fff; border-radius: 50%; transform: translate(-50%, -50%); cursor: pointer; box-shadow: 0 0 0 2px transparent; transition: box-shadow 0.2s; }
+    .color-hotspot.selected { box-shadow: 0 0 0 2px #07c160; }
     .next-btn { width: 100%; background: #07c160; color: #fff; border: none; padding: 15px; cursor: pointer; }
   </style>
 </head>
@@ -22,26 +27,23 @@
     <div>
       <label>选上色区域：</label>
       <select id="areaSelect">
-        <option value="1">① 拳套正面上</option>
-        <option value="2">② 拳套正面下</option>
-        <option value="3">③ 拳套侧面</option>
-        <option value="4">④ 手腕上</option>
-        <option value="5">⑤ 手腕中</option>
-        <option value="6">⑥ 手腕下</option>
-        <option value="7">⑦ 魔术贴1</option>
-        <option value="8">⑧ 魔术贴2</option>
+        <option value="1">① </option>
+        <option value="2">② </option>
+        <option value="3">③ </option>
+        <option value="4">④ </option>
+        <option value="5">⑤ </option>
+        <option value="6">⑥ </option>
+        <option value="7">⑦ </option>
+        <option value="8">⑧ </option>
       </select>
     </div>
     <div>
-      <label>选颜色：</label>
-      <img src="../images/color-swatch.png" style="max-width:100%;margin-top:10px;">
-      <select id="colorSelect">
-        <option value="#FFFFFF">F001 纯白</option>
-        <option value="#F5F0EB">F002 奶昔白</option>
-        <option value="#C79A6A">F003 金棕</option>
-        <option value="#0066CC">F016 克莱因蓝</option>
-        <option value="#000000">F006 黑色</option>
-      </select>
+      <label>选颜色（点击色卡上的颜色）：</label>
+      <div class="color-container" id="colorContainer">
+        <img src="../images/color-swatch.png" class="color-swatch-img" id="colorSwatchImg">
+        <!-- 颜色热点将通过JS动态生成 -->
+      </div>
+      <input type="hidden" id="selectedColor" value="#FFFFFF">
     </div>
     <div>
       <button onclick="drawColor()">应用颜色</button>
@@ -54,15 +56,92 @@
     const canvas = document.getElementById('gloveCanvas');
     const ctx = canvas.getContext('2d');
     const totalPriceEl = document.getElementById('totalPrice');
+    const areaSelect = document.getElementById('areaSelect');
+    const colorContainer = document.getElementById('colorContainer');
+    const colorSwatchImg = document.getElementById('colorSwatchImg');
+    const selectedColor = document.getElementById('selectedColor');
     let basePrice = parseInt(localStorage.getItem('basePrice')) || 1699;
     let colorExtra = 0;
+    // 存储各区域颜色代码
+    const areaColors = {
+      '1': null, '2': null, '3': null, '4': null,
+      '5': null, '6': null, '7': null, '8': null
+    };
+
+    // 色卡上的颜色位置及对应代码（根据实际色卡图片调整坐标和颜色值）
+    const colorPositions = [
+      { x: 10, y: 15, code: '#FFFFFF', name: 'F001 纯白' },
+      { x: 40, y: 15, code: '#F5F0EB', name: 'F002 奶昔白' },
+      { x: 70, y: 15, code: '#C79A6A', name: 'F003 金棕' },
+      { x: 100, y: 15, code: '#B5A99C', name: 'F004 大象灰' },
+      { x: 130, y: 15, code: '#1E2E44', name: 'F005 午夜蓝' },
+      { x: 160, y: 15, code: '#000000', name: 'F006 黑色' },
+      { x: 190, y: 15, code: '#995E3C', name: 'F033 焦糖棕' },
+      { x: 220, y: 15, code: '#3FBF72', name: 'F032 漫画绿' },
+      { x: 250, y: 15, code: '#C1BAB2', name: 'F009 风衣灰' },
+      { x: 280, y: 15, code: '#F27D3C', name: 'F010 橙色' },
+      { x: 310, y: 15, code: '#F2C12E', name: 'F011 太阳黄' },
+      { x: 340, y: 15, code: '#F9E77F', name: 'F012 小鸡黄' },
+      { x: 370, y: 15, code: '#4A5939', name: 'F013 橄榄绿' },
+      { x: 400, y: 15, code: '#BDE0F2', name: 'F014 微风蓝' },
+      { x: 430, y: 15, code: '#A0E7E5', name: 'F015 tiffany蓝' },
+      { x: 460, y: 15, code: '#0066CC', name: 'F016 克莱因蓝' },
+      { x: 490, y: 15, code: '#A4C2D8', name: 'F017 亚麻蓝' },
+      { x: 520, y: 15, code: '#D2B48C', name: 'F018 马拉茶色' },
+      { x: 550, y: 15, code: '#6B8E58', name: 'F019 鼠尾草绿' },
+      { x: 580, y: 15, code: '#808080', name: 'F020 积雨云灰' },
+      { x: 10, y: 45, code: '#E63946', name: 'F021 大红' },
+      { x: 40, y: 45, code: '#FFC0CB', name: 'F022 樱花粉' },
+      { x: 70, y: 45, code: '#F08080', name: 'F023 蔷薇粉' },
+      { x: 100, y: 45, code: '#FFB6C1', name: 'F031 花瓣粉' },
+      { x: 130, y: 45, code: '#A52A2A', name: 'F029 酒红' },
+      { x: 160, y: 45, code: '#FFD700', name: 'F025 柠檬黄' },
+      { x: 190, y: 45, code: '#F5E0C5', name: 'F026 杏色' },
+      { x: 220, y: 45, code: '#0047AB', name: 'F030 深邃蓝' },
+      { x: 250, y: 45, code: '#C0C0C0', name: 'F027 海鸥灰' },
+      { x: 280, y: 45, code: '#4A3728', name: 'F028 深咖' }
+    ];
+
+    // 在色卡图片上创建可点击的颜色热点
+    function createColorHotspots() {
+      // 清除已有热点
+      document.querySelectorAll('.color-hotspot').forEach(el => el.remove());
+      
+      // 创建新热点
+      colorPositions.forEach(color => {
+        const hotspot = document.createElement('div');
+        hotspot.className = 'color-hotspot';
+        hotspot.style.left = `${color.x}px`;
+        hotspot.style.top = `${color.y}px`;
+        hotspot.title = color.name;
+        hotspot.dataset.color = color.code;
+        
+        // 点击热点选择颜色
+        hotspot.onclick = (e) => {
+          e.stopPropagation();
+          // 移除其他热点的选中状态
+          document.querySelectorAll('.color-hotspot').forEach(h => h.classList.remove('selected'));
+          // 添加当前热点的选中状态
+          hotspot.classList.add('selected');
+          // 记录选中的颜色
+          selectedColor.value = color.code;
+        };
+        
+        colorContainer.appendChild(hotspot);
+      });
+    }
 
     // 加载拳套底图
     const bgImg = new Image();
-   bgImg.src = '../images/glove-bg.png';
-    bgImg.onload = () => ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+    bgImg.src = '../images/glove-bg.png'; // 拳套底图路径
+    bgImg.onload = () => {
+      ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+    };
 
-    // 8个区域坐标（用Paint.NET测量后替换！示例值）
+    // 色卡图片加载完成后创建热点
+    colorSwatchImg.onload = createColorHotspots;
+
+    // 8个区域坐标（请根据实际拳套图片调整）
     const areaCoords = {
       '1': { x: 80, y: 60, w: 140, h: 180 },
       '2': { x: 80, y: 250, w: 140, h: 70 },
@@ -76,27 +155,39 @@
 
     // 上色函数
     function drawColor() {
-      const area = document.getElementById('areaSelect').value;
-      const color = document.getElementById('colorSelect').value;
+      const area = areaSelect.value;
+      const color = selectedColor.value;
       const { x, y, w, h } = areaCoords[area];
+      
+      // 记录区域颜色
+      areaColors[area] = color;
+      
+      // 绘制颜色
       ctx.fillStyle = color;
       ctx.fillRect(x, y, w, h);
     }
 
     // 加额外颜色费用
     function addExtraColor() {
-      const area = document.getElementById('areaSelect').value;
-      if (['1','2','3'].includes(area)) colorExtra += 300; // ①②③区+300
-      else colorExtra += 150; // ④~⑧区+150
+      const area = areaSelect.value;
+      if (['1','2','3'].includes(area)) {
+        colorExtra += 300;
+      } else {
+        colorExtra += 150;
+      }
       totalPriceEl.innerText = basePrice + colorExtra;
       localStorage.setItem('colorExtra', colorExtra);
     }
 
-    // 跳转到定制页
+    // 跳转到定制页并存储颜色数据
     function goToCustomize() {
+      // 存储各区域颜色代码到localStorage
+      localStorage.setItem('areaColors', JSON.stringify(areaColors));
       window.location.href = '../pages/4.customize.html';
     }
+
+    // 初始化时创建热点（防止图片缓存导致onload不触发）
+    window.addEventListener('load', createColorHotspots);
   </script>
 </body>
-
 </html>
