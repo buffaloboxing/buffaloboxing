@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>3.配色预览</title>
+  <style>
+    body { font-family: 微软雅黑; padding: 20px; max-width: 750px; margin: 0 auto; }
+    .title { font-size: 20px; font-weight: bold; margin: 20px 0; }
+    canvas { border: 1px solid #ddd; border-radius: 6px; max-width: 100%; }
+    .price { font-size: 18px; font-weight: bold; color: #e4393c; margin: 15px 0; }
+    .controls { display: flex; flex-direction: column; gap: 15px; margin: 20px 0; }
+    select, button { padding: 10px; border-radius: 6px; border: 1px solid #ddd; }
+    .next-btn { width: 100%; background: #07c160; color: #fff; border: none; padding: 15px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="title">配色预览（选区域+颜色上色）</div>
+  <canvas id="gloveCanvas" width="600" height="400"></canvas>
+  <div class="price">当前总价：¥<span id="totalPrice">1699</span></div>
+
+  <div class="controls">
+    <div>
+      <label>选上色区域：</label>
+      <select id="areaSelect">
+        <option value="1">① 拳套正面上</option>
+        <option value="2">② 拳套正面下</option>
+        <option value="3">③ 拳套侧面</option>
+        <option value="4">④ 手腕上</option>
+        <option value="5">⑤ 手腕中</option>
+        <option value="6">⑥ 手腕下</option>
+        <option value="7">⑦ 魔术贴1</option>
+        <option value="8">⑧ 魔术贴2</option>
+      </select>
+    </div>
+    <div>
+      <label>选颜色：</label>
+      <img src="../images/color-swatch.png" style="max-width:100%;margin-top:10px;">
+      <select id="colorSelect">
+        <option value="#FFFFFF">F001 纯白</option>
+        <option value="#F5F0EB">F002 奶昔白</option>
+        <option value="#C79A6A">F003 金棕</option>
+        <option value="#0066CC">F016 克莱因蓝</option>
+        <option value="#000000">F006 黑色</option>
+      </select>
+    </div>
+    <div>
+      <button onclick="drawColor()">应用颜色</button>
+      <button onclick="addExtraColor()">加额外颜色（+300/150元）</button>
+    </div>
+    <button class="next-btn" onclick="goToCustomize()">下一步：定制印字/图案</button>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('gloveCanvas');
+    const ctx = canvas.getContext('2d');
+    const totalPriceEl = document.getElementById('totalPrice');
+    let basePrice = parseInt(localStorage.getItem('basePrice')) || 1699;
+    let colorExtra = 0;
+
+    // 加载拳套底图
+    const bgImg = new Image();
+   bgImg.src = '../images/glove-bg.png';
+    bgImg.onload = () => ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+
+    // 8个区域坐标（用Paint.NET测量后替换！示例值）
+    const areaCoords = {
+      '1': { x: 80, y: 60, w: 140, h: 180 },
+      '2': { x: 80, y: 250, w: 140, h: 70 },
+      '3': { x: 230, y: 80, w: 90, h: 220 },
+      '4': { x: 330, y: 60, w: 80, h: 60 },
+      '5': { x: 330, y: 130, w: 80, h: 80 },
+      '6': { x: 330, y: 220, w: 80, h: 70 },
+      '7': { x: 330, y: 300, w: 80, h: 40 },
+      '8': { x: 230, y: 310, w: 90, h: 30 }
+    };
+
+    // 上色函数
+    function drawColor() {
+      const area = document.getElementById('areaSelect').value;
+      const color = document.getElementById('colorSelect').value;
+      const { x, y, w, h } = areaCoords[area];
+      ctx.fillStyle = color;
+      ctx.fillRect(x, y, w, h);
+    }
+
+    // 加额外颜色费用
+    function addExtraColor() {
+      const area = document.getElementById('areaSelect').value;
+      if (['1','2','3'].includes(area)) colorExtra += 300; // ①②③区+300
+      else colorExtra += 150; // ④~⑧区+150
+      totalPriceEl.innerText = basePrice + colorExtra;
+      localStorage.setItem('colorExtra', colorExtra);
+    }
+
+    // 跳转到定制页
+    function goToCustomize() {
+      window.location.href = '../pages/customize.html';
+    }
+  </script>
+</body>
+</html>

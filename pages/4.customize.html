@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>4.定制印字/图案</title>
+  <style>
+    body { font-family: 微软雅黑; padding: 20px; max-width: 750px; margin: 0 auto; }
+    .title { font-size: 20px; font-weight: bold; margin: 20px 0; }
+    .custom-list { display: flex; flex-direction: column; gap: 15px; margin: 20px 0 30px; }
+    .custom-item { display: flex; align-items: center; gap: 10px; }
+    .price { font-size: 18px; font-weight: bold; color: #e4393c; margin: 15px 0; }
+    .next-btn { width: 100%; background: #07c160; color: #fff; border: none; padding: 15px; border-radius: 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="title">定制印字与图案</div>
+  <div class="custom-list">
+    <div class="custom-item">
+      <input type="checkbox" id="logo" value="70">
+      <label for="logo">替换LOGO（+70元，需私信客服提供文件）</label>
+    </div>
+    <div class="custom-item">
+      <input type="checkbox" id="chinese" value="30">
+      <label for="chinese">定制中文印字（+30元）</label>
+    </div>
+    <div class="custom-item">
+      <input type="checkbox" id="wristPattern" value="30">
+      <label for="wristPattern">手腕内侧图案（+30元，需私信客服提供线稿）</label>
+    </div>
+    <div class="custom-item">
+      <input type="checkbox" id="embroidery">
+      <label for="embroidery">手背刺绣（150元起，需提供图案，客服报价）</label>
+    </div>
+  </div>
+  <div class="price">定制额外费用：¥<span id="customExtra">0</span></div>
+  <button class="next-btn" id="nextBtn">下一步：看最终方案</button>
+
+  <script>
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    const customExtraEl = document.getElementById('customExtra');
+    const nextBtn = document.getElementById('nextBtn');
+    let customExtra = 0;
+
+    // 计算定制费用
+    checkboxes.forEach(box => {
+      box.addEventListener('change', () => {

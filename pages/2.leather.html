@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>2.选皮革类型</title>
+  <style>
+    body { font-family: 微软雅黑; padding: 20px; max-width: 750px; margin: 0 auto; }
+    .title { font-size: 20px; font-weight: bold; margin: 20px 0; }
+    .leather-list { display: flex; flex-direction: column; gap: 12px; margin-bottom: 30px; }
+    .leather-item { border: 1px solid #ddd; padding: 15px; border-radius: 6px; cursor: pointer; }
+    .leather-item.active { border-color: #07c160; background: #f8f8f8; color: #07c160; }
+    .price-tag { color: #e4393c; font-weight: bold; margin-left: 10px; }
+    .next-btn { width: 100%; background: #07c160; color: #fff; border: none; padding: 15px; border-radius: 6px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <div class="title">选择皮革类型</div>
+  <div class="leather-list" id="leatherList">
+    <div class="leather-item" data-type="Swift牛皮拼色" data-price="1699">Swift牛皮拼色 <span class="price-tag">¥1699</span></div>
+    <div class="leather-item" data-type="Swift+野牛皮" data-price="1899">Swift+野牛皮 <span class="price-tag">¥1899</span></div>
+    <div class="leather-item" data-type="Swift+鲨鱼皮" data-price="3599">Swift+鲨鱼皮 <span class="price-tag">¥3599</span></div>
+    <div class="leather-item" data-type="Swift+鳄鱼/蟒蛇皮" data-price="3999">Swift+鳄鱼/蟒蛇皮 <span class="price-tag">¥3999</span></div>
+  </div>
+  <button class="next-btn" id="nextBtn">下一步：配色预览</button>
+
+  <script>
+    const leatherList = document.getElementById('leatherList');
+    const nextBtn = document.getElementById('nextBtn');
+    let selectedLeather = '';
+
+    leatherList.addEventListener('click', (e) => {
+      if (e.target.classList.contains('leather-item')) {
+        document.querySelectorAll('.leather-item').forEach(item => item.classList.remove('active'));
+        e.target.classList.add('active');
+        selectedLeather = e.target.dataset.type;
+        localStorage.setItem('customLeather', selectedLeather);
+        localStorage.setItem('basePrice', e.target.dataset.price);
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (selectedLeather) {
+        window.location.href = '../pages/color.html';
+      } else {
+        alert('请先选皮革哦！');
+      }
+    });
+  </script>
+</body>
+</html>

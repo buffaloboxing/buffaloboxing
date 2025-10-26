@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>5.最终定制方案</title>
+  <style>
+    body { font-family: 微软雅黑; padding: 20px; max-width: 750px; margin: 0 auto; background: #f9f9f9; }
+    .card { background: #fff; padding: 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .title { font-size: 22px; font-weight: bold; color: #333; margin-bottom: 25px; text-align: center; }
+    .result-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f2f2f2; }
+    .item-label { color: #666; }
+    .item-value { color: #333; font-weight: 500; }
+    .final-price { margin: 25px 0; padding: 15px; background: #f8f8f8; border-radius: 6px; text-align: center; }
+    .final-price-text { font-size: 16px; color: #666; margin-bottom: 8px; }
+    .final-price-num { font-size: 28px; font-weight: bold; color: #e4393c; }
+    .note { font-size: 14px; color: #999; margin: 15px 0; line-height: 1.5; }
+    .copy-btn { width: 100%; background: #07c160; color: #fff; border: none; padding: 16px; border-radius: 6px; font-size: 16px; cursor: pointer; margin-top: 10px; }
+    .copy-btn:active { background: #06b152; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="title">达尔文拳套定制方案</div>
+    
+    <div class="result-item">
+      <div class="item-label">拳套尺寸</div>
+      <div class="item-value" id="sizeVal">--</div>
+    </div>
+    <div class="result-item">
+      <div class="item-label">皮革类型</div>
+      <div class="item-value" id="leatherVal">--</div>
+    </div>
+    <div class="result-item">
+      <div class="item-label">配色额外费用</div>
+      <div class="item-value" id="colorVal">¥0</div>
+    </div>
+    <div class="result-item">
+      <div class="item-label">定制项目（LOGO/印字/图案）</div>
+      <div class="item-value" id="customItems">无</div>
+    </div>
+    <div class="result-item">
+      <div class="item-label">定制额外费用</div>
+      <div class="item-value" id="customVal">¥0</div>
+    </div>
+    <div class="result-item">
+      <div class="item-label">手背刺绣</div>
+      <div class="item-value" id="embroideryVal">未选择</div>
+    </div>
+
+    <div class="final-price">
+      <div class="final-price-text">当前预估总价（不含刺绣）</div>
+      <div class="final-price-num" id="totalPrice">¥0</div>
+    </div>
+
+    <div class="note">
+      1. 手背刺绣需提供图案，客服将根据图案复杂度单独报价；<br>
+      2. 最终价格以客服确认方案后核算为准；<br>
+      3. 复制方案后可直接发给客服对接下单。
+    </div>
+
+    <button class="copy-btn" onclick="copyResult()">复制定制方案给客服</button>
+  </div>
+
+  <script>
+    // 页面加载时自动填充数据+算价
+    window.onload = function() {
+      // 1. 获取之前存储的所有配置
+      const size = localStorage.getItem('customSize') || '未选择';
+      const leather = localStorage.getItem('customLeather') || '未选择';
+      const basePrice = parseInt(localStorage.getItem('basePrice')) || 0;
+      const colorExtra = parseInt(localStorage.getItem('colorExtra')) || 0;
+      const customExtra = parseInt(localStorage.getItem('customExtra')) || 0;
+      const customItems = localStorage.getItem('customItems') || '无';
+      const embroidery = localStorage.getItem('backEmbroidery') === 'true' ? '已选择（待报价）' : '未选择';
+
+      // 2. 填充到页面
+      document.getElementById('sizeVal').innerText = size + '盎司';
+      document.getElementById('leatherVal').innerText = leather;
+      document.getElementById('colorVal').innerText = '¥' + colorExtra;
+      document.getElementById('customItems').innerText = customItems;
+      document.getElementById('customVal').innerText = '¥' + customExtra;
+      document.getElementById('embroideryVal').innerText = embroidery;
+
+      // 3. 计算预估总价（基础价+配色额外+定制额外）
+      const total = basePrice + colorExtra + customExtra;
+      document.getElementById('totalPrice').innerText = '¥' + total;
+    };
+
+    // 复制方案到剪贴板
+    function copyResult() {
+      const size = document.getElementById('sizeVal').innerText;
+      const leather = document.getElementById('leatherVal').innerText;
+      const colorExtra = document.getElementById('colorVal').innerText;
+      const customItems = document.getElementById('customItems').innerText;
+      const customExtra = document.getElementById('customVal').innerText;
+      const embroidery = document.getElementById('embroideryVal').innerText;
+      const total = document.getElementById('totalPrice').innerText;
+
+      // 拼接方案文本
+      const resultText = `
+达尔文拳套定制方案：
+1. 拳套尺寸：${size}
+2. 皮革类型：${leather}
+3. 配色额外费用：${colorExtra}
+4. 定制项目：${customItems}
+5. 定制额外费用：${customExtra}
+6. 手背刺绣：${embroidery}
+7. 当前预估总价（不含刺绣）：${total}
+
+备注：请客服确认方案并核算最终价格，刺绣需提供图案对接报价。
+      `;
+
+      // 复制到剪贴板
+      navigator.clipboard.writeText(resultText.trim()).then(() => {
+        alert('方案已复制！现在可以发给客服啦~');
+      }).catch(() => {
+        alert('复制失败，请手动复制文本哦~');
+      });
+    }
+  </script>
+</body>
+</html>
