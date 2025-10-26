@@ -44,3 +44,32 @@
     // 计算定制费用
     checkboxes.forEach(box => {
       box.addEventListener('change', () => {
+        // 处理刺绣选项（固定150元起）
+        if (box.id === 'embroidery') {
+          if (box.checked) {
+            customExtra += 150;
+          } else {
+            customExtra -= 150;
+          }
+        } else {
+          // 处理其他有明确价格的选项
+          const value = parseInt(box.value) || 0;
+          if (box.checked) {
+            customExtra += value;
+          } else {
+            customExtra -= value;
+          }
+        }
+        // 更新显示的费用
+        customExtraEl.textContent = customExtra;
+      });
+    });
+
+    // 添加下一步跳转功能
+    nextBtn.addEventListener('click', () => {
+      // 跳转到结果页面
+      window.location.href = '5.result.html';
+    });
+  </script>
+</body>
+</html>
