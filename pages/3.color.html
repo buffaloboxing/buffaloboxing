@@ -6,22 +6,101 @@
   <style>
     body { font-family: 微软雅黑; padding: 20px; max-width: 750px; margin: 0 auto; }
     .title { font-size: 20px; font-weight: bold; margin: 20px 0; }
-    canvas { border: 1px solid #ddd; border-radius: 6px; max-width: 100%; }
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      height: 400px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      background-color: #f9f9f9;
+      overflow: hidden;
+    }
+    .canvas-placeholder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #999;
+      font-size: 14px;
+      z-index: 1;
+    }
+    canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      max-width: 600px;
+      max-height: 400px;
+      z-index: 2;
+    }
     .price { font-size: 18px; font-weight: bold; color: #e4393c; margin: 15px 0; }
     .controls { display: flex; flex-direction: column; gap: 15px; margin: 20px 0; }
     select, button { padding: 10px; border-radius: 6px; border: 1px solid #ddd; }
-    .color-container { position: relative; margin-top: 10px; }
-    .color-swatch-img { max-width: 100%; border: 1px solid #eee; border-radius: 4px; }
-    .color-hotspot { position: absolute; width: 24px; height: 24px; border: 2px solid #fff; border-radius: 50%; transform: translate(-50%, -50%); cursor: pointer; box-shadow: 0 0 0 2px transparent; transition: box-shadow 0.2s; }
-    .color-hotspot.selected { box-shadow: 0 0 0 2px #07c160; }
+    .color-container { 
+      position: relative; 
+      margin-top: 10px; 
+      width: 100%; 
+      overflow: auto; /* 允许横向滚动 */
+      padding-bottom: 10px;
+    }
+    .color-swatch-img { 
+      width: 100%; 
+      min-width: 600px; /* 确保色卡完整显示 */
+      border: 1px solid #eee; 
+      border-radius: 4px; 
+    }
+    .color-hotspot { 
+      position: absolute; 
+      width: 24px; 
+      height: 24px; 
+      border: 2px solid #fff; 
+      border-radius: 50%; 
+      transform: translate(-50%, -50%); 
+      cursor: pointer; 
+      box-shadow: 0 0 0 2px transparent; 
+      transition: box-shadow 0.2s; 
+      /* 新增：填充颜色 */
+      background-color: var(--hotspot-color);
+    }
+    .color-hotspot.selected { 
+      box-shadow: 0 0 0 2px #07c160, 0 0 0 4px rgba(7, 193, 96, 0.2);
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .button-group button {
+      flex: 1;
+    }
     .next-btn { width: 100%; background: #07c160; color: #fff; border: none; padding: 15px; cursor: pointer; }
     .alert-box { padding: 12px; background: #fff8e1; border: 1px solid #ffe082; border-radius: 6px; margin: 10px 0; color: #e65100; font-size: 14px; }
     .color-rule { font-size: 14px; color: #666; margin: 5px 0; line-height: 1.5; }
+    .image-error {
+      color: #e4393c;
+      font-size: 14px;
+      margin: 5px 0;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
   <div class="title">配色预览（选区域+颜色上色）</div>
-  <canvas id="gloveCanvas" width="600" height="400"></canvas>
+  
+  <div class="canvas-container">
+    <div class="canvas-placeholder">拳套预览图加载中...</div>
+    <canvas id="gloveCanvas" width="600" height="400"></canvas>
+  </div>
+  <div id="bgImageError" class="image-error" style="display: none;">
+    提示：拳套底图加载失败，请检查图片路径是否正确 (../images/glove-bg.png)
+  </div>
+
   <div class="price">当前总价：¥<span id="totalPrice">1699</span></div>
 
   <!-- 颜色规则说明 -->
@@ -50,12 +129,16 @@
     <div>
       <label>选颜色（点击色卡上的颜色）：</label>
       <div class="color-container" id="colorContainer">
-        <img src="../images/color-swatch.png" class="color-swatch-img" id="colorSwatchImg">
+        <img src="../images/color-swatch.png" class="color-swatch-img" id="colorSwatchImg" 
+             onerror="document.getElementById('swatchImageError').style.display='block'">
         <!-- 颜色热点将通过JS动态生成 -->
+      </div>
+      <div id="swatchImageError" class="image-error" style="display: none;">
+        提示：色卡图片加载失败，请检查图片路径是否正确 (../images/color-swatch.png)
       </div>
       <input type="hidden" id="selectedColor" value="#FFFFFF">
     </div>
-    <div>
+    <div class="button-group">
       <button onclick="drawColor()">应用颜色</button>
       <button onclick="addExtraColor()">加额外颜色（+300/150元）</button>
     </div>
@@ -71,6 +154,7 @@
     const colorSwatchImg = document.getElementById('colorSwatchImg');
     const selectedColor = document.getElementById('selectedColor');
     const alertBox = document.getElementById('alertBox');
+    const canvasPlaceholder = document.querySelector('.canvas-placeholder');
     let basePrice = parseInt(localStorage.getItem('basePrice')) || 1699;
     let colorExtra = 0;
     // 存储各区域颜色代码
@@ -119,10 +203,6 @@
       const area123Colors = new Set();
       // 4-8号区域使用的颜色集合
       const area45678Colors = new Set();
-      // 1-3号区域使用的所有颜色（包括重复）
-      const area123All = [];
-      // 4-8号区域使用的所有颜色（包括重复）
-      const area45678All = [];
 
       // 收集数据
       for (let i = 1; i <= 8; i++) {
@@ -131,10 +211,8 @@
         
         if (i <= 3) {
           area123Colors.add(color);
-          area123All.push(color);
         } else {
           area45678Colors.add(color);
-          area45678All.push(color);
         }
       }
 
@@ -192,8 +270,12 @@
       colorPositions.forEach(color => {
         const hotspot = document.createElement('div');
         hotspot.className = 'color-hotspot';
+        // 设置热点位置
         hotspot.style.left = `${color.x}px`;
         hotspot.style.top = `${color.y}px`;
+        // 设置热点颜色（关键修复）
+        hotspot.style.setProperty('--hotspot-color', color.code);
+        // 提示文本
         hotspot.title = color.name;
         hotspot.dataset.color = color.code;
         
@@ -216,7 +298,15 @@
     const bgImg = new Image();
     bgImg.src = '../images/glove-bg.png'; // 拳套底图路径
     bgImg.onload = () => {
+      // 隐藏占位符
+      canvasPlaceholder.style.display = 'none';
+      // 绘制图片
       ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+    };
+    // 图片加载失败处理
+    bgImg.onerror = () => {
+      canvasPlaceholder.textContent = '拳套底图加载失败';
+      document.getElementById('bgImageError').style.display = 'block';
     };
 
     // 色卡图片加载完成后创建热点
