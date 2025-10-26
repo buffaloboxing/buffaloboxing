@@ -10,6 +10,11 @@
     .result-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #f2f2f2; }
     .item-label { color: #666; }
     .item-value { color: #333; font-weight: 500; }
+    .color-swatch { display: inline-block; width: 16px; height: 16px; border-radius: 3px; margin-right: 5px; vertical-align: middle; }
+    .color-section { margin-top: 15px; }
+    .color-title { font-weight: bold; margin-bottom: 10px; color: #333; }
+    .color-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .color-item { display: flex; justify-content: space-between; align-items: center; }
     .final-price { margin: 25px 0; padding: 15px; background: #f8f8f8; border-radius: 6px; text-align: center; }
     .final-price-text { font-size: 16px; color: #666; margin-bottom: 8px; }
     .final-price-num { font-size: 28px; font-weight: bold; color: #e4393c; }
@@ -30,6 +35,15 @@
       <div class="item-label">皮革类型</div>
       <div class="item-value" id="leatherVal">--</div>
     </div>
+    
+    <!-- 新增颜色选择区域 -->
+    <div class="color-section">
+      <div class="color-title">各区域配色方案</div>
+      <div class="color-grid" id="colorGrid">
+        <!-- 颜色区域将通过JS动态生成 -->
+      </div>
+    </div>
+    
     <div class="result-item">
       <div class="item-label">配色额外费用</div>
       <div class="item-value" id="colorVal">¥0</div>
@@ -62,6 +76,52 @@
   </div>
 
   <script>
+    // 区域名称映射表
+    const areaNames = {
+      '1': '① ',
+      '2': '② ',
+      '3': '③ ',
+      '4': '④ ',
+      '5': '⑤ ',
+      '6': '⑥ ',
+      '7': '⑦ ',
+      '8': '⑧ '
+    };
+
+    // 颜色名称映射表（与colorPositions对应）
+    const colorNames = {
+      '#FFFFFF': 'F001 纯白',
+      '#F5F0EB': 'F002 奶昔白',
+      '#C79A6A': 'F003 金棕',
+      '#B5A99C': 'F004 大象灰',
+      '#1E2E44': 'F005 午夜蓝',
+      '#000000': 'F006 黑色',
+      '#995E3C': 'F033 焦糖棕',
+      '#3FBF72': 'F032 漫画绿',
+      '#C1BAB2': 'F009 风衣灰',
+      '#F27D3C': 'F010 橙色',
+      '#F2C12E': 'F011 太阳黄',
+      '#F9E77F': 'F012 小鸡黄',
+      '#4A5939': 'F013 橄榄绿',
+      '#BDE0F2': 'F014 微风蓝',
+      '#A0E7E5': 'F015 tiffany蓝',
+      '#0066CC': 'F016 克莱因蓝',
+      '#A4C2D8': 'F017 亚麻蓝',
+      '#D2B48C': 'F018 马拉茶色',
+      '#6B8E58': 'F019 鼠尾草绿',
+      '#808080': 'F020 积雨云灰',
+      '#E63946': 'F021 大红',
+      '#FFC0CB': 'F022 樱花粉',
+      '#F08080': 'F023 蔷薇粉',
+      '#FFB6C1': 'F031 花瓣粉',
+      '#A52A2A': 'F029 酒红',
+      '#FFD700': 'F025 柠檬黄',
+      '#F5E0C5': 'F026 杏色',
+      '#0047AB': 'F030 深邃蓝',
+      '#C0C0C0': 'F027 海鸥灰',
+      '#4A3728': 'F028 深咖'
+    };
+
     // 页面加载时自动填充数据+算价
     window.onload = function() {
       // 1. 获取之前存储的所有配置
@@ -72,8 +132,9 @@
       const customExtra = parseInt(localStorage.getItem('customExtra')) || 0;
       const customItems = localStorage.getItem('customItems') || '无';
       const embroidery = localStorage.getItem('backEmbroidery') === 'true' ? '已选择（待报价）' : '未选择';
+      const areaColors = JSON.parse(localStorage.getItem('areaColors')) || {};
 
-      // 2. 填充到页面
+      // 2. 填充基础信息到页面
       document.getElementById('sizeVal').innerText = size + '盎司';
       document.getElementById('leatherVal').innerText = leather;
       document.getElementById('colorVal').innerText = '¥' + colorExtra;
@@ -81,7 +142,36 @@
       document.getElementById('customVal').innerText = '¥' + customExtra;
       document.getElementById('embroideryVal').innerText = embroidery;
 
-      // 3. 计算预估总价（基础价+配色额外+定制额外）
+      // 3. 填充颜色选择信息
+      const colorGrid = document.getElementById('colorGrid');
+      // 遍历所有区域
+      for (let i = 1; i <= 8; i++) {
+        const colorCode = areaColors[i];
+        const colorItem = document.createElement('div');
+        colorItem.className = 'color-item';
+        
+        // 如果有选择颜色，显示颜色样本和名称
+        if (colorCode) {
+          const colorName = colorNames[colorCode] || colorCode;
+          colorItem.innerHTML = `
+            <span>${areaNames[i]}</span>
+            <span>
+              <span class="color-swatch" style="background-color: ${colorCode};"></span>
+              ${colorName}
+            </span>
+          `;
+        } else {
+          // 未选择颜色
+          colorItem.innerHTML = `
+            <span>${areaNames[i]}</span>
+            <span>未选择</span>
+          `;
+        }
+        
+        colorGrid.appendChild(colorItem);
+      }
+
+      // 4. 计算预估总价（基础价+配色额外+定制额外）
       const total = basePrice + colorExtra + customExtra;
       document.getElementById('totalPrice').innerText = '¥' + total;
     };
@@ -95,17 +185,31 @@
       const customExtra = document.getElementById('customVal').innerText;
       const embroidery = document.getElementById('embroideryVal').innerText;
       const total = document.getElementById('totalPrice').innerText;
+      
+      // 获取颜色信息
+      const areaColors = JSON.parse(localStorage.getItem('areaColors')) || {};
+      let colorText = '';
+      for (let i = 1; i <= 8; i++) {
+        const colorCode = areaColors[i];
+        if (colorCode) {
+          const colorName = colorNames[colorCode] || colorCode;
+          colorText += `${areaNames[i]}: ${colorName}（${colorCode}）\n`;
+        }
+      }
+      if (!colorText) colorText = '未进行颜色选择\n';
 
       // 拼接方案文本
       const resultText = `
 达尔文拳套定制方案：
 1. 拳套尺寸：${size}
 2. 皮革类型：${leather}
-3. 配色额外费用：${colorExtra}
-4. 定制项目：${customItems}
-5. 定制额外费用：${customExtra}
-6. 手背刺绣：${embroidery}
-7. 当前预估总价（不含刺绣）：${total}
+3. 各区域配色：
+${colorText}
+4. 配色额外费用：${colorExtra}
+5. 定制项目：${customItems}
+6. 定制额外费用：${customExtra}
+7. 手背刺绣：${embroidery}
+8. 当前预估总价（不含刺绣）：${total}
 
 备注：请客服确认方案并核算最终价格，刺绣需提供图案对接报价。
       `;
