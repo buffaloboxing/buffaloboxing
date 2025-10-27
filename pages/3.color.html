@@ -2,14 +2,14 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>3.配色预览</title>
+  <title>3.配色预览（精准弧线版）</title>
   <style>
     body { font-family: 微软雅黑; padding: 20px; max-width: 750px; margin: 0 auto; }
     .title { font-size: 20px; font-weight: bold; margin: 20px 0; }
     .canvas-container {
       position: relative;
       width: 100%;
-      height: 400px;
+      height: auto;
       border: 1px solid #ddd;
       border-radius: 6px;
       background-color: #f9f9f9;
@@ -29,88 +29,113 @@
       z-index: 1;
     }
     canvas {
-      position: absolute;
-      top: 0;
-      left: 0;
+      position: relative;
       width: 100%;
-      height: 100%;
-      max-width: 600px;
-      max-height: 400px;
+      height: auto;
       z-index: 2;
     }
-    .price { font-size: 18px; font-weight: bold; color: #e4393c; margin: 15px 0; }
-    .controls { display: flex; flex-direction: column; gap: 15px; margin: 20px 0; }
-    select, button { padding: 10px; border-radius: 6px; border: 1px solid #ddd; }
     .color-container { 
       position: relative; 
       margin-top: 10px; 
       width: 100%; 
-      overflow: auto; /* 允许横向滚动 */
-      padding-bottom: 10px;
+      display: flex;
+      flex-wrap: wrap; 
+      gap: 10px; 
     }
-    .color-swatch-img { 
-      width: 100%; 
-      min-width: 600px; /* 确保色卡完整显示 */
-      border: 1px solid #eee; 
-      border-radius: 4px; 
+    .color-circle {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 0 2px transparent;
+      transition: box-shadow 0.2s;
     }
-    .color-hotspot { 
-      position: absolute; 
-      width: 24px; 
-      height: 24px; 
-      border: 2px solid #fff; 
-      border-radius: 50%; 
-      transform: translate(-50%, -50%); 
-      cursor: pointer; 
-      box-shadow: 0 0 0 2px transparent; 
-      transition: box-shadow 0.2s; 
-      /* 新增：填充颜色 */
-      background-color: var(--hotspot-color);
-    }
-    .color-hotspot.selected { 
+    .color-circle.selected {
       box-shadow: 0 0 0 2px #07c160, 0 0 0 4px rgba(7, 193, 96, 0.2);
-      transform: translate(-50%, -50%) scale(1.1);
+      transform: scale(1.1);
     }
-    .button-group {
+    .current-price {
+      font-size: 16px;
+      font-weight: bold;
+      color: #333;
+      margin: 10px 0;
+    }
+    .price-alert {
+      padding: 10px;
+      background: #fff1f0;
+      border: 1px solid #ffa39e;
+      border-radius: 6px;
+      margin: 10px 0;
+      color: #e83e3e;
+      font-size: 14px;
+      display: none;
+    }
+    .alert-box { 
+      padding: 12px; 
+      background: #fff8e1; 
+      border: 1px solid #ffe082; 
+      border-radius: 6px; 
+      margin: 10px 0; 
+      color: #e65100; 
+      font-size: 14px; 
+    }
+    .color-rule { font-size: 14px; color: #666; margin: 5px 0; line-height: 1.5; }
+    .btn-group {
       display: flex;
       gap: 10px;
-      margin-top: 10px;
+      margin-top: 20px;
     }
-    .button-group button {
+    .prev-btn, .next-btn {
       flex: 1;
+      padding: 15px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
     }
-    .next-btn { width: 100%; background: #07c160; color: #fff; border: none; padding: 15px; cursor: pointer; }
-    .alert-box { padding: 12px; background: #fff8e1; border: 1px solid #ffe082; border-radius: 6px; margin: 10px 0; color: #e65100; font-size: 14px; }
-    .color-rule { font-size: 14px; color: #666; margin: 5px 0; line-height: 1.5; }
-    .image-error {
-      color: #e4393c;
-      font-size: 14px;
-      margin: 5px 0;
-      text-align: center;
+    .prev-btn {
+      background: #f5f5f5;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+    .next-btn {
+      background: #07c160;
+      color: #fff;
+      border: none;
+    }
+    .controls {
+      margin-top: 20px;
+      padding: 15px;
+      background: #f9f9f9;
+      border-radius: 6px;
+    }
+    select {
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin: 10px 0;
+      width: 100%;
+      box-sizing: border-box;
     }
   </style>
 </head>
 <body>
   <div class="title">配色预览（选区域+颜色上色）</div>
   
+  <div class="current-price">当前价格：¥<span id="currentPrice">1699</span></div>
+  <!-- 价格提示框 -->
+  <div class="price-alert" id="priceAlert"></div>
+
   <div class="canvas-container">
     <div class="canvas-placeholder">拳套预览图加载中...</div>
-    <canvas id="gloveCanvas" width="600" height="400"></canvas>
-  </div>
-  <div id="bgImageError" class="image-error" style="display: none;">
-    提示：拳套底图加载失败，请检查图片路径是否正确 (../images/glove-bg.png)
+    <canvas id="gloveCanvas"></canvas>
   </div>
 
-  <div class="price">当前总价：¥<span id="totalPrice">1699</span></div>
+  <div id="leatherTip" class="alert-box" style="display: none;"></div>
 
-  <!-- 颜色规则说明 -->
   <div class="color-rules">
     <div class="color-rule">①、②、③号区域：可免费选择2种颜色，每额外增加1种+300元</div>
     <div class="color-rule">④、⑤、⑥、⑦、⑧号区域：可在免费2种颜色基础上再免费选1种，每额外增加1种+150元</div>
   </div>
-
-  <!-- 提示框（默认隐藏） -->
-  <div class="alert-box" id="alertBox" style="display: none;"></div>
 
   <div class="controls">
     <div>
@@ -127,87 +152,336 @@
       </select>
     </div>
     <div>
-      <label>选颜色（点击色卡上的颜色）：</label>
+      <label>选颜色（点击颜色圆圈）：</label>
       <div class="color-container" id="colorContainer">
-        <img src="../images/color-swatch.png" class="color-swatch-img" id="colorSwatchImg" 
-             onerror="document.getElementById('swatchImageError').style.display='block'">
-        <!-- 颜色热点将通过JS动态生成 -->
+        <!-- 颜色圆圈将通过JS动态生成 -->
       </div>
-      <div id="swatchImageError" class="image-error" style="display: none;">
-        提示：色卡图片加载失败，请检查图片路径是否正确 (../images/color-swatch.png)
-      </div>
-      <input type="hidden" id="selectedColor" value="#FFFFFF">
     </div>
-    <div class="button-group">
-      <button onclick="drawColor()">应用颜色</button>
-      <button onclick="addExtraColor()">加额外颜色（+300/150元）</button>
-    </div>
-    <button class="next-btn" onclick="goToCustomize()">下一步：定制印字/图案</button>
+  </div>
+
+  <div class="btn-group">
+    <button class="prev-btn" id="prevBtn">上一页：选择皮革</button>
+    <button class="next-btn" id="nextBtn">下一步：定制印字/图案</button>
   </div>
 
   <script>
     const canvas = document.getElementById('gloveCanvas');
     const ctx = canvas.getContext('2d');
-    const totalPriceEl = document.getElementById('totalPrice');
+    const currentPriceEl = document.getElementById('currentPrice');
     const areaSelect = document.getElementById('areaSelect');
     const colorContainer = document.getElementById('colorContainer');
-    const colorSwatchImg = document.getElementById('colorSwatchImg');
-    const selectedColor = document.getElementById('selectedColor');
-    const alertBox = document.getElementById('alertBox');
+    const leatherTip = document.getElementById('leatherTip');
     const canvasPlaceholder = document.querySelector('.canvas-placeholder');
+    const priceAlert = document.getElementById('priceAlert');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    
     let basePrice = parseInt(localStorage.getItem('basePrice')) || 1699;
     let colorExtra = 0;
-    // 存储各区域颜色代码
     const areaColors = {
       '1': null, '2': null, '3': null, '4': null,
       '5': null, '6': null, '7': null, '8': null
     };
+    let bgImg = null; // 存储底图对象
+    let originalWidth, originalHeight; // 原始图片尺寸
 
-    // 色卡上的颜色位置及对应代码（根据实际色卡图片调整坐标和颜色值）
-    const colorPositions = [
-      { x: 10, y: 15, code: '#FFFFFF', name: 'F001 纯白' },
-      { x: 40, y: 15, code: '#F5F0EB', name: 'F002 奶昔白' },
-      { x: 70, y: 15, code: '#C79A6A', name: 'F003 金棕' },
-      { x: 100, y: 15, code: '#B5A99C', name: 'F004 大象灰' },
-      { x: 130, y: 15, code: '#1E2E44', name: 'F005 午夜蓝' },
-      { x: 160, y: 15, code: '#000000', name: 'F006 黑色' },
-      { x: 190, y: 15, code: '#995E3C', name: 'F033 焦糖棕' },
-      { x: 220, y: 15, code: '#3FBF72', name: 'F032 漫画绿' },
-      { x: 250, y: 15, code: '#C1BAB2', name: 'F009 风衣灰' },
-      { x: 280, y: 15, code: '#F27D3C', name: 'F010 橙色' },
-      { x: 310, y: 15, code: '#F2C12E', name: 'F011 太阳黄' },
-      { x: 340, y: 15, code: '#F9E77F', name: 'F012 小鸡黄' },
-      { x: 370, y: 15, code: '#4A5939', name: 'F013 橄榄绿' },
-      { x: 400, y: 15, code: '#BDE0F2', name: 'F014 微风蓝' },
-      { x: 430, y: 15, code: '#A0E7E5', name: 'F015 tiffany蓝' },
-      { x: 460, y: 15, code: '#0066CC', name: 'F016 克莱因蓝' },
-      { x: 490, y: 15, code: '#A4C2D8', name: 'F017 亚麻蓝' },
-      { x: 520, y: 15, code: '#D2B48C', name: 'F018 马拉茶色' },
-      { x: 550, y: 15, code: '#6B8E58', name: 'F019 鼠尾草绿' },
-      { x: 580, y: 15, code: '#808080', name: 'F020 积雨云灰' },
-      { x: 10, y: 45, code: '#E63946', name: 'F021 大红' },
-      { x: 40, y: 45, code: '#FFC0CB', name: 'F022 樱花粉' },
-      { x: 70, y: 45, code: '#F08080', name: 'F023 蔷薇粉' },
-      { x: 100, y: 45, code: '#FFB6C1', name: 'F031 花瓣粉' },
-      { x: 130, y: 45, code: '#A52A2A', name: 'F029 酒红' },
-      { x: 160, y: 45, code: '#FFD700', name: 'F025 柠檬黄' },
-      { x: 190, y: 45, code: '#F5E0C5', name: 'F026 杏色' },
-      { x: 220, y: 45, code: '#0047AB', name: 'F030 深邃蓝' },
-      { x: 250, y: 45, code: '#C0C0C0', name: 'F027 海鸥灰' },
-      { x: 280, y: 45, code: '#4A3728', name: 'F028 深咖' }
+    // 颜色列表
+    const colors = [
+      { code: '#FFFFFF', name: '纯白' },
+      { code: '#F5F0EB', name: '奶昔白' },
+      { code: '#9D5F3B', name: '金棕' },
+      { code: '#746148', name: '大象灰' },
+      { code: '#1E2E44', name: '午夜蓝' },
+      { code: '#000000', name: '黑色' },
+      { code: '#80412D', name: '焦糖棕' },
+      { code: '#3FBF72', name: '漫画绿' },
+      { code: '#B3A59A', name: '风衣灰' },
+      { code: '#F27D3C', name: '橙色' },
+      { code: '#F2C12E', name: '太阳黄' },
+      { code: '#F9E77F', name: '小鸡黄' },
+      { code: '#404234', name: '橄榄绿' },
+      { code: '#BDE0F2', name: '微风蓝' },
+      { code: '#A0E7E5', name: 'tiffany蓝' },
+      { code: '#0D32C4', name: '克莱因蓝' },
+      { code: '#91A3B1', name: '亚麻蓝' },
+      { code: '#C0A086', name: '马拉茶色' },
+      { code: '#828776', name: '鼠尾草绿' },
+      { code: '#808080', name: '积雨云灰' },
+      { code: '#BE3033', name: '大红' },
+      { code: '#EEB9C9', name: '樱花粉' },
+      { code: '#DF6981', name: '蔷薇粉' },
+      { code: '#E4A3BB', name: '花瓣粉' },
+      { code: '#6A2A30', name: '酒红' },
+      { code: '#FFD700', name: '柠檬黄' },
+      { code: '#C6AEA6', name: '杏色' },
+      { code: '#294162', name: '深邃蓝' },
+      { code: '#C0C0C0', name: '海鸥灰' },
+      { code: '#402D2D', name: '深咖' }
     ];
 
-    // 获取颜色统计数据
-    function getColorStats() {
-      // 1-3号区域使用的颜色集合
+    // 生成颜色选择圆圈
+    function createColorCircles() {
+      colorContainer.innerHTML = '';
+      colors.forEach(color => {
+        const circle = document.createElement('div');
+        circle.className = 'color-circle';
+        circle.style.backgroundColor = color.code;
+        circle.title = color.name;
+        circle.dataset.color = color.code;
+        
+        circle.onclick = () => {
+          document.querySelectorAll('.color-circle').forEach(el => el.classList.remove('selected'));
+          circle.classList.add('selected');
+          const area = areaSelect.value;
+          const colorCode = color.code;
+          areaColors[area] = colorCode;
+          redrawAllColors();
+          calculatePrice();
+        };
+        
+        colorContainer.appendChild(circle);
+      });
+    }
+
+    // 与原始底图匹配的各区域路径坐标
+    const areaPaths = {
+      // ①号区域：左右拳套顶部绿色（精准匹配原图绿色区域）
+      '1': {
+        left: [
+          {x: 160, y: 90},          // 左上角起点
+          {x: 220, y: 60},          // 顶部圆弧控制点（二次贝塞尔）
+          {x: 280, y: 90},          // 右上角终点
+          {x: 290, y: 220},         // 右侧直线终点
+          {x: 140, y: 230},         // 左侧直线终点
+          {x: 160, y: 90}           // 闭合点
+        ],
+        right: [
+          {x: 340, y: 90},          // 左上角起点
+          {x: 400, y: 60},          // 顶部圆弧控制点（二次贝塞尔）
+          {x: 460, y: 90},          // 右上角终点
+          {x: 470, y: 220},         // 右侧直线终点
+          {x: 330, y: 230},         // 左侧直线终点
+          {x: 340, y: 90}           // 闭合点
+        ]
+      },
+
+      // ②号区域：左右拳套下部红色（精准匹配原图红色区域）
+      '2': {
+        left: [
+          {x: 160, y: 230},         // 上边缘左起点
+          {x: 150, y: 320},         // 左侧圆角控制点（二次贝塞尔）
+          {x: 170, y: 330},         // 左下角终点
+          {x: 260, y: 330},         // 右下角终点
+          {x: 280, y: 320},         // 右侧圆角控制点（二次贝塞尔）
+          {x: 270, y: 220},         // 上边缘右起点
+          {x: 160, y: 230}          // 闭合点
+        ],
+        right: [
+          {x: 360, y: 230},         // 上边缘左起点
+          {x: 370, y: 320},         // 左侧圆角控制点（二次贝塞尔）
+          {x: 390, y: 330},         // 左下角终点
+          {x: 480, y: 330},         // 右下角终点
+          {x: 500, y: 320},         // 右侧圆角控制点（二次贝塞尔）
+          {x: 490, y: 220},         // 上边缘右起点
+          {x: 360, y: 230}          // 闭合点
+        ]
+      },
+
+      // ③号区域：左右拳套主体蓝色（精准匹配原图蓝色区域）
+      '3': {
+        left: [
+          {x: 150, y: 130},         // 上起点
+          {x: 120, y: 180},         // 左侧弧线控制点1（三次贝塞尔）
+          {x: 110, y: 250},         // 左侧弧线控制点2（三次贝塞尔）
+          {x: 130, y: 290},         // 下起点
+          {x: 250, y: 280},         // 右侧直线终点
+          {x: 260, y: 180},         // 上部右侧弧线控制点
+          {x: 150, y: 130}          // 闭合点
+        ],
+        right: [
+          {x: 340, y: 130},         // 上起点
+          {x: 370, y: 180},         // 右侧弧线控制点1（三次贝塞尔）
+          {x: 380, y: 250},         // 右侧弧线控制点2（三次贝塞尔）
+          {x: 360, y: 290},         // 下起点
+          {x: 240, y: 280},         // 左侧直线终点
+          {x: 230, y: 180},         // 上部左侧弧线控制点
+          {x: 340, y: 130}          // 闭合点
+        ]
+      },
+
+      // ④号区域：左右上部侧边粉色（精准匹配原图粉色区域）
+      '4': {
+        left: [
+          {x: 290, y: 90},          // 上起点（衔接①号区域）
+          {x: 310, y: 110},         // 外侧圆弧控制点（二次贝塞尔）
+          {x: 305, y: 150},         // 外侧终点
+          {x: 285, y: 140},         // 内侧直线终点
+          {x: 290, y: 90}           // 闭合点
+        ],
+        right: [
+          {x: 470, y: 90},          // 上起点（衔接①号区域）
+          {x: 490, y: 110},         // 外侧圆弧控制点（二次贝塞尔）
+          {x: 485, y: 150},         // 外侧终点
+          {x: 465, y: 140},         // 内侧直线终点
+          {x: 470, y: 90}           // 闭合点
+        ]
+      },
+
+      // ⑤号区域：左右中部侧边灰色（精准匹配原图灰色区域）
+      '5': {
+        left: [
+          {x: 285, y: 150},         // 上起点（衔接④号区域）
+          {x: 305, y: 160},         // 外侧弧线控制点
+          {x: 300, y: 210},         // 外侧终点
+          {x: 275, y: 200},         // 内侧直线终点
+          {x: 285, y: 150}          // 闭合点
+        ],
+        right: [
+          {x: 465, y: 150},         // 上起点（衔接④号区域）
+          {x: 485, y: 160},         // 外侧弧线控制点
+          {x: 480, y: 210},         // 外侧终点
+          {x: 455, y: 200},         // 内侧直线终点
+          {x: 465, y: 150}          // 闭合点
+        ]
+      },
+
+      // ⑥号区域：左右中部内侧黑色（精准匹配原图黑色区域）
+      '6': {
+        left: [
+          {x: 275, y: 200},         // 上起点（衔接⑤号区域）
+          {x: 290, y: 195},         // 内侧弧线控制点（二次贝塞尔）
+          {x: 285, y: 240},         // 内侧终点
+          {x: 260, y: 250},         // 下直线终点
+          {x: 275, y: 200}          // 闭合点
+        ],
+        right: [
+          {x: 455, y: 200},         // 上起点（衔接⑤号区域）
+          {x: 440, y: 195},         // 内侧弧线控制点（二次贝塞尔）
+          {x: 445, y: 240},         // 内侧终点
+          {x: 470, y: 250},         // 下直线终点
+          {x: 455, y: 200}          // 闭合点
+        ]
+      },
+
+      // ⑦号区域：左右下部内侧紫色（精准匹配原图紫色区域）
+      '7': {
+        left: [
+          {x: 260, y: 250},         // 上起点（衔接⑥号区域）
+          {x: 270, y: 270},         // 外侧弧线控制点
+          {x: 265, y: 300},         // 外侧终点
+          {x: 230, y: 310},         // 内侧直线终点
+          {x: 260, y: 250}          // 闭合点
+        ],
+        right: [
+          {x: 470, y: 250},         // 上起点（衔接⑥号区域）
+          {x: 460, y: 270},         // 外侧弧线控制点
+          {x: 465, y: 300},         // 外侧终点
+          {x: 500, y: 310},         // 内侧直线终点
+          {x: 470, y: 250}          // 闭合点
+        ]
+      },
+
+      // ⑧号区域：左右系带及底部黄色（精准匹配原图黄色区域）
+      '8': {
+        left: [
+          {x: 180, y: 330},         // 左系带起点
+          {x: 200, y: 325},         // 系带弧线控制点（二次贝塞尔）
+          {x: 220, y: 330},         // 左系带终点
+          {x: 215, y: 340},         // 底部圆角控制点
+          {x: 185, y: 340},         // 底部左侧终点
+          {x: 180, y: 330}          // 闭合点
+        ],
+        right: [
+          {x: 380, y: 200},         // 上系带起点
+          {x: 400, y: 200},         // 上系带终点
+          {x: 405, y: 250},         // 中系带右侧点
+          {x: 400, y: 300},         // 下系带右侧点
+          {x: 405, y: 320},         // 底部圆角控制点（二次贝塞尔）
+          {x: 395, y: 330},         // 底部右侧终点
+          {x: 365, y: 330},         // 底部左侧终点
+          {x: 360, y: 320},         // 左侧圆角控制点
+          {x: 365, y: 300},         // 下系带左侧点
+          {x: 360, y: 250},         // 中系带左侧点
+          {x: 380, y: 200}          // 闭合点
+        ]
+      }
+    };
+
+    // 重新绘制所有区域颜色
+    function redrawAllColors() {
+      if (!bgImg) return;
+      
+      // 先绘制底图
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
+      
+      // 再绘制每个区域的颜色（左右两侧分别处理）
+      Object.keys(areaColors).forEach(area => {
+        const color = areaColors[area];
+        if (color) {
+          drawAreaColor(area, color);
+        }
+      });
+    }
+
+    // 绘制单个区域颜色（区分左右，处理弧线）
+    function drawAreaColor(area, color) {
+      const paths = areaPaths[area];
+      if (!paths) return;
+
+      // 绘制左侧区域（若存在）
+      if (paths.left) {
+        drawPathWithCurve(paths.left, color);
+      }
+
+      // 绘制右侧区域（若存在）
+      if (paths.right) {
+        drawPathWithCurve(paths.right, color);
+      }
+    }
+
+    // 处理含弧线的路径绘制（支持二次贝塞尔曲线）
+    function drawPathWithCurve(points, color) {
+      ctx.beginPath();
+      ctx.moveTo(points[0].x, points[0].y);
+
+      for (let i = 1; i < points.length; i++) {
+        // 判断是否为圆弧段（控制点+终点成对出现）
+        if (i % 2 === 1 && i + 1 < points.length) {
+          // 二次贝塞尔曲线：控制点(points[i]) → 终点(points[i+1])
+          ctx.quadraticCurveTo(
+            points[i].x, points[i].y,
+            points[i + 1].x, points[i + 1].y
+          );
+          i++; // 跳过终点，避免重复绘制
+        } else {
+          // 直线段
+          ctx.lineTo(points[i].x, points[i].y);
+        }
+      }
+
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+      // 添加半透明效果使原图轮廓可见
+      ctx.globalAlpha = 0.8;
+      ctx.fill();
+      ctx.globalAlpha = 1;
+    }
+
+    // 价格计算及提示显示
+    function calculatePrice() {
+      const leatherType = localStorage.getItem('leatherType') || '';
+      const isWildCowhide = leatherType.includes('野牛皮');
       const area123Colors = new Set();
-      // 4-8号区域使用的颜色集合
       const area45678Colors = new Set();
 
-      // 收集数据
+      // 收集颜色
       for (let i = 1; i <= 8; i++) {
         const color = areaColors[i];
         if (!color) continue;
+        
+        if (isWildCowhide && color === '#80412D') continue;
         
         if (i <= 3) {
           area123Colors.add(color);
@@ -216,174 +490,107 @@
         }
       }
 
-      // 计算4-8号区域使用的新颜色（不在1-3号区域颜色中的）
+      // 计算新增颜色
       const newColorsIn45678 = new Set();
       area45678Colors.forEach(color => {
-        if (!area123Colors.has(color)) {
-          newColorsIn45678.add(color);
-        }
+        if (!area123Colors.has(color)) newColorsIn45678.add(color);
       });
 
-      return {
-        area123UniqueCount: area123Colors.size,  // 1-3号区域独特颜色数量
-        area45678NewCount: newColorsIn45678.size // 4-8号区域新增独特颜色数量
+      // 计算额外费用
+      let extra = 0;
+      let alertText = '';
+      
+      // 1-3号区域超额提示
+      if (area123Colors.size > (isWildCowhide ? 3 : 2)) {
+        const overCount = area123Colors.size - (isWildCowhide ? 3 : 2);
+        extra += overCount * 300;
+        alertText += `①②③号区域已超额使用${overCount}种颜色，需额外支付${overCount * 300}元；`;
+      }
+      
+      // 4-8号区域超额提示
+      if (newColorsIn45678.size > (isWildCowhide ? 2 : 1)) {
+        const overCount = newColorsIn45678.size - (isWildCowhide ? 2 : 1);
+        extra += overCount * 150;
+        alertText += `④⑤⑥⑦⑧号区域已超额使用${overCount}种颜色，需额外支付${overCount * 150}元；`;
+      }
+
+      // 显示/隐藏提示
+      if (alertText) {
+        priceAlert.textContent = alertText;
+        priceAlert.style.display = 'block';
+      } else {
+        priceAlert.style.display = 'none';
+      }
+
+      // 更新价格
+      colorExtra = extra;
+      currentPriceEl.innerText = basePrice + colorExtra;
+      localStorage.setItem('colorExtra', colorExtra);
+      // 保存颜色选择
+      localStorage.setItem('areaColors', JSON.stringify(areaColors));
+    }
+
+    // 皮革提示
+    function showLeatherTip() {
+      const leatherType = localStorage.getItem('leatherType') || '';
+      if (leatherType.includes('野牛皮')) {
+        leatherTip.textContent = '野牛皮固定为深棕色，您可以用深棕色代替野牛皮来进行搭配，且不计入两种普通牛皮的颜色额度';
+        leatherTip.style.display = 'block';
+      } else if (leatherType.includes('鲨鱼皮') || leatherType.includes('鳄鱼') || leatherType.includes('鸵鸟') || leatherType.includes('蜥蜴')) {
+        leatherTip.textContent = '鳄鱼/鲨鱼/鸵鸟/蜥蜴等稀有皮革没有色卡，一般会有黑色、棕色、白色等常见颜色，您可以先用色卡上相似的颜色搭配，然后由我们来找找看有没有对应颜色的皮革（这种名贵稀有皮固定应用于 2、5 号区域，应用于其它区域需要联系客服报价）';
+        leatherTip.style.display = 'block';
+      } else {
+        leatherTip.style.display = 'none';
+      }
+    }
+
+    // 加载原始底图并设置canvas尺寸与图片一致
+    function loadBgImage() {
+      bgImg = new Image();
+      // 恢复为原始底图路径
+      bgImg.src = '../images/glove-bg.png.png';
+      
+      bgImg.onload = () => {
+        // 设置canvas尺寸与图片原始尺寸完全一致
+        canvas.width = bgImg.width;
+        canvas.height = bgImg.height;
+        originalWidth = bgImg.width;
+        originalHeight = bgImg.height;
+        
+        canvasPlaceholder.style.display = 'none';
+        ctx.drawImage(bgImg, 0, 0);
+        
+        // 恢复之前的颜色选择
+        const savedColors = localStorage.getItem('areaColors');
+        if (savedColors) {
+          Object.assign(areaColors, JSON.parse(savedColors));
+          redrawAllColors();
+        }
+        
+        showLeatherTip();
+        calculatePrice();
+      };
+      
+      bgImg.onerror = () => {
+        canvasPlaceholder.textContent = '拳套底图加载失败，请检查图片路径是否正确';
       };
     }
 
-    // 检查颜色是否超出限制并显示提示
-    function checkColorLimit(area) {
-      const stats = getColorStats();
-      let message = '';
+    // 导航按钮事件
+    prevBtn.addEventListener('click', () => {
+      window.location.href = 'leather.html'; // 上一页：选择皮革页面
+    });
 
-      // 检查1-3号区域
-      if (area <= 3) {
-        if (stats.area123UniqueCount > 2) {
-          const extra = stats.area123UniqueCount - 2;
-          message = `提示：①②③号区域已使用${stats.area123UniqueCount}种颜色，超出免费额度${extra}种，需额外支付${extra * 300}元`;
-        }
-      } 
-      // 检查4-8号区域
-      else {
-        if (stats.area45678NewCount > 1) {
-          const extra = stats.area45678NewCount - 1;
-          message = `提示：④-⑧号区域已使用${stats.area45678NewCount}种新颜色，超出免费额度${extra}种，需额外支付${extra * 150}元`;
-        }
-      }
-
-      // 显示或隐藏提示框
-      if (message) {
-        alertBox.textContent = message;
-        alertBox.style.display = 'block';
-      } else {
-        alertBox.style.display = 'none';
-      }
-
-      return message;
-    }
-
-    // 在色卡图片上创建可点击的颜色热点
-    function createColorHotspots() {
-      // 清除已有热点
-      document.querySelectorAll('.color-hotspot').forEach(el => el.remove());
-      
-      // 创建新热点
-      colorPositions.forEach(color => {
-        const hotspot = document.createElement('div');
-        hotspot.className = 'color-hotspot';
-        // 设置热点位置
-        hotspot.style.left = `${color.x}px`;
-        hotspot.style.top = `${color.y}px`;
-        // 设置热点颜色（关键修复）
-        hotspot.style.setProperty('--hotspot-color', color.code);
-        // 提示文本
-        hotspot.title = color.name;
-        hotspot.dataset.color = color.code;
-        
-        // 点击热点选择颜色
-        hotspot.onclick = (e) => {
-          e.stopPropagation();
-          // 移除其他热点的选中状态
-          document.querySelectorAll('.color-hotspot').forEach(h => h.classList.remove('selected'));
-          // 添加当前热点的选中状态
-          hotspot.classList.add('selected');
-          // 记录选中的颜色
-          selectedColor.value = color.code;
-        };
-        
-        colorContainer.appendChild(hotspot);
-      });
-    }
-
-    // 加载拳套底图
-    const bgImg = new Image();
-    bgImg.src = '../images/glove-bg.png'; // 拳套底图路径
-    bgImg.onload = () => {
-      // 隐藏占位符
-      canvasPlaceholder.style.display = 'none';
-      // 绘制图片
-      ctx.drawImage(bgImg, 0, 0, canvas.width, canvas.height);
-    };
-    // 图片加载失败处理
-    bgImg.onerror = () => {
-      canvasPlaceholder.textContent = '拳套底图加载失败';
-      document.getElementById('bgImageError').style.display = 'block';
-    };
-
-    // 色卡图片加载完成后创建热点
-    colorSwatchImg.onload = createColorHotspots;
-
-    // 8个区域坐标（请根据实际拳套图片调整）
-    const areaCoords = {
-      '1': { x: 80, y: 60, w: 140, h: 180 },
-      '2': { x: 80, y: 250, w: 140, h: 70 },
-      '3': { x: 230, y: 80, w: 90, h: 220 },
-      '4': { x: 330, y: 60, w: 80, h: 60 },
-      '5': { x: 330, y: 130, w: 80, h: 80 },
-      '6': { x: 330, y: 220, w: 80, h: 70 },
-      '7': { x: 330, y: 300, w: 80, h: 40 },
-      '8': { x: 230, y: 310, w: 90, h: 30 }
-    };
-
-    // 上色函数
-    function drawColor() {
-      const area = parseInt(areaSelect.value);
-      const color = selectedColor.value;
-      const { x, y, w, h } = areaCoords[area];
-      
-      // 记录区域颜色
-      areaColors[area] = color;
-      
-      // 绘制颜色
-      ctx.fillStyle = color;
-      ctx.fillRect(x, y, w, h);
-      
-      // 检查颜色限制并显示提示
-      checkColorLimit(area);
-    }
-
-    // 加额外颜色费用
-    function addExtraColor() {
-      const area = parseInt(areaSelect.value);
-      const stats = getColorStats();
-      let extraFee = 0;
-
-      // 计算额外费用
-      if (area <= 3) {
-        // 1-3号区域
-        if (stats.area123UniqueCount > 2) {
-          extraFee = 300;
-        } else {
-          alert('当前未超出免费颜色额度，无需额外付费');
-          return;
-        }
-      } else {
-        // 4-8号区域
-        if (stats.area45678NewCount > 1) {
-          extraFee = 150;
-        } else {
-          alert('当前未超出免费颜色额度，无需额外付费');
-          return;
-        }
-      }
-
-      // 更新费用
-      colorExtra += extraFee;
-      totalPriceEl.innerText = basePrice + colorExtra;
-      localStorage.setItem('colorExtra', colorExtra);
-      
-      // 显示更新后的提示
-      checkColorLimit(area);
-    }
-
-    // 跳转到定制页并存储颜色数据
-    function goToCustomize() {
-      // 存储各区域颜色代码到localStorage
+    nextBtn.addEventListener('click', () => {
+      // 保存当前颜色选择
       localStorage.setItem('areaColors', JSON.stringify(areaColors));
-      window.location.href = '../pages/4.customize.html';
-    }
+      localStorage.setItem('colorExtra', colorExtra);
+      window.location.href = 'customize.html'; // 下一页：定制印字/图案页面
+    });
 
-    // 初始化时创建热点（防止图片缓存导致onload不触发）
-    window.addEventListener('load', createColorHotspots);
+    // 初始化
+    loadBgImage();
+    createColorCircles();
   </script>
 </body>
 </html>
