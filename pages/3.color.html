@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>3.配色预览（精准弧线版）</title>
+  <title>3.配色预览</title>
   <style>
     body { font-family: 微软雅黑; padding: 20px; max-width: 750px; margin: 0 auto; }
     .title { font-size: 20px; font-weight: bold; margin: 20px 0; }
@@ -464,7 +464,7 @@
     // 加载原始底图（1632×1280高清图）
     function loadBgImage() {
       bgImg = new Image();
-      bgImg.src = '../images/glove-bg-hd.png.png'; // 请确保此路径对应1632×1280的高清图
+      bgImg.src = '../images/glove-bg.png.png'; // 请确保此路径对应1632×1280的高清图
       
       bgImg.onload = () => {
         canvasPlaceholder.style.display = 'none';
@@ -504,4 +504,5 @@
   </script>
 </body>
 </html>
+
 
