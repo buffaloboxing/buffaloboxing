@@ -29,17 +29,38 @@
         }
         .color-container {
             position: relative; margin-top: 10px; width: 100%;
-            display: flex; flex-wrap: wrap; gap: 10px;
+            display: flex; flex-wrap: wrap; gap: 12px 10px;
         }
+        /* 新增：单个颜色项容器（色圈+名称） */
+        .color-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            width: 62px;
+            transition: transform 0.2s;
+        }
+        .color-item:hover { transform: translateY(-2px); }
+
         .color-circle {
             width: 30px; height: 30px; border-radius: 50%;
-            cursor: pointer; box-shadow: 0 0 0 2px transparent;
+            box-shadow: 0 0 0 2px transparent;
             transition: all 0.2s;
         }
         .color-circle.selected {
             box-shadow: 0 0 0 2px #07c160, 0 0 0 4px rgba(7, 193, 96, 0.2);
             transform: scale(1.1);
         }
+        /* 新增：颜色名称文字样式 */
+        .color-name {
+            font-size: 12px;
+            color: #333;
+            text-align: center;
+            line-height: 1.2;
+            word-break: break-all;
+        }
+
         .current-price { font-size: 16px; font-weight: bold; color: #333; margin: 10px 0; }
         .price-alert { padding: 10px; background: #fff1f0; border: 1px solid #ffa39e; border-radius: 6px; margin: 10px 0; color: #e83e3e; font-size: 14px; display: none; }
         .alert-box { padding: 12px; background: #fff8e1; border: 1px solid #ffe082; border-radius: 6px; margin: 10px 0; color: #e65100; font-size: 14px; }
@@ -85,7 +106,7 @@
         </select>
     </div>
     <div>
-        <label>选颜色（点击颜色圆圈）：</label>
+        <label>选颜色（点击颜色圆圈或名称）：</label>
         <div class="color-container" id="colorContainer"></div>
     </div>
 </div>
@@ -211,7 +232,7 @@
         renderLayer(idx);
     }
 
-    /* ==================== 颜色选择 ==================== */
+    /* ==================== 颜色选择（修改：色圈+名称） ==================== */
     const colors = [
         { code: '#FFFFFF', name: '纯白' }, { code: '#F5F0EB', name: '奶昔白' },
         { code: '#9D5F3B', name: '金棕' }, { code: '#746148', name: '大象灰' },
@@ -222,7 +243,7 @@
         { code: '#404234', name: '橄榄绿' }, { code: '#BDE0F2', name: '微风蓝' },
         { code: '#A0E7E5', name: 'tiffany蓝' }, { code: '#0D32C4', name: '克莱因蓝' },
         { code: '#91A3B1', name: '亚麻蓝' }, { code: '#C0A086', name: '马拉茶色' },
-        { code: '#83835F', name: '鼠尾草绿' }, { code: '#808080', name: '积雨云灰' },
+        { code: '#71735C', name: '鼠尾草绿' }, { code: '#808080', name: '积雨云灰' },
         { code: '#BE3033', name: '大红' }, { code: '#EEB9C9', name: '樱花粉' },
         { code: '#DF6981', name: '蔷薇粉' }, { code: '#E4A3BB', name: '花瓣粉' },
         { code: '#6A2A30', name: '酒红' }, { code: '#FFD700', name: '柠檬黄' },
@@ -233,12 +254,26 @@
     function createColorCircles() {
         colorContainer.innerHTML = '';
         colors.forEach(color => {
+            // 单个颜色项容器
+            const item = document.createElement('div');
+            item.className = 'color-item';
+
+            // 色圈
             const circle = document.createElement('div');
             circle.className = 'color-circle';
             circle.style.backgroundColor = color.code;
-            circle.title = color.name;
             circle.dataset.color = color.code;
-            circle.onclick = () => {
+
+            // 颜色名称
+            const nameEl = document.createElement('div');
+            nameEl.className = 'color-name';
+            nameEl.textContent = color.name;
+
+            item.appendChild(circle);
+            item.appendChild(nameEl);
+
+            // 点击整个颜色项（色圈+文字）都可选中
+            item.onclick = () => {
                 document.querySelectorAll('.color-circle').forEach(el => el.classList.remove('selected'));
                 circle.classList.add('selected');
                 const area = areaSelect.value;
@@ -246,7 +281,8 @@
                 tintLayer(parseInt(area) - 1, color.code);
                 calculatePrice();
             };
-            colorContainer.appendChild(circle);
+
+            colorContainer.appendChild(item);
         });
     }
 
@@ -308,7 +344,7 @@
             leatherTip.textContent = '野牛皮固定为深棕色，您可以用深棕色代替野牛皮来进行搭配，且不计入两种普通牛皮的颜色额度';
             leatherTip.style.display = 'block';
         } else if (/鲨鱼|鳄鱼|鸵鸟|蜥蜴/.test(leatherType)) {
-            leatherTip.textContent = '鳄鱼/鲨鱼/鸵鸟/蜥蜴等稀有皮革没有色卡，一般会有黑色、棕色?白色等常见颜色，您可以先用色卡上相似的颜色搭配，然后由我们来找找看有没有对应颜色的皮革（这种名贵稀有皮固定应用于 2、5 号区域，应用于其它区域需要联系客服报价）';
+            leatherTip.textContent = '鳄鱼/鲨鱼/鸵鸟/蜥蜴等稀有皮革没有色卡，一般会有黑色、棕色、白色等常见颜色，您可以先用色卡上相似的颜色搭配，然后由我们来找找看有没有对应颜色的皮革（这种名贵稀有皮固定应用于 2、5 号区域，应用于其它区域需要联系客服报价）';
             leatherTip.style.display = 'block';
         } else {
             leatherTip.style.display = 'none';
@@ -353,4 +389,3 @@
 </script>
 </body>
 </html>
-
