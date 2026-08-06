@@ -48,15 +48,19 @@
       color: #1a1a1a;
       letter-spacing: 1px;
     }
+    /* 统一尺寸按钮：两列等宽网格 */
     .size-list { 
-      display: flex; 
-      flex-wrap: wrap; 
-      gap: 12px; 
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
       margin-bottom: 60px; 
     }
     .size-item { 
       border: 1px solid #d9d9d9; 
-      padding: 16px 32px; 
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       border-radius: 2px; 
       cursor: pointer;
       font-size: 15px;
