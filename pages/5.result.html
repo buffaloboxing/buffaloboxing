@@ -397,7 +397,7 @@
       return '默认';
     }
 
-    // 修复：兼容本地文件的复制方案
+    // 优化排版后的复制方案
     function copyResult() {
       const size = document.getElementById('sizeVal').innerText;
       const leather = document.getElementById('leatherVal').innerText;
@@ -408,10 +408,11 @@
       const logoReplace = document.getElementById('logoReplaceVal').innerText;
       const embroidery = document.getElementById('embroideryVal').innerText;
       const total = document.getElementById('totalPrice').innerText;
-      const printDetail = document.getElementById('printDetail').innerText.replace(/\s+/g, ' ').trim();
-      const patternDetail = document.getElementById('patternDetail').innerText.replace(/\s+/g, ' ').trim();
       
       const areaColors = JSON.parse(localStorage.getItem('areaColors')) || {};
+      const customOptions = JSON.parse(localStorage.getItem('customOptions')) || {};
+
+      // 各区域配色文本
       let colorText = '';
       for (let i = 1; i <= 8; i++) {
         const colorCode = areaColors[i];
@@ -422,42 +423,76 @@
       }
       if (!colorText) colorText = '  未进行颜色选择\n';
 
+      // 手腕印字 - 左右手分行
+      let leftPrint = '未定制';
+      let rightPrint = '未定制';
+      
+      if (customOptions.leftEngText || customOptions.leftChText) {
+        const content = customOptions.leftEngText || customOptions.leftChText;
+        const type = customOptions.leftEngText ? '英文/数字' : '汉字（+ ¥30）';
+        const font = customOptions.leftEngFont === 'cursive' ? '花体' : '正体';
+        const color = getColorText(customOptions.leftPrintColor || 'leftGold');
+        leftPrint = `${type}「${content}」· ${font} · ${color}`;
+      }
+      
+      if (customOptions.rightEngText || customOptions.rightChText) {
+        const content = customOptions.rightEngText || customOptions.rightChText;
+        const type = customOptions.rightEngText ? '英文/数字' : '汉字（+ ¥30）';
+        const font = customOptions.rightEngFont === 'cursive' ? '花体' : '正体';
+        const color = getColorText(customOptions.rightPrintColor || 'rightGold');
+        rightPrint = `${type}「${content}」· ${font} · ${color}`;
+      }
+
+      // 手腕图案 - 左右手分行
+      let leftPattern = '未定制';
+      let rightPattern = '未定制';
+      
+      if (customOptions.leftWristPattern === 'yes') {
+        const color = getPatternColorText(customOptions.leftPatternColor || 'leftPatternGold');
+        leftPattern = `已定制（+ ¥30）· ${color}`;
+      }
+      if (customOptions.rightWristPattern === 'yes') {
+        const color = getPatternColorText(customOptions.rightPatternColor || 'rightPatternGold');
+        rightPattern = `已定制（+ ¥30）· ${color}`;
+      }
+
       const resultText = 
 `BUFFALO BOXING · Darwin 系列定制方案
-━━━━━━━━━━━━━━━━━━━━━━
+────────────────────
 1. 拳套尺寸：${size}
 2. 皮革类型：${leather}
 3. Logo 配置
-   颜色：${logoColor}
-   工艺：${logoStitch}
+  颜色：${logoColor}
+  工艺：${logoStitch}
 4. 各区域配色
 ${colorText}
 5. 手腕内侧印字
-   ${printDetail}
+  左手：${leftPrint}
+  右手：${rightPrint}
 6. 手腕内侧图案
-   ${patternDetail}
+  左手：${leftPattern}
+  右手：${rightPattern}
 7. Logo 替换：${logoReplace}
 8. 手背刺绣：${embroidery}
 9. 配色额外费用：${colorExtra}
 10. 定制额外费用：${customExtra}
 11. 预估总价（不含刺绣）：${total}
-
+────────────────────
 备注：请客服确认方案并核算最终价格，刺绣需提供图案对接报价。`;
 
-      // 优先使用现代剪贴板 API
+      // 优先现代API，失败降级，兼容移动端
       if (navigator.clipboard && window.isSecureContext) {
-        navigator.clipboard.writeText(resultText.trim()).then(() => {
+        navigator.clipboard.writeText(resultText).then(() => {
           alert('方案已复制，可直接发送给客服');
         }).catch(() => {
-          fallbackCopy(resultText.trim());
+          fallbackCopy(resultText);
         });
       } else {
-        // 降级方案：兼容本地 file:// 协议
-        fallbackCopy(resultText.trim());
+        fallbackCopy(resultText);
       }
     }
 
-    // 传统复制降级方法
+    // 降级复制方法
     function fallbackCopy(text) {
       const textarea = document.createElement('textarea');
       textarea.value = text;
