@@ -223,7 +223,7 @@
 
     <div class="btn-group">
       <button class="prev-btn" id="prevBtn">BACK · 返回修改</button>
-      <button class="copy-btn" onclick="copyResult">COPY · 复制方案</button>
+      <button class="copy-btn" onclick="copyResult()">COPY · 复制方案</button>
     </div>
   </div>
 
@@ -397,6 +397,7 @@
       return '默认';
     }
 
+    // 修复：兼容本地文件的复制方案
     function copyResult() {
       const size = document.getElementById('sizeVal').innerText;
       const leather = document.getElementById('leatherVal').innerText;
@@ -443,11 +444,36 @@ ${colorText}
 
 备注：请客服确认方案并核算最终价格，刺绣需提供图案对接报价。`;
 
-      navigator.clipboard.writeText(resultText.trim()).then(() => {
+      // 优先使用现代剪贴板 API
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(resultText.trim()).then(() => {
+          alert('方案已复制，可直接发送给客服');
+        }).catch(() => {
+          fallbackCopy(resultText.trim());
+        });
+      } else {
+        // 降级方案：兼容本地 file:// 协议
+        fallbackCopy(resultText.trim());
+      }
+    }
+
+    // 传统复制降级方法
+    function fallbackCopy(text) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.top = '0';
+      textarea.style.left = '0';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
         alert('方案已复制，可直接发送给客服');
-      }).catch(() => {
-        alert('复制失败，请手动复制');
-      });
+      } catch (err) {
+        alert('复制失败，请手动复制方案内容');
+      }
+      document.body.removeChild(textarea);
     }
 
     document.getElementById('prevBtn').addEventListener('click', () => {
