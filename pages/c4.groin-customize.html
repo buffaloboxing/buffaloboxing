@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Logo 与图案 · BUFFALO BOXING 护裆定制</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 40px 20px; max-width: 750px; margin: 0 auto; background: #fafafa; color: #1a1a1a; line-height: 1.6;
+  }
+  .page-frame { background: #fff; border: 1px solid #1a1a1a; border-radius: 2px; padding: 32px 20px; }
+  @media (min-width: 768px) { .page-frame { padding: 48px 40px; } }
+  .brand-header { text-align: center; margin-bottom: 44px; padding-bottom: 24px; border-bottom: 1px solid #1a1a1a; }
+  .brand-name { font-size: 20px; font-weight: 600; letter-spacing: 3px; }
+  .brand-series { font-size: 11px; letter-spacing: 4px; color: #666; margin-top: 6px; text-transform: uppercase; }
+
+  .step-tag { font-size: 11px; letter-spacing: 3px; color: #999; text-transform: uppercase; margin-bottom: 10px; }
+  .page-title { font-size: 20px; font-weight: 500; margin-bottom: 22px; letter-spacing: 1px; }
+  .current-price { font-size: 14px; color: #666; margin-bottom: 30px; padding-bottom: 16px; border-bottom: 1px solid #1a1a1a; }
+  .current-price span { font-size: 22px; font-weight: 500; color: #1a1a1a; margin-left: 8px; }
+
+  .section { margin-bottom: 36px; padding-bottom: 30px; border-bottom: 1px solid #e5e5e5; }
+  .section:last-of-type { border-bottom: none; padding-bottom: 0; margin-bottom: 32px; }
+  .section-title { font-size: 15px; font-weight: 500; margin-bottom: 18px; letter-spacing: .5px; }
+  .option-label { font-weight: 500; margin: 14px 0 9px; font-size: 14px; color: #333; display: block; }
+  .radio-group { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 10px; }
+  .radio-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #333; cursor: pointer; }
+  .radio-item input[type="radio"] {
+    appearance: none; -webkit-appearance: none; width: 16px; height: 16px;
+    border: 1px solid #b3b3b3; border-radius: 50%; cursor: pointer; position: relative; transition: border-color .2s;
+  }
+  .radio-item input[type="radio"]:checked { border-color: #1a1a1a; }
+  .radio-item input[type="radio"]:checked::after {
+    content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 8px; height: 8px; border-radius: 50%; background: #1a1a1a;
+  }
+  select { padding: 12px; border: 1px solid #d9d9d9; border-radius: 2px; width: 100%; background: #fff; font-size: 14px; font-family: inherit; outline: none; margin: 6px 0; }
+  select:focus { border-color: #1a1a1a; }
+  .sub-box { display: none; margin-top: 14px; padding: 16px 18px; border: 1px solid #d9d9d9; border-radius: 2px; background: #fafafa; }
+  .sub-box.show { display: block; }
+  .note { font-size: 12px; color: #999; margin: 8px 0 0; line-height: 1.6; }
+  .price-tag { font-size: 13px; font-weight: 500; }
+  .warning { font-size: 12px; padding: 11px 14px; border: 1px solid #d9d9d9; border-radius: 2px; background: #fafafa; margin: 10px 0; line-height: 1.6; display: none; }
+
+  .pattern-card { border: 1px solid #d9d9d9; border-radius: 2px; padding: 16px; margin-bottom: 14px; background: #fafafa; }
+  .pattern-name { font-size: 14px; font-weight: 500; color: #1a1a1a; margin-bottom: 6px; }
+  .pattern-detail { display: none; margin-top: 12px; }
+  .pattern-detail.show { display: block; }
+
+  .btn-group { display: flex; gap: 12px; }
+  .prev-btn, .next-btn { flex: 1; padding: 16px; border-radius: 2px; cursor: pointer; font-size: 14px; letter-spacing: 2px; transition: all .2s; }
+  .prev-btn { background: #fff; color: #1a1a1a; border: 1px solid #d9d9d9; }
+  .prev-btn:hover { border-color: #1a1a1a; }
+  .next-btn { background: #1a1a1a; color: #fff; border: 1px solid #1a1a1a; }
+  .next-btn:hover { background: #000; border-color: #000; }
+  .step-nav { display: flex; gap: 8px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+  .step-nav::-webkit-scrollbar { height: 3px; }
+  .step-nav-item { flex: 0 0 auto; display: flex; align-items: center; gap: 7px; border: 1px solid #d9d9d9; border-radius: 2px; padding: 9px 13px; background: #fff; font-size: 12px; letter-spacing: 1px; color: #666; cursor: pointer; font-family: inherit; transition: all .2s ease; }
+  .step-nav-item .sn-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border: 1px solid #999; border-radius: 50%; font-size: 10px; }
+  .step-nav-item:hover { border-color: #1a1a1a; color: #1a1a1a; }
+  .step-nav-item.current { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+  .step-nav-item.current .sn-num { border-color: #fff; }
+  .mem-logo-btn { border:1px solid #1a1a1a; background:#fff; color:#1a1a1a; border-radius:2px; padding:10px 14px; font-size:12px; letter-spacing:1px; cursor:pointer; font-family:inherit; margin-bottom:18px; transition:all .2s; }
+  .mem-logo-btn:hover { background:#1a1a1a; color:#fff; }
+  .mem-text-cap { font-size:10px; letter-spacing:1px; color:#aaa; margin:8px 0 4px; }
+  .mem-text-row { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 6px; }
+  .mem-text-chip { border:1px solid #d9d9d9; background:#fafafa; border-radius:2px; padding:5px 10px; font-size:12px; color:#555; cursor:pointer; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .mem-text-chip:hover { border-color:#1a1a1a; color:#1a1a1a; }
+    .global-nav { display:flex; gap:10px; margin-top:24px; padding-top:18px; border-top:1px solid #f0f0f0; }
+    .gn-link { flex:1; text-align:center; border:1px solid #d9d9d9; border-radius:2px; padding:13px 8px; font-size:12px; letter-spacing:1px; color:#666; background:#fff; text-decoration:none; cursor:pointer; transition:all .2s; }
+    .gn-link:hover { border-color:#1a1a1a; color:#1a1a1a; }
+    .gn-link.gn-bundle { border-color:#1a1a1a; color:#1a1a1a; display:none; }
+    .gn-link.gn-bundle:hover { background:#1a1a1a; color:#fff; }
+</style>
+</head>
+<body>
+  <div class="page-frame">
+    <div class="brand-header">
+      <div class="brand-name">BUFFALO BOXING</div>
+      <div class="brand-series">Groin Guard · Darwin Custom</div>
+    </div>
+
+    <div class="step-tag">Step 04 / 05</div>
+    <div class="step-nav" id="stepNav"><button type="button" class="step-nav-item" data-href="c1.groin-size.html"><span class="sn-num">1</span>数据</button><button type="button" class="step-nav-item" data-href="c2.groin-leather.html"><span class="sn-num">2</span>皮革</button><button type="button" class="step-nav-item" data-href="c3.groin-color.html"><span class="sn-num">3</span>配色</button><button type="button" class="step-nav-item current" data-href="c4.groin-customize.html"><span class="sn-num">4</span>Logo</button><button type="button" class="step-nav-item" data-href="c5.groin-result.html"><span class="sn-num">5</span>结果</button></div>
+<div class="page-title">Logo 与图案</div>
+    <div class="current-price">当前价格 <span>¥<span id="currentPrice">0</span></span></div>
+
+    <!-- 01 主 Logo（固定外缝，无文字 Logo） -->
+    <div class="section">
+      <div class="section-title">01 / Logo</div>
+<button class="mem-logo-btn" id="memLogoBtn" type="button">同上一件 Logo 设置 · 一键套用</button>
+      <span class="option-label">Logo 款式（均为外缝）</span>
+      <div class="radio-group" id="logoTypeGroup">
+        <label class="radio-item"><input type="radio" name="logoType" value="original" checked> 原色 Logo（外缝）</label>
+        <label class="radio-item"><input type="radio" name="logoType" value="colored"> 其他颜色 Logo（选色外缝）</label>
+        <label class="radio-item"><input type="radio" name="logoType" value="none"> 无 Logo</label>
+        <label class="radio-item"><input type="radio" name="logoType" value="embroidery"> 刺绣 Logo（单独报价）</label>
+      </div>
+      <div class="warning" id="embroideryLogoNote">刺绣 Logo 需联系客服，按图案复杂度单独报价，不计入自动总价。</div>
+
+      <!-- 其他颜色 Logo 子选项 -->
+      <div class="sub-box" id="coloredLogoBox">
+        <span class="option-label">选择 Logo 颜色</span>
+        <select id="coloredLogoSelect"></select>
+        <div class="note" id="coloredLogoNote"></div>
+      </div>
+
+      <!-- 图案来源（外缝类） -->
+      <div class="sub-box" id="replaceBox">
+        <span class="option-label">图案来源</span>
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="logoReplace" value="no" checked> 保留品牌 Logo</label>
+          <label class="radio-item"><input type="radio" name="logoReplace" value="yes"> 替换为自有图案 <span class="price-tag">+¥70</span></label>
+        </div>
+        <div class="note">替换需提供线稿图。</div>
+      </div>
+    </div>
+
+    <!-- 02 正面图案（左/右各一个） -->
+    <div class="section">
+      <div class="section-title">02 / 正面图案</div>
+      <div class="note" style="margin:0 0 14px;">可在正面左侧、正面右侧各添加一个图案。烫印 ¥30/个，计入自动总价；刺绣 ¥100–300/个，按图案复杂度联系客服报价，不计入自动总价。</div>
+      <div id="patternBox"></div>
+    </div>
+
+    <div class="btn-group">
+      <button class="prev-btn" id="prevBtn">BACK · 返回配色</button>
+      <button class="next-btn" id="nextBtn">NEXT · 方案确认</button>
+    </div>
+  <div class="global-nav">
+      <a class="gn-link" href="../index.html">返回定制工具首页 · 加选/改数量</a>
+      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套装汇总</a>
+    </div>
+    </div>
+
+  <script>
+    /* ===== 统一存储封装（每件独立前缀） ===== */
+    const BBSUIT_KEY = 'bb_suit';
+    function BB_suit(){ try{ return JSON.parse(localStorage.getItem(BBSUIT_KEY)) || null; }catch(e){ return null; } }
+    function BB_prefix(){
+      const s = BB_suit();
+      if(!s || !Array.isArray(s.items) || !s.items.length) return '';
+      const idx = (typeof s.current === 'number') ? s.current : 0;
+      return 'bb_' + idx + '_';
+    }
+    const LS = {
+      get(k){ return localStorage.getItem(BB_prefix() + k); },
+      set(k,v){ localStorage.setItem(BB_prefix() + k, v); },
+      remove(k){ localStorage.removeItem(BB_prefix() + k); }
+    };
+
+    /* ============ 基础状态 ============ */
+    const leatherType = LS.get('leatherType') || '';
+    const isWild = leatherType.includes('野牛皮');
+    const COLORS = [
+      ['#FFFFFF','纯白'],['#F5F0EB','奶昔白'],['#9D5F3B','金棕'],['#746148','大象灰'],['#1E2E44','午夜蓝'],
+      ['#000000','黑色'],['#80412D','焦糖棕'],['#3FBF72','漫画绿'],['#B3A59A','风衣灰'],['#F27D3B','橙色'],
+      ['#F2C12E','太阳黄'],['#F9E77F','小鸡黄'],['#404234','橄榄绿'],['#BDE0F2','微风蓝'],['#A0E7E5','tiffany蓝'],
+      ['#0D32C4','克莱因蓝'],['#91A3B1','亚麻蓝'],['#C0A086','马拉茶色'],['#8C8969','鼠尾草绿'],['#808080','积雨云灰'],
+      ['#BE3033','大红'],['#EEB9C9','樱花粉'],['#DF6981','蔷薇粉'],['#E4A3BB','花瓣粉'],['#6A2A30','酒红'],
+      ['#FFD700','柠檬黄'],['#C6AEA6','杏色'],['#294162','深邃蓝'],['#C0C0C0','海鸥灰'],['#402D2D','深咖']
+    ];
+
+    let areaColors = {};
+    try { areaColors = JSON.parse(LS.get('areaColors')) || {}; } catch (e) {}
+    const usedHex = new Set(Object.values(areaColors).filter(Boolean));
+
+    const currentPriceEl = document.getElementById('currentPrice');
+    const basePrice = parseInt(LS.get('basePrice'),10) || 0;
+    const colorExtra = parseInt(LS.get('colorExtra'),10) || 0;
+
+    /* ============ 主 Logo 元素 ============ */
+    const coloredBox = document.getElementById('coloredLogoBox');
+    const replaceBox = document.getElementById('replaceBox');
+    const embroideryLogoNote = document.getElementById('embroideryLogoNote');
+    const coloredSelect = document.getElementById('coloredLogoSelect');
+    COLORS.forEach(([hex, nm]) => {
+      const inUse = usedHex.has(hex);
+      const o = document.createElement('option');
+      o.value = hex;
+      o.textContent = nm + ' · ' + (inUse ? '护裆已选（免费）' : '新颜色（+¥50）');
+      coloredSelect.appendChild(o);
+    });
+    const coloredNote = document.getElementById('coloredLogoNote');
+    function refreshColoredNote() {
+      const hex = coloredSelect.value;
+      coloredNote.textContent = usedHex.has(hex)
+        ? '该颜色护裆已使用，Logo 不额外收费。'
+        : '该颜色护裆未使用，Logo 额外 +¥50。';
+    }
+    coloredSelect.addEventListener('change', () => { refreshColoredNote(); calc(); });
+
+    const logoTypeValue = () => {
+      const el = document.querySelector('input[name="logoType"]:checked');
+      return el ? el.value : 'original';
+    };
+
+    /* ============ 正面图案（固定两位置，每位置一个） ============ */
+    const PATTERN_POS = [['frontLeft','正面左侧'],['frontRight','正面右侧']];
+    let patterns = {
+      frontLeft: { craft: 'none', print: 'gold' },
+      frontRight: { craft: 'none', print: 'gold' }
+    };
+
+    function renderPatterns() {
+      const box = document.getElementById('patternBox');
+      box.innerHTML = '';
+      PATTERN_POS.forEach(([key, nm]) => {
+        const st = patterns[key];
+        const card = document.createElement('div');
+        card.className = 'pattern-card';
+        const craftName = 'craft_' + key;
+        const printName = 'print_' + key;
+        const originalOption = isWild
+          ? '<label class="radio-item"><input type="radio" name="' + printName + '" value="original" ' + (st.print==='original'?'checked':'') + '> 原色（野牛皮专用）</label>'
+          : '';
+        card.innerHTML =
+          '<div class="pattern-name">' + nm + '</div>' +
+          '<span class="option-label">工艺</span>' +
+          '<div class="radio-group">' +
+            '<label class="radio-item"><input type="radio" name="' + craftName + '" value="none" ' + (st.craft==='none'?'checked':'') + '> 不添加</label>' +
+            '<label class="radio-item"><input type="radio" name="' + craftName + '" value="hot" ' + (st.craft==='hot'?'checked':'') + '> 烫印（¥30）</label>' +
+            '<label class="radio-item"><input type="radio" name="' + craftName + '" value="embroidery" ' + (st.craft==='embroidery'?'checked':'') + '> 刺绣</label>' +
+          '</div>' +
+          '<div class="pattern-detail' + (st.craft==='hot'?' show':'') + '">' +
+            '<span class="option-label">烫印颜色</span>' +
+            '<div class="radio-group">' +
+              '<label class="radio-item"><input type="radio" name="' + printName + '" value="gold" ' + (st.print==='gold'?'checked':'') + '> 烫金</label>' +
+              '<label class="radio-item"><input type="radio" name="' + printName + '" value="silver" ' + (st.print==='silver'?'checked':'') + '> 烫银</label>' +
+              originalOption +
+            '</div>' +
+            '<div class="note">仅支持简单线稿图。</div>' +
+          '</div>' +
+          '<div class="pattern-detail' + (st.craft==='embroidery'?' show':'') + '">' +
+            '<div class="note">刺绣按图案复杂度报价 ¥100–300/个，联系客服确认，不计入自动总价。</div>' +
+          '</div>';
+        box.appendChild(card);
+      });
+    }
+    document.getElementById('patternBox').addEventListener('change', e => {
+      if (!e.target.name) return;
+      if (e.target.name.indexOf('craft_') === 0) {
+        const key = e.target.name.replace('craft_', '');
+        patterns[key].craft = e.target.value;
+        if (e.target.value === 'hot' && !patterns[key].print) patterns[key].print = 'gold';
+        renderPatterns(); calc();
+      } else if (e.target.name.indexOf('print_') === 0) {
+        const key = e.target.name.replace('print_', '');
+        patterns[key].print = e.target.value;
+        calc();
+      }
+    });
+
+    /* ============ Logo 款式切换 ============ */
+    function onLogoTypeChange() {
+      const v = logoTypeValue();
+      coloredBox.classList.toggle('show', v === 'colored');
+      replaceBox.classList.toggle('show', v === 'original' || v === 'colored');
+      embroideryLogoNote.style.display = v === 'embroidery' ? 'block' : 'none';
+      calc();
+    }
+    document.getElementById('logoTypeGroup').addEventListener('change', onLogoTypeChange);
+    document.querySelectorAll('input[name="logoReplace"]').forEach(r => {
+      r.addEventListener('change', calc);
+    });
+
+    /* ============ 计费 ============ */
+    function calc() {
+      let customExtra = 0;
+      const lt = logoTypeValue();
+      if (lt === 'colored' && !usedHex.has(coloredSelect.value)) customExtra += 50;
+      const replaceEl = document.querySelector('input[name="logoReplace"]:checked');
+      if (replaceEl && replaceEl.value === 'yes') customExtra += 70;
+      PATTERN_POS.forEach(([key]) => { if (patterns[key].craft === 'hot') customExtra += 30; });
+      LS.set('customExtra', customExtra);
+      currentPriceEl.textContent = basePrice + colorExtra + customExtra;
+    }
+
+    /* ============ 保存 ============ */
+    function saveOptions() {
+      const get = name => { const el = document.querySelector('input[name="'+name+'"]:checked'); return el ? el.value : ''; };
+      const data = {
+        logoType: get('logoType'),
+        coloredLogo: coloredSelect.value,
+        logoReplace: get('logoReplace'),
+        groinPatterns: patterns
+      };
+      LS.set('customOptions', JSON.stringify(data));
+      MEM_setLogo({logoType:data.logoType,coloredLogo:data.coloredLogo,logoReplace:data.logoReplace});
+    }
+
+    /* ============ 恢复 ============ */
+    function restoreOptions() {
+      let data;
+      try { data = JSON.parse(LS.get('customOptions')); } catch (e) { return; }
+      if (!data) return;
+      const check = (name, val) => {
+        if (!val) return;
+        const el = document.querySelector('input[name="'+name+'"][value="'+val+'"]');
+        if (el) el.checked = true;
+      };
+      check('logoType', data.logoType);
+      if (data.coloredLogo) coloredSelect.value = data.coloredLogo;
+      check('logoReplace', data.logoReplace);
+      if (data.groinPatterns) {
+        Object.keys(patterns).forEach(k => {
+          if (data.groinPatterns[k]) patterns[k] = data.groinPatterns[k];
+        });
+      }
+      renderPatterns();
+      onLogoTypeChange();
+      refreshColoredNote();
+    }
+
+    /* ============ 导航 ============ */
+    document.getElementById('prevBtn').onclick = () => {
+      saveOptions();
+      window.location.href = 'c3.groin-color.html';
+    };
+    document.getElementById('nextBtn').onclick = () => {
+      saveOptions();
+      window.location.href = 'c5.groin-result.html';
+    };
+
+    /* ============ 初始化 ============ */
+    restoreOptions();
+    renderPatterns();
+    onLogoTypeChange();
+    refreshColoredNote();
+    calc();
+      window.__bbSave = saveOptions;
+    document.getElementById('stepNav').addEventListener('click', function(e){
+      const it = e.target.closest('.step-nav-item');
+      if (!it) return;
+      try { if (window.__bbSave) window.__bbSave(); } catch(err){}
+      window.location.href = it.dataset.href;
+    });
+    /* ===== 全局记忆库 bb_memory（跨装备共享，不随件前缀隔离） ===== */
+    function MEM_get(){ try{ return JSON.parse(localStorage.getItem('bb_memory')) || {colors:[],texts:[],logo:null}; }catch(e){ return {colors:[],texts:[],logo:null}; } }
+    function MEM_save(m){ localStorage.setItem('bb_memory', JSON.stringify(m)); }
+    /* ===== 记忆库扩展：文字与 Logo 快照 ===== */
+    function MEM_addText(t){
+      t=(t||'').trim(); if(!t) return;
+      const m=MEM_get();
+      m.texts=m.texts.filter(x=>x!==t);
+      m.texts.unshift(t); m.texts=m.texts.slice(0,6);
+      MEM_save(m);
+    }
+    function MEM_setLogo(snap){ const m=MEM_get(); m.logo=snap; MEM_save(m); }
+    function applyMemLogo(){
+      const snap=MEM_get().logo;
+      if(!snap){ alert('还没有可沿用的 Logo 设置，请先完成上一件'); return; }
+      const setRadio=(name,val)=>{
+        if(!val) return;
+        const el=document.querySelector('input[name="'+name+'"][value="'+val+'"]');
+        if(el && !el.disabled){ el.checked=true; el.dispatchEvent(new Event('change',{bubbles:true})); }
+      };
+      ['logoType','textContent','textLogoFont','textPrint','logoStitch','logoReplace'].forEach(n=>setRadio(n,snap[n]));
+      if(snap.coloredLogo && typeof coloredSelect!=='undefined' && coloredSelect){
+        try{ coloredSelect.value=snap.coloredLogo; coloredSelect.dispatchEvent(new Event('change',{bubbles:true})); }catch(e){}
+      }
+      if(typeof onLogoTypeChange==='function') onLogoTypeChange();
+      if(typeof calc==='function') calc();
+    }
+    document.getElementById('memLogoBtn').addEventListener('click', applyMemLogo);
+</script>
+<script>
+    (function(){
+      try{
+        var st=BB_suit();
+        var b=document.getElementById('gnBundle');
+        if(b && st && st.mode==='suit') b.style.display='inline-block';
+      }catch(e){}
+    })();
+  </script>
+</body>
+</html>

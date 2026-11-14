@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>印字与图案 · BUFFALO BOXING 护头定制</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 40px 20px; max-width: 750px; margin: 0 auto; background: #fafafa; color: #1a1a1a; line-height: 1.6;
+  }
+  .page-frame { background: #fff; border: 1px solid #1a1a1a; border-radius: 2px; padding: 32px 20px; }
+  @media (min-width: 768px) { .page-frame { padding: 48px 40px; } }
+  .brand-header { text-align: center; margin-bottom: 44px; padding-bottom: 24px; border-bottom: 1px solid #1a1a1a; }
+  .brand-name { font-size: 20px; font-weight: 600; letter-spacing: 3px; }
+  .brand-series { font-size: 11px; letter-spacing: 4px; color: #666; margin-top: 6px; text-transform: uppercase; }
+
+  .step-tag { font-size: 11px; letter-spacing: 3px; color: #999; text-transform: uppercase; margin-bottom: 10px; }
+  .page-title { font-size: 20px; font-weight: 500; margin-bottom: 22px; letter-spacing: 1px; }
+  .current-price { font-size: 14px; color: #666; margin-bottom: 30px; padding-bottom: 16px; border-bottom: 1px solid #1a1a1a; }
+  .current-price span { font-size: 22px; font-weight: 500; color: #1a1a1a; margin-left: 8px; }
+
+  .section { margin-bottom: 36px; padding-bottom: 30px; border-bottom: 1px solid #e5e5e5; }
+  .section:last-of-type { border-bottom: none; padding-bottom: 0; margin-bottom: 32px; }
+  .section-title { font-size: 15px; font-weight: 500; margin-bottom: 18px; letter-spacing: .5px; }
+  .option-label { font-weight: 500; margin: 14px 0 9px; font-size: 14px; color: #333; display: block; }
+  .radio-group { display: flex; gap: 18px; flex-wrap: wrap; margin-bottom: 10px; }
+  .radio-item { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #333; cursor: pointer; }
+  .radio-item input[type="radio"] {
+    appearance: none; -webkit-appearance: none; width: 16px; height: 16px;
+    border: 1px solid #b3b3b3; border-radius: 50%; cursor: pointer; position: relative; transition: border-color .2s;
+  }
+  .radio-item input[type="radio"]:checked { border-color: #1a1a1a; }
+  .radio-item input[type="radio"]:checked::after {
+    content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 8px; height: 8px; border-radius: 50%; background: #1a1a1a;
+  }
+  input[type="text"] {
+    width: 100%; padding: 12px 14px; border: 1px solid #d9d9d9; border-radius: 2px; margin: 6px 0 14px;
+    font-size: 16px; font-family: inherit; outline: none; background: #fff; transition: border-color .2s;
+  }
+  input[type="text"]:focus { border-color: #1a1a1a; }
+  select { padding: 12px; border: 1px solid #d9d9d9; border-radius: 2px; width: 100%; background: #fff; font-size: 14px; font-family: inherit; outline: none; margin: 6px 0; }
+  select:focus { border-color: #1a1a1a; }
+  .sub-box { display: none; margin-top: 14px; padding: 16px 18px; border: 1px solid #d9d9d9; border-radius: 2px; background: #fafafa; }
+  .sub-box.show { display: block; }
+  .note { font-size: 12px; color: #999; margin: 8px 0 0; line-height: 1.6; }
+  .price-tag { font-size: 13px; font-weight: 500; }
+  .warning { font-size: 12px; padding: 11px 14px; border: 1px solid #d9d9d9; border-radius: 2px; background: #fafafa; margin: 10px 0; line-height: 1.6; display: none; }
+
+  .small-item { border: 1px solid #d9d9d9; border-radius: 2px; padding: 14px; margin-bottom: 12px; background: #fafafa; }
+  .small-item-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .small-item-title { font-size: 13px; font-weight: 500; color: #666; }
+  .small-del { padding: 7px 12px; border: 1px solid #d9d9d9; background: #fff; border-radius: 2px; cursor: pointer; font-size: 12px; color: #666; }
+  .small-del:hover { border-color: #1a1a1a; color: #1a1a1a; }
+  .add-small-btn { width: 100%; padding: 13px; border: 1px dashed #1a1a1a; background: #fff; border-radius: 2px; cursor: pointer; font-size: 14px; letter-spacing: 1px; color: #1a1a1a; }
+  .add-small-btn:hover { background: #fafafa; }
+  .empty-small { font-size: 13px; color: #999; padding: 8px 0 4px; }
+
+  .btn-group { display: flex; gap: 12px; }
+  .prev-btn, .next-btn { flex: 1; padding: 16px; border-radius: 2px; cursor: pointer; font-size: 14px; letter-spacing: 2px; transition: all .2s; }
+  .prev-btn { background: #fff; color: #1a1a1a; border: 1px solid #d9d9d9; }
+  .prev-btn:hover { border-color: #1a1a1a; }
+  .next-btn { background: #1a1a1a; color: #fff; border: 1px solid #1a1a1a; }
+  .next-btn:hover { background: #000; border-color: #000; }
+  .step-nav { display: flex; gap: 8px; margin-bottom: 30px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
+  .step-nav::-webkit-scrollbar { height: 3px; }
+  .step-nav-item { flex: 0 0 auto; display: flex; align-items: center; gap: 7px; border: 1px solid #d9d9d9; border-radius: 2px; padding: 9px 13px; background: #fff; font-size: 12px; letter-spacing: 1px; color: #666; cursor: pointer; font-family: inherit; transition: all .2s ease; }
+  .step-nav-item .sn-num { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border: 1px solid #999; border-radius: 50%; font-size: 10px; }
+  .step-nav-item:hover { border-color: #1a1a1a; color: #1a1a1a; }
+  .step-nav-item.current { background: #1a1a1a; border-color: #1a1a1a; color: #fff; }
+  .step-nav-item.current .sn-num { border-color: #fff; }
+  .mem-logo-btn { border:1px solid #1a1a1a; background:#fff; color:#1a1a1a; border-radius:2px; padding:10px 14px; font-size:12px; letter-spacing:1px; cursor:pointer; font-family:inherit; margin-bottom:18px; transition:all .2s; }
+  .mem-logo-btn:hover { background:#1a1a1a; color:#fff; }
+  .mem-text-cap { font-size:10px; letter-spacing:1px; color:#aaa; margin:8px 0 4px; }
+  .mem-text-row { display:flex; gap:8px; flex-wrap:wrap; margin:0 0 6px; }
+  .mem-text-chip { border:1px solid #d9d9d9; background:#fafafa; border-radius:2px; padding:5px 10px; font-size:12px; color:#555; cursor:pointer; max-width:220px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .mem-text-chip:hover { border-color:#1a1a1a; color:#1a1a1a; }
+    .global-nav { display:flex; gap:10px; margin-top:24px; padding-top:18px; border-top:1px solid #f0f0f0; }
+    .gn-link { flex:1; text-align:center; border:1px solid #d9d9d9; border-radius:2px; padding:13px 8px; font-size:12px; letter-spacing:1px; color:#666; background:#fff; text-decoration:none; cursor:pointer; transition:all .2s; }
+    .gn-link:hover { border-color:#1a1a1a; color:#1a1a1a; }
+    .gn-link.gn-bundle { border-color:#1a1a1a; color:#1a1a1a; display:none; }
+    .gn-link.gn-bundle:hover { background:#1a1a1a; color:#fff; }
+</style>
+</head>
+<body>
+  <div class="page-frame">
+    <div class="brand-header">
+      <div class="brand-name">BUFFALO BOXING</div>
+      <div class="brand-series">Head Guard · Darwin Custom</div>
+    </div>
+
+    <div class="step-tag">Step 05 / 06</div>
+    <div class="step-nav" id="stepNav"><button type="button" class="step-nav-item" data-href="h1.head-size.html"><span class="sn-num">1</span>头围</button><button type="button" class="step-nav-item" data-href="h2.head-leather.html"><span class="sn-num">2</span>皮革</button><button type="button" class="step-nav-item" data-href="h3.head-mode.html"><span class="sn-num">3</span>模式</button><button type="button" class="step-nav-item" data-href="h4.head-color.html"><span class="sn-num">4</span>配色</button><button type="button" class="step-nav-item current" data-href="h5.head-customize.html"><span class="sn-num">5</span>印字</button><button type="button" class="step-nav-item" data-href="h6.head-result.html"><span class="sn-num">6</span>结果</button></div>
+<div class="page-title">印字与图案</div>
+
+    <div class="current-price">当前价格 <span>¥<span id="currentPrice">0</span></span></div>
+
+    <!-- 01 Logo（先款式，后替换） -->
+    <div class="section">
+      <div class="section-title">01 / Logo</div>
+<button class="mem-logo-btn" id="memLogoBtn" type="button">同上一件 Logo 设置 · 一键套用</button>
+
+      <span class="option-label">Logo 款式</span>
+      <div class="radio-group" id="logoTypeGroup">
+        <label class="radio-item"><input type="radio" name="logoType" value="original" checked> 原色 Logo（外缝）</label>
+        <label class="radio-item" id="textLogoItem"><input type="radio" name="logoType" value="text"> 文字 Logo（烫印）</label>
+        <label class="radio-item"><input type="radio" name="logoType" value="colored"> 其他颜色 Logo（选色外缝）</label>
+        <label class="radio-item"><input type="radio" name="logoType" value="none"> 无 Logo</label>
+        <label class="radio-item"><input type="radio" name="logoType" value="embroidery"> 刺绣 Logo（单独报价）</label>
+      </div>
+      <div class="warning" id="rareLogoWarning">稀有皮革仅支持在三拼 1 号（额头中间）与 3 号（耳朵条）区域选择，且仅支持文字 Logo 烫印。</div>
+      <div class="warning" id="embroideryLogoNote">刺绣 Logo 需联系客服，按图案复杂度单独报价，不计入自动总价。</div>
+
+      <!-- 文字 Logo 子选项（仅三拼，固定正中间） -->
+      <div class="sub-box" id="textLogoBox">
+        <span class="option-label">烫印内容</span>
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="textContent" value="brand" checked> 品牌文字</label>
+          <label class="radio-item"><input type="radio" name="textContent" value="custom"> 自定义文字</label>
+        </div>
+
+        <div class="sub-box" id="textCustomBox" style="background:#fff;">
+          <span class="option-label">自定义文字（英文数字免费，含汉字需铜模 ¥30）</span>
+          <input type="text" id="textLogoCustom" placeholder="最多 25 字符，支持英文、数字、汉字" maxlength="25">
+<div class="mem-text-cap" id="textLogoCustomMemCap" style="display:none;">最近输入 · 点一下填入</div><div class="mem-text-row" id="textLogoCustomMemBox"></div>
+          <span class="option-label">字体</span>
+          <div class="radio-group">
+            <label class="radio-item"><input type="radio" name="textLogoFont" value="normal" checked> 正字体/宋体</label>
+            <label class="radio-item"><input type="radio" name="textLogoFont" value="cursive"> 花体/手写体</label>
+          </div>
+        </div>
+
+        <span class="option-label">烫印颜色</span>
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="textPrint" value="gold" checked> 烫金</label>
+          <label class="radio-item"><input type="radio" name="textPrint" value="silver"> 烫银</label>
+          <label class="radio-item" id="textOriginalItem"><input type="radio" name="textPrint" value="original"> 原色（野牛皮专用）</label>
+        </div>
+        <div class="note">文字 Logo 固定烫印在正中间，仅支持烫印。</div>
+      </div>
+
+      <!-- 其他颜色 Logo 子选项 -->
+      <div class="sub-box" id="coloredLogoBox">
+        <span class="option-label">选择 Logo 颜色</span>
+        <select id="coloredLogoSelect"></select>
+        <div class="note" id="coloredLogoNote"></div>
+      </div>
+
+      <!-- 图案替换（外缝类） -->
+      <div class="sub-box" id="replaceBox">
+        <span class="option-label">图案来源</span>
+        <div class="radio-group">
+          <label class="radio-item"><input type="radio" name="logoReplace" value="no" checked> 保留品牌 Logo</label>
+          <label class="radio-item"><input type="radio" name="logoReplace" value="yes"> 替换为自有图案 <span class="price-tag">+¥70</span></label>
+        </div>
+        <div class="note">替换需提供线稿图；烫金/烫银/选色烫印仅野牛皮可选。</div>
+      </div>
+    </div>
+
+    <!-- 02 左耳烫印 -->
+    <div class="section">
+      <div class="section-title">02 / 左耳烫印</div>
+      <span class="option-label">英文 / 数字（免费，最多 25 字符）</span>
+      <input type="text" id="leftEng" placeholder="字母、数字、空格与 , & . -" maxlength="25">
+      <div class="note">英文仅支持字母、数字、空格和 , & . - 这几个符号，其他字符无法输入。</div>
+<div class="mem-text-cap" id="leftEngMemCap" style="display:none;">最近输入 · 点一下填入</div><div class="mem-text-row" id="leftEngMemBox"></div>
+      <div class="radio-group">
+        <label class="radio-item"><input type="radio" name="leftEngFont" value="normal" checked> 正体</label>
+        <label class="radio-item"><input type="radio" name="leftEngFont" value="cursive"> 花体</label>
+      </div>
+      <span class="option-label">汉字（铜模 ¥30，最多 10 字符）</span>
+      <input type="text" id="leftCh" placeholder="支持汉字、空格与中英文标点" maxlength="10">
+<div class="mem-text-cap" id="leftChMemCap" style="display:none;">最近输入 · 点一下填入</div><div class="mem-text-row" id="leftChMemBox"></div>
+      <div class="radio-group">
+        <label class="radio-item"><input type="radio" name="leftChFont" value="handwrite" checked> 手写体</label>
+        <label class="radio-item"><input type="radio" name="leftChFont" value="song"> 宋体</label>
+      </div>
+      <span class="option-label">烫印颜色</span>
+      <div class="radio-group">
+        <label class="radio-item"><input type="radio" name="leftPrint" value="gold" checked> 烫金</label>
+        <label class="radio-item"><input type="radio" name="leftPrint" value="silver"> 烫银</label>
+        <label class="radio-item"><input type="radio" name="leftPrint" value="original"> 原色（野牛皮专用）</label>
+      </div>
+      <div class="warning" id="leftWarn">英文/数字与汉字仅可选择一项</div>
+    </div>
+
+    <!-- 03 右耳烫印 -->
+    <div class="section">
+      <div class="section-title">03 / 右耳烫印</div>
+      <span class="option-label">英文 / 数字（免费，最多 25 字符）</span>
+      <input type="text" id="rightEng" placeholder="字母、数字、空格与 , & . -" maxlength="25">
+      <div class="note">英文仅支持字母、数字、空格和 , & . - 这几个符号，其他字符无法输入。</div>
+<div class="mem-text-cap" id="rightEngMemCap" style="display:none;">最近输入 · 点一下填入</div><div class="mem-text-row" id="rightEngMemBox"></div>
+      <div class="radio-group">
+        <label class="radio-item"><input type="radio" name="rightEngFont" value="normal" checked> 正体</label>
+        <label class="radio-item"><input type="radio" name="rightEngFont" value="cursive"> 花体</label>
+      </div>
+      <span class="option-label">汉字（铜模 ¥30，最多 10 字符）</span>
+      <input type="text" id="rightCh" placeholder="支持汉字、空格与中英文标点" maxlength="10">
+<div class="mem-text-cap" id="rightChMemCap" style="display:none;">最近输入 · 点一下填入</div><div class="mem-text-row" id="rightChMemBox"></div>
+      <div class="radio-group">
+        <label class="radio-item"><input type="radio" name="rightChFont" value="handwrite" checked> 手写体</label>
+        <label class="radio-item"><input type="radio" name="rightChFont" value="song"> 宋体</label>
+      </div>
+      <span class="option-label">烫印颜色</span>
+      <div class="radio-group">
+        <label class="radio-item"><input type="radio" name="rightPrint" value="gold" checked> 烫金</label>
+        <label class="radio-item"><input type="radio" name="rightPrint" value="silver"> 烫银</label>
+        <label class="radio-item"><input type="radio" name="rightPrint" value="original"> 原色（野牛皮专用）</label>
+      </div>
+      <div class="warning" id="rightWarn">英文/数字与汉字仅可选择一项</div>
+    </div>
+
+    <!-- 04 小图案（可叠加多个） -->
+    <div class="section">
+      <div class="section-title">04 / 小图案</div>
+      <div class="note" style="margin:0 0 14px;">每个小图案需提供线稿图，可在多个位置叠加。烫印 ¥30/个（烫金/烫银/原色野牛皮专属）；刺绣 ¥100–300/个，按图案复杂度咨询客服。</div>
+      <div id="smallList"></div>
+      <div class="empty-small" id="smallEmpty">暂未添加小图案</div>
+      <button class="add-small-btn" id="addSmallBtn" type="button">+ 添加一个小图案</button>
+    </div>
+
+    <div class="btn-group">
+      <button class="prev-btn" id="prevBtn">BACK · 返回</button>
+      <button class="next-btn" id="nextBtn">NEXT · 查看方案</button>
+    </div>
+  <div class="global-nav">
+      <a class="gn-link" href="../index.html">返回定制工具首页 · 加选/改数量</a>
+      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套装汇总</a>
+    </div>
+    </div>
+
+  <script>
+    /* ===== 统一存储封装（每件独立前缀） ===== */
+    const BBSUIT_KEY = 'bb_suit';
+    function BB_suit(){ try{ return JSON.parse(localStorage.getItem(BBSUIT_KEY)) || null; }catch(e){ return null; } }
+    function BB_prefix(){
+      const s = BB_suit();
+      if(!s || !Array.isArray(s.items) || !s.items.length) return '';
+      const idx = (typeof s.current === 'number') ? s.current : 0;
+      return 'bb_' + idx + '_';
+    }
+    const LS = {
+      get(k){ return localStorage.getItem(BB_prefix() + k); },
+      set(k,v){ localStorage.setItem(BB_prefix() + k, v); },
+      remove(k){ localStorage.removeItem(BB_prefix() + k); }
+    };
+
+    /* ============ 基础状态 ============ */
+    const leatherType = LS.get('leatherType') || '';
+    const mode = LS.get('mode') || 'triple';
+    const isWild = leatherType.includes('野牛皮');
+    const isRare = /鲨鱼|鳄鱼|鸵鸟|蜥蜴/.test(leatherType);
+
+    const COLORS = [
+      ['#FFFFFF','纯白'],['#F5F0EB','奶昔白'],['#9D5F3B','金棕'],['#746148','大象灰'],['#1E2E44','午夜蓝'],
+      ['#000000','黑色'],['#80412D','焦糖棕'],['#3FBF72','漫画绿'],['#B3A59A','风衣灰'],['#F27D3B','橙色'],
+      ['#F2C12E','太阳黄'],['#F9E77F','小鸡黄'],['#404234','橄榄绿'],['#BDE0F2','微风蓝'],['#A0E7E5','tiffany蓝'],
+      ['#0D32C4','克莱因蓝'],['#91A3B1','亚麻蓝'],['#C0A086','马拉茶色'],['#8C8969','鼠尾草绿'],['#808080','积雨云灰'],
+      ['#BE3033','大红'],['#EEB9C9','樱花粉'],['#DF6981','蔷薇粉'],['#E4A3BB','花瓣粉'],['#6A2A30','酒红'],
+      ['#FFD700','柠檬黄'],['#C6AEA6','杏色'],['#294162','深邃蓝'],['#C0C0C0','海鸥灰'],['#402D2D','深咖']
+    ];
+
+    let areaColors = {};
+    try { areaColors = JSON.parse(LS.get('areaColors')) || {}; } catch (e) {}
+    const usedHex = new Set(Object.values(areaColors).filter(Boolean));
+
+    /* ============ IME 安全的输入校验（仅限制语言，不限制空格与标点） ============ */
+    function sanitizeByKind(el, kind) {
+      let v = el.value;
+      if (kind === 'eng') {
+        // 英文框：仅允许英文字母、数字、空格，以及 , & . - 四个符号
+        v = v.replace(/[^A-Za-z0-9 ,&.\-]/g, '');
+        if (v.length > 25) v = v.slice(0, 25);
+      } else if (kind === 'ch') {
+        // 中文框：汉字 + 空格 + 中英文标点；删除半角/全角英文字母与数字
+        v = v.replace(/[A-Za-z0-9\uFF21-\uFF3A\uFF41-\uFF5A\uFF10-\uFF19]/g, '');
+        if (v.length > 10) v = v.slice(0, 10);
+      } else {
+        // 混合框：英文数字 + 汉字 + 空格 + 中英文标点
+        v = v.replace(/[^\x20-\x7E一-龥\u3000-\u303F\uFF01-\uFF5E]/g, '');
+        if (v.length > 25) v = v.slice(0, 25);
+      }
+      el.value = v;
+    }
+    function bindIME(el, kind, after) {
+      let composing = false;
+      el.addEventListener('compositionstart', () => { composing = true; });
+      el.addEventListener('compositionend', () => {
+        composing = false;
+        sanitizeByKind(el, kind);
+        after(el);
+      });
+      el.addEventListener('input', () => {
+        if (composing) return;
+        sanitizeByKind(el, kind);
+        after(el);
+      });
+    }
+    const leftEng = document.getElementById('leftEng');
+    const leftCh = document.getElementById('leftCh');
+    const rightEng = document.getElementById('rightEng');
+    const rightCh = document.getElementById('rightCh');
+
+    /* ============ 同耳英文/汉字互斥 ============ */
+    const leftWarn = document.getElementById('leftWarn');
+    const rightWarn = document.getElementById('rightWarn');
+    function onEarInput(changed) {
+      if (changed === leftEng || changed === leftCh) {
+        // 双向互斥：哪个框有有效内容，就清空同耳另一个框
+        if (changed === leftEng) {
+          if (leftEng.value) leftCh.value = '';
+        } else {
+          if (leftCh.value) leftEng.value = '';
+        }
+        leftWarn.style.display = (leftEng.value && leftCh.value) ? 'block' : 'none';
+      } else {
+        if (changed === rightEng) {
+          if (rightEng.value) rightCh.value = '';
+        } else {
+          if (rightCh.value) rightEng.value = '';
+        }
+        rightWarn.style.display = (rightEng.value && rightCh.value) ? 'block' : 'none';
+      }
+      calc();
+    }
+    bindIME(leftEng, 'eng', onEarInput);
+    bindIME(leftCh, 'ch', onEarInput);
+    bindIME(rightEng, 'eng', onEarInput);
+    bindIME(rightCh, 'ch', onEarInput);
+
+    /* ============ Logo 款式切换 ============ */
+    const textBox = document.getElementById('textLogoBox');
+    const coloredBox = document.getElementById('coloredLogoBox');
+    const replaceBox = document.getElementById('replaceBox');
+    const embroideryLogoNote = document.getElementById('embroideryLogoNote');
+
+    // 双拼：无文字 Logo 选项
+    if (mode === 'split') document.getElementById('textLogoItem').style.display = 'none';
+    if (!isWild) document.getElementById('textOriginalItem').style.display = 'none';
+
+    // 稀有皮：锁定文字 Logo，禁用其他款式
+    if (isRare) {
+      document.querySelectorAll('input[name="logoType"]').forEach(r => {
+        if (r.value !== 'text') { r.disabled = true; r.closest('.radio-item').style.opacity = '.4'; }
+      });
+      document.querySelector('input[name="logoType"][value="text"]').checked = true;
+    }
+
+    function onLogoTypeChange() {
+      const v = document.querySelector('input[name="logoType"]:checked').value;
+      textBox.classList.toggle('show', v === 'text');
+      coloredBox.classList.toggle('show', v === 'colored');
+      replaceBox.classList.toggle('show', v === 'original' || v === 'colored');
+      embroideryLogoNote.style.display = v === 'embroidery' ? 'block' : 'none';
+      calc();
+    }
+    document.getElementById('logoTypeGroup').addEventListener('change', onLogoTypeChange);
+
+    /* ============ 文字 Logo 烫印内容切换 ============ */
+    const textCustomBox = document.getElementById('textCustomBox');
+    const textLogoCustom = document.getElementById('textLogoCustom');
+    document.querySelectorAll('input[name="textContent"]').forEach(r => {
+      r.addEventListener('change', () => {
+        const tc = document.querySelector('input[name="textContent"]:checked').value;
+        textCustomBox.classList.toggle('show', tc === 'custom');
+        calc();
+      });
+    });
+    bindIME(textLogoCustom, 'mixed', () => { calc(); });
+
+    /* ============ 其他颜色 Logo 选色 ============ */
+    const coloredSelect = document.getElementById('coloredLogoSelect');
+    const coloredNote = document.getElementById('coloredLogoNote');
+    COLORS.forEach(([hex, nm]) => {
+      const inUse = usedHex.has(hex);
+      const o = document.createElement('option');
+      o.value = hex;
+      o.textContent = `${nm} · ${inUse ? '护头已选（免费）' : '新颜色（+¥50）'}`;
+      coloredSelect.appendChild(o);
+    });
+    function refreshColoredNote() {
+      const hex = coloredSelect.value;
+      coloredNote.textContent = usedHex.has(hex)
+        ? '该颜色护头已使用，Logo 不额外收费。'
+        : '该颜色护头未使用，Logo 额外 +¥50。';
+    }
+    coloredSelect.addEventListener('change', () => { refreshColoredNote(); calc(); });
+
+    /* ============ 小图案动态列表（可叠加） ============ */
+    const POS_OPTIONS = [
+      ['leftEar','左耳'],['rightEar','右耳'],['foreLeft','额头左侧'],
+      ['foreRight','额头右侧'],['other','其它区域（请备注）']
+    ];
+    const smallList = document.getElementById('smallList');
+    const smallEmpty = document.getElementById('smallEmpty');
+    let smallPatterns = [];
+
+    function renderSmallList() {
+      smallList.innerHTML = '';
+      smallEmpty.style.display = smallPatterns.length ? 'none' : 'block';
+      smallPatterns.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'small-item';
+        const opts = POS_OPTIONS.map(([val, nm]) =>
+          `<option value="${val}" ${item.pos === val ? 'selected' : ''}>${nm}</option>`).join('');
+        const isHot = item.craft !== 'embroidery';
+        const title = isHot
+          ? `小图案 ${idx + 1} · 烫印（¥30）`
+          : `小图案 ${idx + 1} · 刺绣（¥100–300）`;
+        const printName = 'smallPrint' + idx;
+        const originalRadio = isWild
+          ? `<label class="radio-item"><input type="radio" name="${printName}" value="original" ${item.print === 'original' ? 'checked' : ''}> 原色（野牛皮专用）</label>`
+          : '';
+        const craftDetail = isHot
+          ? `<span class="option-label" style="margin-top:12px;">烫印颜色</span>
+             <div class="radio-group">
+               <label class="radio-item"><input type="radio" name="${printName}" value="gold" ${(!item.print || item.print === 'gold') ? 'checked' : ''}> 烫金</label>
+               <label class="radio-item"><input type="radio" name="${printName}" value="silver" ${item.print === 'silver' ? 'checked' : ''}> 烫银</label>
+               ${originalRadio}
+             </div>
+             <div class="note">仅支持简单线稿图。</div>`
+          : `<div class="note" style="margin-top:10px;">刺绣按图案复杂度报价 ¥100–300/个，联系客服确认，不计入自动总价。</div>`;
+        div.innerHTML =
+          `<div class="small-item-head">
+             <span class="small-item-title">${title}</span>
+             <button type="button" class="small-del" data-del="${idx}">删除</button>
+           </div>
+           <span class="option-label" style="margin-top:10px;">工艺</span>
+           <div class="radio-group">
+             <label class="radio-item"><input type="radio" class="small-craft" data-idx="${idx}" value="hot" ${isHot ? 'checked' : ''}> 烫印</label>
+             <label class="radio-item"><input type="radio" class="small-craft" data-idx="${idx}" value="embroidery" ${!isHot ? 'checked' : ''}> 刺绣</label>
+           </div>
+           <select class="small-pos" data-idx="${idx}">${opts}</select>
+           ${craftDetail}
+           <input type="text" class="small-note" data-idx="${idx}"
+             placeholder="其它区域请在此备注"
+             value="${(item.note || '').replace(/"/g, '&quot;')}"
+             style="${item.pos === 'other' ? '' : 'display:none;'}">`;
+        smallList.appendChild(div);
+      });
+      calc();
+    }
+    document.getElementById('addSmallBtn').addEventListener('click', () => {
+      smallPatterns.push({ pos: 'leftEar', note: '', craft: 'hot', print: 'gold' });
+      renderSmallList();
+    });
+    smallList.addEventListener('click', e => {
+      const del = e.target.closest('[data-del]');
+      if (del) { smallPatterns.splice(parseInt(del.dataset.del, 10), 1); renderSmallList(); }
+    });
+    smallList.addEventListener('change', e => {
+      if (e.target.classList.contains('small-craft')) {
+        const idx = parseInt(e.target.dataset.idx, 10);
+        smallPatterns[idx].craft = e.target.value;
+        if (e.target.value === 'hot' && !smallPatterns[idx].print) smallPatterns[idx].print = 'gold';
+        renderSmallList();
+      } else if (e.target.classList.contains('small-pos')) {
+        const idx = parseInt(e.target.dataset.idx, 10);
+        smallPatterns[idx].pos = e.target.value;
+        renderSmallList();
+      }
+    });
+    smallList.addEventListener('input', e => {
+      if (e.target.classList.contains('small-note')) {
+        const idx = parseInt(e.target.dataset.idx, 10);
+        smallPatterns[idx].note = e.target.value;
+        calc();
+      }
+    });
+    smallList.addEventListener('change', e => {
+      if (e.target.name && e.target.name.indexOf('smallPrint') === 0) {
+        const idx = parseInt(e.target.name.replace('smallPrint', ''), 10);
+        smallPatterns[idx].print = e.target.value;
+        calc();
+      }
+    });
+
+    /* ============ 稀有皮警告 ============ */
+    if (isRare) document.getElementById('rareLogoWarning').style.display = 'block';
+
+    /* ============ 计费 ============ */
+    const basePrice = parseInt(LS.get('basePrice'),10) || 1299;
+    const colorExtra = parseInt(LS.get('colorExtra'),10) || 0;
+    const currentPriceEl = document.getElementById('currentPrice');
+
+    function calc() {
+      let customExtra = 0;
+      const logoType = document.querySelector('input[name="logoType"]:checked').value;
+      if (logoType === 'colored' && !usedHex.has(coloredSelect.value)) customExtra += 50;
+      const replaceEl = document.querySelector('input[name="logoReplace"]:checked');
+      if (replaceEl && replaceEl.value === 'yes') customExtra += 70;
+      if (logoType === 'text') {
+        const tc = document.querySelector('input[name="textContent"]:checked').value;
+        if (tc === 'custom' && /[一-龥]/.test(textLogoCustom.value)) customExtra += 30;
+      }
+      if (leftCh.value.trim()) customExtra += 30;
+      if (rightCh.value.trim()) customExtra += 30;
+      customExtra += smallPatterns.filter(it => it.craft !== 'embroidery').length * 30;
+
+      LS.set('customExtra', customExtra);
+      currentPriceEl.textContent = basePrice + colorExtra + customExtra;
+    }
+
+    document.querySelectorAll('input[type="radio"]').forEach(r => {
+      r.addEventListener('change', calc);
+    });
+
+    /* ============ 保存 ============ */
+    function saveOptions() {
+      const get = name => { const el = document.querySelector(`input[name="${name}"]:checked`); return el ? el.value : ''; };
+      const data = {
+        logoType: get('logoType'),
+        textContent: get('textContent'),
+        textLogoCustom: textLogoCustom.value,
+        textLogoFont: get('textLogoFont'),
+        textPrint: get('textPrint'),
+        coloredLogo: coloredSelect.value,
+        logoReplace: get('logoReplace'),
+        leftEng: leftEng.value, leftEngFont: get('leftEngFont'),
+        leftCh: leftCh.value, leftChFont: get('leftChFont'), leftPrint: get('leftPrint'),
+        rightEng: rightEng.value, rightEngFont: get('rightEngFont'),
+        rightCh: rightCh.value, rightChFont: get('rightChFont'), rightPrint: get('rightPrint'),
+        smallPatterns: smallPatterns.slice()
+      };
+      LS.set('customOptions', JSON.stringify(data));
+      MEM_setLogo({logoType:data.logoType,textContent:data.textContent,textLogoFont:data.textLogoFont,textPrint:data.textPrint,logoStitch:data.logoStitch,logoReplace:data.logoReplace,coloredLogo:data.coloredLogo});
+      [data.textLogoCustom,data.leftEng,data.leftCh,data.rightEng,data.rightCh].forEach(function(t){ MEM_addText(t); });
+    }
+
+    function restoreOptions() {
+      let data;
+      try { data = JSON.parse(LS.get('customOptions')); } catch (e) { return; }
+      if (!data) return;
+      const check = (name, val) => {
+        if (!val) return;
+        const el = document.querySelector(`input[name="${name}"][value="${val}"]`);
+        if (el) el.checked = true;
+      };
+      check('logoType', data.logoType);
+      check('textContent', data.textContent);
+      textLogoCustom.value = data.textLogoCustom || '';
+      check('textLogoFont', data.textLogoFont);
+      check('textPrint', data.textPrint);
+      if (data.coloredLogo) coloredSelect.value = data.coloredLogo;
+      check('logoReplace', data.logoReplace);
+      leftEng.value = data.leftEng || ''; check('leftEngFont', data.leftEngFont);
+      leftCh.value = data.leftCh || ''; check('leftChFont', data.leftChFont); check('leftPrint', data.leftPrint);
+      rightEng.value = data.rightEng || ''; check('rightEngFont', data.rightEngFont);
+      rightCh.value = data.rightCh || ''; check('rightChFont', data.rightChFont); check('rightPrint', data.rightPrint);
+
+      // 小图案：优先新数组；兼容旧的单图案字段；补齐工艺与烫印颜色
+      const normalizeSmall = it => ({
+        pos: it.pos || 'leftEar', note: it.note || '',
+        craft: it.craft || 'hot', print: it.print || 'gold'
+      });
+      if (Array.isArray(data.smallPatterns)) {
+        smallPatterns = data.smallPatterns.map(normalizeSmall);
+      } else if (data.smallPattern === 'yes') {
+        smallPatterns = [normalizeSmall({ pos: data.smallPos, note: data.smallNote })];
+      }
+      renderSmallList();
+
+      // 文字 Logo 自定义框显示态
+      const tc = document.querySelector('input[name="textContent"]:checked');
+      if (tc) textCustomBox.classList.toggle('show', tc.value === 'custom');
+
+      onLogoTypeChange();
+      refreshColoredNote();
+    }
+
+    /* ============ 导航（明确逐级跳转） ============ */
+    document.getElementById('prevBtn').onclick = () => {
+      saveOptions();
+      window.location.href = 'h4.head-color.html';
+    };
+    document.getElementById('nextBtn').onclick = () => {
+      saveOptions();
+      window.location.href = 'h6.head-result.html';
+    };
+
+    /* ============ 初始化 ============ */
+    restoreOptions();
+    onLogoTypeChange();
+    refreshColoredNote();
+    calc();
+      window.__bbSave = saveOptions;
+    document.getElementById('stepNav').addEventListener('click', function(e){
+      const it = e.target.closest('.step-nav-item');
+      if (!it) return;
+      try { if (window.__bbSave) window.__bbSave(); } catch(err){}
+      window.location.href = it.dataset.href;
+    });
+    /* ===== 全局记忆库 bb_memory（跨装备共享，不随件前缀隔离） ===== */
+    function MEM_get(){ try{ return JSON.parse(localStorage.getItem('bb_memory')) || {colors:[],texts:[],logo:null}; }catch(e){ return {colors:[],texts:[],logo:null}; } }
+    function MEM_save(m){ localStorage.setItem('bb_memory', JSON.stringify(m)); }
+    /* ===== 记忆库扩展：文字与 Logo 快照 ===== */
+    function MEM_addText(t){
+      t=(t||'').trim(); if(!t) return;
+      const m=MEM_get();
+      m.texts=m.texts.filter(x=>x!==t);
+      m.texts.unshift(t); m.texts=m.texts.slice(0,6);
+      MEM_save(m);
+    }
+    function MEM_setLogo(snap){ const m=MEM_get(); m.logo=snap; MEM_save(m); }
+    function applyMemLogo(){
+      const snap=MEM_get().logo;
+      if(!snap){ alert('还没有可沿用的 Logo 设置，请先完成上一件'); return; }
+      const setRadio=(name,val)=>{
+        if(!val) return;
+        const el=document.querySelector('input[name="'+name+'"][value="'+val+'"]');
+        if(el && !el.disabled){ el.checked=true; el.dispatchEvent(new Event('change',{bubbles:true})); }
+      };
+      ['logoType','textContent','textLogoFont','textPrint','logoStitch','logoReplace'].forEach(n=>setRadio(n,snap[n]));
+      if(snap.coloredLogo && typeof coloredSelect!=='undefined' && coloredSelect){
+        try{ coloredSelect.value=snap.coloredLogo; coloredSelect.dispatchEvent(new Event('change',{bubbles:true})); }catch(e){}
+      }
+      if(typeof onLogoTypeChange==='function') onLogoTypeChange();
+      if(typeof calc==='function') calc();
+    }
+    function renderMemTextChips(){
+      const m=MEM_get();
+      ['textLogoCustom','leftEng','leftCh','rightEng','rightCh'].forEach(id=>{
+        const inputEl=document.getElementById(id);
+        const cap=document.getElementById(id+'MemCap');
+        const box=document.getElementById(id+'MemBox');
+        if(!inputEl||!cap||!box) return;
+        if(!m.texts.length){ cap.style.display='none'; box.innerHTML=''; return; }
+        cap.style.display='block'; box.innerHTML='';
+        m.texts.forEach(t=>{
+          const c=document.createElement('span');
+          c.className='mem-text-chip'; c.textContent=t; c.title=t;
+          c.onclick=()=>{ inputEl.value=t; inputEl.dispatchEvent(new Event('input',{bubbles:true})); if(typeof calc==='function')calc(); };
+          box.appendChild(c);
+        });
+      });
+    }
+    renderMemTextChips();
+    document.getElementById('memLogoBtn').addEventListener('click', applyMemLogo);
+</script>
+<script>
+    (function(){
+      try{
+        var st=BB_suit();
+        var b=document.getElementById('gnBundle');
+        if(b && st && st.mode==='suit') b.style.display='inline-block';
+      }catch(e){}
+    })();
+  </script>
+</body>
+</html>
