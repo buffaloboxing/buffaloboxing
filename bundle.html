@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>套装方案汇总 · BUFFALO BOXING</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a1a1a'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='18' font-weight='bold' fill='%23fff' text-anchor='middle'%3EB%3C/text%3E%3C/svg%3E">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 40px 20px; max-width: 750px; margin: 0 auto; background: #fafafa; color: #1a1a1a; line-height: 1.7;
+  }
+  .page-frame { background: #fff; border: 1px solid #1a1a1a; border-radius: 2px; padding: 32px 20px; }
+  @media (min-width: 768px) { .page-frame { padding: 48px 40px; } }
+  .brand-header { text-align: center; margin-bottom: 30px; padding-bottom: 24px; border-bottom: 1px solid #1a1a1a; }
+  .brand-name { font-size: 20px; font-weight: 600; letter-spacing: 3px; }
+  .brand-series { font-size: 11px; letter-spacing: 4px; color: #666; margin-top: 6px; text-transform: uppercase; }
+
+  .page-title { font-size: 20px; font-weight: 500; margin-bottom: 10px; text-align: center; letter-spacing: 1px; }
+  .page-sub { font-size: 13px; color: #999; margin-bottom: 30px; text-align: center; }
+
+  .item-card { border: 1px solid #1a1a1a; border-radius: 2px; margin-bottom: 22px; overflow: hidden; }
+  .item-head { display: flex; justify-content: space-between; align-items: center; padding: 16px 18px; background: #1a1a1a; color: #fff; }
+  .item-head .t { font-size: 14px; letter-spacing: 2px; }
+  .item-head .sub { font-size: 11px; color: #bbb; letter-spacing: 1px; }
+  .item-body { padding: 18px; }
+  .line { display: flex; justify-content: space-between; gap: 14px; padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 14px; }
+  .line .k { color: #999; flex: 0 0 auto; }
+  .line .v { font-weight: 500; text-align: right; }
+  .sub-title { font-size: 13px; font-weight: 600; letter-spacing: 1px; margin: 16px 0 6px; color: #333; }
+  .detail { font-size: 13px; color: #333; margin: 4px 0; }
+  .color-swatch { display: inline-block; width: 13px; height: 13px; border-radius: 2px; margin-right: 7px; vertical-align: middle; border: 1px solid rgba(0,0,0,.08); }
+  .color-line { display: flex; justify-content: space-between; align-items: center; font-size: 13px; padding: 6px 0; border-bottom: 1px solid #f0f0f0; gap: 10px; }
+  .item-subtotal { display: flex; justify-content: space-between; padding: 14px 18px 4px; font-size: 14px; }
+  .item-subtotal b { font-size: 16px; }
+  .edit-link { padding: 0 18px 16px; }
+  .edit-btn { width: 100%; padding: 12px; border: 1px solid #d9d9d9; background: #fff; border-radius: 2px; cursor: pointer; font-size: 13px; letter-spacing: 2px; color: #1a1a1a; }
+  .edit-btn:hover { border-color: #1a1a1a; }
+
+  .notice-box { border: 1px solid #f0f0f0; background: #fafafa; border-radius: 2px; padding: 14px 16px; margin-bottom: 20px; }
+  .notice-box .detail { color: #666; }
+
+  .final-total { margin: 24px 0 18px; padding: 26px 22px; background: #fafafa; border: 1px solid #1a1a1a; border-radius: 2px; text-align: center; }
+  .final-total .ft { font-size: 11px; color: #666; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 8px; }
+  .final-total .fn { font-size: 30px; font-weight: 500; }
+  .final-total .fh { font-size: 12px; color: #999; margin-top: 6px; }
+
+  .main-actions { display: flex; gap: 12px; }
+  .act-btn { flex: 1; padding: 16px; border-radius: 2px; cursor: pointer; font-size: 14px; letter-spacing: 2px; }
+  .copy-all { background: #1a1a1a; color: #fff; border: 1px solid #1a1a1a; }
+  .copy-all:hover { background: #000; }
+  .restart { background: #fff; color: #1a1a1a; border: 1px solid #d9d9d9; }
+  .restart:hover { border-color: #1a1a1a; }
+
+  .policy-note { margin-top: 22px; padding-top: 14px; border-top: 1px solid #f0f0f0; font-size: 11px; color: #9a9a9a; line-height: 1.9; letter-spacing: .2px; }
+</style>
+</head>
+<body>
+  <div class="page-frame">
+    <div class="brand-header">
+      <div class="brand-name">BUFFALO BOXING</div>
+      <div class="brand-series">Darwin Custom Series</div>
+    </div>
+
+    <div class="page-title">套装方案汇总</div>
+    <div class="page-sub" id="pageSub">核对各件配置，确认后一键复制发送给客服</div>
+
+    <div id="itemsWrap"></div>
+
+    <div class="notice-box" id="noticeBox"></div>
+
+    <div class="final-total">
+      <div class="ft">Suit Total · 套装自动价合计</div>
+      <div class="fn" id="grandTotal">--</div>
+      <div class="fh">刺绣、特殊皮扩展等单独报价项不计入此合计</div>
+    </div>
+
+    <div class="main-actions">
+      <button class="act-btn restart" id="restartBtn" type="button">重新选择</button>
+      <button class="act-btn copy-all" id="copyAllBtn" type="button">复制全部方案</button>
+    </div>
+
+    <div class="policy-note">国内所有地区顺丰包邮；下单后约一个月交付，工期不随件数叠加，无付费加急；定制产品非质量问题不退不换。</div>
+  </div>
+
+  <script>
+    /* ===== 公共常量 ===== */
+    const COLOR_NAME = {
+      '#FFFFFF':'纯白','#F5F0EB':'奶昔白','#9D5F3B':'金棕','#746148':'大象灰','#1E2E44':'午夜蓝',
+      '#000000':'黑色','#80412D':'焦糖棕','#3FBF72':'漫画绿','#B3A59A':'风衣灰','#F27D3B':'橙色','#F27D3C':'橙色',
+      '#F2C12E':'太阳黄','#F9E77F':'小鸡黄','#404234':'橄榄绿','#BDE0F2':'微风蓝','#A0E7E5':'tiffany蓝',
+      '#0D32C4':'克莱因蓝','#91A3B1':'亚麻蓝','#C0A086':'马拉茶色','#8C8969':'鼠尾草绿','#808080':'积雨云灰',
+      '#BE3033':'大红','#EEB9C9':'樱花粉','#DF6981':'蔷薇粉','#E4A3BB':'花瓣粉','#6A2A30':'酒红',
+      '#FFD700':'柠檬黄','#C6AEA6':'杏色','#294162':'深邃蓝','#C0C0C0':'海鸥灰','#402D2D':'深咖',
+      '#452E22':'野牛皮'
+    };
+    const GLOVE_AREA = {1:'手背正面',2:'正面手腕',3:'背面主体',4:'拇指外侧上部',5:'拇指外侧下部',6:'拇指内侧',7:'手掌侧条',8:'包边'};
+    const HEAD_ZONE = {
+      split: {1:'左边',2:'右边',3:'左耳耳朵条',4:'左耳',5:'右耳耳朵条',6:'右耳',7:'包边'},
+      triple: {1:'中间',2:'两侧',3:'耳朵条',4:'耳朵',5:'包边'}
+    };
+    const GLOVE_POS = {wristLeftLeft:'左手手腕内侧·左侧',wristLeftRight:'左手手腕内侧·右侧',wristRightLeft:'右手手腕内侧·左侧',wristRightRight:'右手手腕内侧·右侧'};
+    const HEAD_SMALL_POS = {leftEar:'左耳',rightEar:'右耳',foreLeft:'额头左侧',foreRight:'额头右侧',other:'其它区域'};
+    const GROIN_ZONE = {1:'左侧',2:'右侧',3:'左侧包边',4:'右侧包边',5:'系带左侧',6:'系带右侧'};
+    const TYPE_LABEL = {glove:'拳套', head:'护头', groin:'护裆'};
+    const TYPE_RESULT = {glove:'g5.result.html', head:'h6.head-result.html', groin:'c5.groin-result.html'};
+
+    const printText = v => ({gold:'烫金',silver:'烫银',original:'原色烫印'}[v] || v);
+    const engFontText = v => v === 'cursive' ? '花体' : '正体';
+    const chFontText = v => v === 'song' ? '宋体' : '手写体';
+    const mixedFontText = v => v === 'cursive' ? '花体/手写体' : '正字体/宋体';
+    const stitchText = v => v === 'inner' ? '内缝' : '外缝';
+    const cname = hex => COLOR_NAME[hex] || hex;
+    const swatch = hex => `<span class="color-swatch" style="background:${hex};"></span>`;
+
+    /* ===== 读取套装与各件数据 ===== */
+    let suit;
+    try { suit = JSON.parse(localStorage.getItem('bb_suit')); } catch (e) { suit = null; }
+    if (!suit || !Array.isArray(suit.items) || !suit.items.length) {
+      alert('未找到套装数据，请先选择产品');
+      window.location.href = 'index.html';
+    }
+    function readItem(i){
+      const pfx = 'bb_' + i + '_';
+      const get = k => localStorage.getItem(pfx + k);
+      const parse = (k,d) => { try { return JSON.parse(get(k)) || d; } catch (e) { return d; } };
+      return {
+        type: suit.items[i].type,
+        size: get('size'),
+        height: get('height'),
+        weight: get('weight'),
+        waist: get('waist'),
+        leather: get('leatherType') || '未选择',
+        mode: get('mode') || 'triple',
+        basePrice: parseInt(get('basePrice'),10) || 0,
+        colorExtra: parseInt(get('colorExtra'),10) || 0,
+        customExtra: parseInt(get('customExtra'),10) || 0,
+        areaColors: parse('areaColors', {}),
+        opt: parse('customOptions', {})
+      };
+    }
+    /* ===== HTML 辅助 ===== */
+    const line = (k,v) => `<div class="line"><span class="k">${k}</span><span class="v">${v}</span></div>`;
+    const subTitle = t => `<div class="sub-title">${t}</div>`;
+    const colorLine = (k,v) => `<div class="color-line"><span>${k}</span><span>${v}</span></div>`;
+    const detail = s => `<div class="detail">${s}</div>`;
+
+    /* ===== 拳套渲染 ===== */
+    function gloveLogo(o){
+      const lt = o.logoType || 'original';
+      if (lt === 'text') {
+        const tc = o.textContent || 'brand';
+        if (tc === 'custom') {
+          let s = `文字 Logo（正面手腕）· 自定义文字「${o.textLogoCustom}」· ${mixedFontText(o.textLogoFont)} · ${printText(o.textPrint)}`;
+          if (/[一-龥]/.test(o.textLogoCustom || '')) s += '（汉字铜模 ¥30）';
+          return s;
+        }
+        return `文字 Logo（正面手腕）· 品牌文字 · ${printText(o.textPrint)}`;
+      }
+      if (lt === 'colored') return `其他颜色 Logo · ${cname(o.coloredLogo)} · ${stitchText(o.logoStitch)}`;
+      if (lt === 'none') return '无 Logo';
+      if (lt === 'embroidery') return '刺绣 Logo · 联系客服单独报价';
+      return `原色 Logo · ${stitchText(o.logoStitch)}`;
+    }
+    function buildGlove(d){
+      const o = d.opt;
+      const html = [];
+      const text = [];
+      const notices = [];
+
+      html.push(line('拳套尺寸', d.size ? d.size + ' oz' : '未选择'));
+      html.push(line('皮革类型', d.leather));
+      text.push('拳套尺寸：' + (d.size ? d.size + ' oz' : '未选择'));
+      text.push('皮革类型：' + d.leather);
+
+      html.push(subTitle('各区域配色'));
+      text.push('各区域配色：');
+      for (let i = 1; i <= 8; i++) {
+        const hex = d.areaColors[i];
+        if (hex) { html.push(colorLine(i + '号 · ' + GLOVE_AREA[i], swatch(hex) + cname(hex))); text.push(`  ${i}号 ${GLOVE_AREA[i]}：${cname(hex)}`); }
+        else html.push(colorLine(i + '号 · ' + GLOVE_AREA[i], '<span style="color:#ccc;">未选择</span>'));
+      }
+
+      html.push(subTitle('Logo 配置'));
+      html.push(detail(gloveLogo(o)));
+      text.push('Logo 配置：');
+      text.push('  ' + gloveLogo(o));
+
+      html.push(subTitle('手腕内侧印字'));
+      text.push('手腕内侧印字：');
+      ['left','right'].forEach(side => {
+        const lab = side === 'left' ? '左手' : '右手';
+        let s;
+        if (o[side + 'Eng']) s = `${lab}：英文/数字「${o[side+'Eng']}」· ${engFontText(o[side+'EngFont'])} · ${printText(o[side+'Print'])}`;
+        else if (o[side + 'Ch']) s = `${lab}：汉字「${o[side+'Ch']}」· ${chFontText(o[side+'ChFont'])} · ${printText(o[side+'Print'])}（铜模 ¥30）`;
+        else s = `${lab}：未定制`;
+        html.push(detail(s)); text.push('  ' + s);
+      });
+
+      html.push(subTitle('小图案'));
+      text.push('小图案：');
+      const sp = Array.isArray(o.smallPatterns) ? o.smallPatterns : [];
+      if (sp.length) {
+        sp.forEach((it, idx) => {
+          let s;
+          if (it.craft === 'embroidery') {
+            s = `小图案 ${idx+1}：刺绣（${GLOVE_POS[it.pos]||it.pos}，¥100–300 联系客服，不计入自动总价）`;
+            notices.push('拳套小图案 ' + (idx+1) + ' 刺绣：' + (GLOVE_POS[it.pos]||it.pos) + '，¥100–300 按图案报价');
+          } else {
+            s = `小图案 ${idx+1}：烫印（${GLOVE_POS[it.pos]||it.pos}，${printText(it.print)}，+¥30）`;
+          }
+          html.push(detail(s)); text.push('  ' + s);
+        });
+      } else { html.push(detail('未添加小图案')); text.push('  未添加'); }
+
+      const handS = o.handEmbroidery === 'yes'
+        ? '已添加手背刺绣（¥100–300，提供图案联系客服，不计入自动总价）'
+        : '不添加';
+      html.push(subTitle('手背刺绣'));
+      html.push(detail(handS));
+      text.push('手背刺绣：' + handS);
+      if (o.handEmbroidery === 'yes') notices.push('拳套手背刺绣：¥100–300 按图案报价');
+
+      if ((o.logoType === 'embroidery')) notices.push('拳套刺绣 Logo：按图案复杂度单独报价');
+      if (/鲨鱼|鳄鱼|鸵鸟|蜥蜴/.test(d.leather)) notices.push('拳套稀有皮「' + d.leather + '」：最终皮料与价格以客服核对为准');
+
+      html.push(line('基础价格', '¥' + d.basePrice));
+      html.push(line('配色额外费用', '¥' + d.colorExtra));
+      html.push(line('定制额外费用', '¥' + d.customExtra));
+      const total = d.basePrice + d.colorExtra + d.customExtra;
+      text.push('费用：基础 ¥' + d.basePrice + ' + 配色 ¥' + d.colorExtra + ' + 定制 ¥' + d.customExtra);
+      text.push('本件小计（不含刺绣单独报价）：¥' + total);
+      return { html: html.join(''), text: text.join('\n'), total, notices };
+    }
+    /* ===== 护头渲染 ===== */
+    function headLogo(o){
+      const lt = o.logoType;
+      if (lt === 'text') {
+        const tc = o.textContent || 'brand';
+        if (tc === 'custom') {
+          let s = `文字 Logo（正中间）· 自定义文字「${o.textLogoCustom}」· ${mixedFontText(o.textLogoFont)} · ${printText(o.textPrint)}`;
+          if (/[一-龥]/.test(o.textLogoCustom || '')) s += '（汉字铜模 ¥30）';
+          return s;
+        }
+        return `文字 Logo（正中间）· 品牌文字 · ${printText(o.textPrint)}`;
+      }
+      if (lt === 'colored') return `其他颜色 Logo · ${cname(o.coloredLogo)}`;
+      if (lt === 'none') return '无 Logo';
+      if (lt === 'embroidery') return '刺绣 Logo · 联系客服单独报价';
+      return '原色 Logo · 外缝';
+    }
+    function headSmallPatterns(o){
+      const norm = it => ({ pos: it.pos || 'leftEar', note: it.note || '', craft: it.craft || 'hot', print: it.print || 'gold' });
+      if (Array.isArray(o.smallPatterns)) return o.smallPatterns.map(norm);
+      if (o.smallPattern === 'yes') return [norm({ pos: o.smallPos, note: o.smallNote })];
+      return [];
+    }
+    function buildHead(d){
+      const o = d.opt;
+      const html = [];
+      const text = [];
+      const notices = [];
+      const layerCount = d.mode === 'split' ? 7 : 5;
+
+      html.push(line('头围尺寸', d.size ? d.size + ' cm' : '未选择'));
+      html.push(line('皮革类型', d.leather));
+      html.push(line('拼色方式', d.mode === 'split' ? '双拼（左右对拼）' : '三拼（中间与两侧）'));
+      text.push('头围尺寸：' + (d.size ? d.size + ' cm' : '未选择'));
+      text.push('皮革类型：' + d.leather);
+      text.push('拼色方式：' + (d.mode === 'split' ? '双拼（左右对拼）' : '三拼（中间与两侧）'));
+
+      html.push(subTitle('各区域配色'));
+      text.push('各区域配色：');
+      for (let i = 1; i <= layerCount; i++) {
+        const hex = d.areaColors[i];
+        if (hex) { html.push(colorLine(i + '号 · ' + HEAD_ZONE[d.mode][i], swatch(hex) + cname(hex))); text.push(`  ${i}号 ${HEAD_ZONE[d.mode][i]}：${cname(hex)}`); }
+        else html.push(colorLine(i + '号 · ' + HEAD_ZONE[d.mode][i], '<span style="color:#ccc;">未选择</span>'));
+      }
+
+      html.push(subTitle('Logo 与烫印'));
+      html.push(detail(headLogo(o)));
+      text.push('Logo 与烫印：');
+      text.push('  ' + headLogo(o));
+      ['left','right'].forEach(side => {
+        const lab = side === 'left' ? '左耳' : '右耳';
+        let s;
+        if (o[side + 'Eng']) s = `${lab}：英文/数字「${o[side+'Eng']}」· ${engFontText(o[side+'EngFont'])} · ${printText(o[side+'Print'])}`;
+        else if (o[side + 'Ch']) s = `${lab}：汉字「${o[side+'Ch']}」· ${chFontText(o[side+'ChFont'])} · ${printText(o[side+'Print'])}（铜模 ¥30）`;
+        else s = `${lab}：未烫印`;
+        html.push(detail(s)); text.push('  ' + s);
+      });
+
+      html.push(subTitle('其他定制'));
+      text.push('其他定制：');
+      const repS = o.logoReplace === 'yes' ? '已选择（+¥70）' : '未选择';
+      html.push(detail('Logo 替换：' + repS));
+      text.push('  Logo 替换：' + repS);
+      const sp = headSmallPatterns(o);
+      if (sp.length) {
+        sp.forEach((it, idx) => {
+          let s;
+          if (it.craft === 'embroidery') {
+            s = `小图案 ${idx+1}：刺绣（${HEAD_SMALL_POS[it.pos]||it.pos}，¥100–300 联系客服，不计入自动总价）`;
+            notices.push('护头小图案 ' + (idx+1) + ' 刺绣：' + (HEAD_SMALL_POS[it.pos]||it.pos) + '，¥100–300 按图案报价');
+          } else {
+            s = `小图案 ${idx+1}：烫印（${HEAD_SMALL_POS[it.pos]||it.pos}，${printText(it.print)}，+¥30）`;
+          }
+          if (it.pos === 'other' && it.note) s += '，备注「' + it.note + '」';
+          html.push(detail(s)); text.push('  ' + s);
+        });
+      } else { html.push(detail('小图案：未添加')); text.push('  小图案：未添加'); }
+
+      html.push(line('基础价格', '¥' + d.basePrice));
+      html.push(line('配色额外费用', '¥' + d.colorExtra));
+      html.push(line('定制额外费用', '¥' + d.customExtra));
+      const total = d.basePrice + d.colorExtra + d.customExtra;
+      text.push('费用：基础 ¥' + d.basePrice + ' + 配色 ¥' + d.colorExtra + ' + 定制 ¥' + d.customExtra);
+      text.push('本件小计（不含刺绣单独报价）：¥' + total);
+
+      if (o.logoType === 'embroidery') notices.push('护头刺绣 Logo：按图案复杂度单独报价');
+      if (/鲨鱼|鳄鱼|鸵鸟|蜥蜴/.test(d.leather)) notices.push('护头稀有皮「' + d.leather + '」：最终皮料与价格以客服核对为准');
+      return { html: html.join(''), text: text.join('\n'), total, notices };
+    }
+
+    /* ===== 护裆渲染 ===== */
+    function buildGroin(d){
+      const html = [];
+      const text = [];
+      const notices = [];
+
+      html.push(line('身高', d.height ? d.height + ' cm' : '未选择'));
+      html.push(line('体重', d.weight ? d.weight + ' kg' : '未选择'));
+      html.push(line('腰围', d.waist ? d.waist + ' cm' : '未选择'));
+      html.push(line('皮革类型', d.leather));
+      text.push('身高：' + (d.height ? d.height + ' cm' : '未选择'));
+      text.push('体重：' + (d.weight ? d.weight + ' kg' : '未选择'));
+      text.push('腰围：' + (d.waist ? d.waist + ' cm' : '未选择'));
+      text.push('皮革类型：' + d.leather);
+
+      html.push(subTitle('各区域配色'));
+      text.push('各区域配色：');
+      for (let i = 1; i <= 6; i++) {
+        const hex = d.areaColors[i];
+        if (hex) { html.push(colorLine(i + '号 · ' + GROIN_ZONE[i], swatch(hex) + cname(hex))); text.push(`  ${i}号 ${GROIN_ZONE[i]}：${cname(hex)}`); }
+        else html.push(colorLine(i + '号 · ' + GROIN_ZONE[i], '<span style="color:#ccc;">未选择</span>'));
+      }
+
+      const o = d.opt || {};
+      html.push(subTitle('Logo 与图案'));
+      text.push('Logo 与图案：');
+      const GROIN_LOGO_LABEL = { original:'原色 Logo（外缝）', colored:'其他颜色 Logo（外缝）', none:'无 Logo', embroidery:'刺绣 Logo' };
+      const lt = o.logoType || 'original';
+      let mainS = GROIN_LOGO_LABEL[lt] || lt;
+      if (lt === 'colored') mainS += ' · ' + cname(o.coloredLogo);
+      if (lt === 'embroidery') { mainS += '（单独报价，不计自动价）'; notices.push('护裆刺绣 Logo：按图案复杂度单独报价'); }
+      html.push(detail('Logo 款式：' + mainS)); text.push('  Logo 款式：' + mainS);
+      if (lt === 'original' || lt === 'colored') {
+        const repS = o.logoReplace === 'yes' ? '替换为自有图案（+¥70）' : '保留品牌 Logo';
+        html.push(detail('图案来源：' + repS)); text.push('  图案来源：' + repS);
+      }
+      const gp = o.groinPatterns || {};
+      [['frontLeft','正面左侧'],['frontRight','正面右侧']].forEach(([key,nm]) => {
+        const it = gp[key];
+        let s;
+        if (!it || !it.craft || it.craft === 'none') s = nm + '：不添加';
+        else if (it.craft === 'hot') s = nm + '：烫印（' + printText(it.print) + '，+¥30）';
+        else { s = nm + '：刺绣（¥100–300 联系客服，不计自动价）'; notices.push('护裆' + nm + '刺绣：按图案报价'); }
+        html.push(detail(s)); text.push('  ' + s);
+      });
+
+      html.push(line('基础价格', '¥' + d.basePrice));
+      html.push(line('配色额外费用', '¥' + d.colorExtra));
+      html.push(line('定制额外费用', '¥' + d.customExtra));
+      const total = d.basePrice + d.colorExtra + d.customExtra;
+      text.push('费用：基础 ¥' + d.basePrice + ' + 配色 ¥' + d.colorExtra + ' + 定制 ¥' + d.customExtra);
+      text.push('本件小计（不含刺绣单独报价）：¥' + total);
+      return { html: html.join(''), text: text.join('\n'), total, notices };
+    }
+
+    /* ===== 主渲染循环 ===== */
+    if (suit) {
+    const wrap = document.getElementById('itemsWrap');
+    const allNotices = [];
+    const allText = [];
+    let grand = 0;
+    suit.items.forEach((it, i) => {
+      const d = readItem(i);
+      let r;
+      if (d.type === 'glove') r = buildGlove(d);
+      else if (d.type === 'groin') r = buildGroin(d);
+      else r = buildHead(d);
+      grand += r.total;
+      allNotices.push(...r.notices);
+
+      const card = document.createElement('div');
+      card.className = 'item-card';
+      card.innerHTML =
+        `<div class="item-head"><span class="t">第 ${i+1} 件 · ${TYPE_LABEL[d.type]}</span><span class="sub">${d.leather}</span></div>` +
+        `<div class="item-body">${r.html}</div>` +
+        `<div class="item-subtotal"><span>本件小计</span><b>¥${r.total}</b></div>` +
+        `<div class="edit-link"><button class="edit-btn" type="button" data-edit="${i}">返回修改本件</button></div>`;
+      wrap.appendChild(card);
+
+      allText.push('【第 ' + (i+1) + ' 件 · ' + TYPE_LABEL[d.type] + '】');
+      allText.push(r.text);
+      allText.push('');
+    });
+
+    document.getElementById('grandTotal').textContent = '¥' + grand.toLocaleString();
+    document.getElementById('pageSub').textContent = '共 ' + suit.items.length + ' 件，套装自动价合计 ¥' + grand.toLocaleString();
+
+    const noticeBox = document.getElementById('noticeBox');
+    if (allNotices.length) {
+      noticeBox.innerHTML = '<div class="sub-title" style="margin-top:0;">单独报价 / 需客服核对项</div>' +
+        allNotices.map(n => `<div class="detail">· ${n}</div>`).join('');
+    } else {
+      noticeBox.style.display = 'none';
+    }
+
+    /* ===== 返回修改 ===== */
+    document.querySelectorAll('.edit-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const i = parseInt(btn.dataset.edit, 10);
+        suit.current = i;
+        localStorage.setItem('bb_suit', JSON.stringify(suit));
+        window.location.href = 'pages/' + TYPE_RESULT[suit.items[i].type];
+      });
+    });
+
+    /* ===== 复制全部 ===== */
+    function fallbackCopy(text) {
+      const ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); alert('全部方案已复制，可直接发送给客服'); }
+      catch (e) { alert('复制失败，请手动复制'); }
+      document.body.removeChild(ta);
+    }
+    document.getElementById('copyAllBtn').onclick = () => {
+      const out = [];
+      out.push('BUFFALO BOXING · Darwin 系列套装定制方案（共 ' + suit.items.length + ' 件）');
+      out.push('════════════════════');
+      out.push(allText.join('\n'));
+      out.push('════════════════════');
+      out.push('套装自动价合计（不含刺绣、特殊皮扩展等单独报价）：¥' + grand);
+      if (allNotices.length) {
+        out.push('需客服核对 / 单独报价项：');
+        allNotices.forEach(n => out.push('· ' + n));
+      }
+      const text = out.join('\n');
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(
+          () => alert('全部方案已复制，可直接发送给客服'),
+          () => fallbackCopy(text)
+        );
+      } else {
+        fallbackCopy(text);
+      }
+    };
+
+    /* ===== 重新选择 ===== */
+    document.getElementById('restartBtn').onclick = () => {
+      window.location.href = 'index.html';
+    };
+    }
+  </script>
+</body>
+</html>

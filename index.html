@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>选择定制产品 · BUFFALO BOXING</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a1a1a'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='18' font-weight='bold' fill='%23fff' text-anchor='middle'%3EB%3C/text%3E%3C/svg%3E">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    padding: 40px 20px;
+    max-width: 750px;
+    margin: 0 auto;
+    background: #fafafa;
+    color: #1a1a1a;
+    line-height: 1.6;
+  }
+  .page-frame {
+    background: #ffffff;
+    border: 1px solid #1a1a1a;
+    border-radius: 2px;
+    padding: 48px 40px;
+  }
+  @media (max-width: 520px) { .page-frame { padding: 36px 22px; } }
+  .brand-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #1a1a1a;
+  }
+  .brand-name { font-size: 20px; font-weight: 600; letter-spacing: 3px; color: #1a1a1a; }
+  .brand-series { font-size: 11px; letter-spacing: 4px; color: #666; margin-top: 6px; text-transform: uppercase; }
+
+  .page-title { font-size: 20px; font-weight: 500; color: #1a1a1a; letter-spacing: 1px; text-align: center; }
+  .page-sub { font-size: 13px; color: #999; margin: 10px 0 34px; text-align: center; }
+
+  .pick-list { display: flex; flex-direction: column; gap: 14px; margin-bottom: 34px; }
+  .pick-item {
+    position: relative;
+    border: 1px solid #d9d9d9; padding: 26px 20px; border-radius: 2px; cursor: pointer;
+    transition: all 0.2s ease; background: #fff; text-align: center;
+  }
+  .pick-item:hover { border-color: #1a1a1a; }
+  .pick-item.active { border-color: #1a1a1a; background: #fafafa; }
+  .pick-name { font-size: 18px; font-weight: 600; letter-spacing: 2px; }
+  .pick-en { font-size: 11px; letter-spacing: 3px; color: #999; text-transform: uppercase; margin-top: 7px; }
+  .pick-price { font-size: 13px; color: #666; margin-top: 16px; }
+  .pick-price b { color: #1a1a1a; font-weight: 600; font-size: 15px; margin-left: 4px; }
+  .order-badge {
+    display: none; position: absolute; top: 12px; left: 14px; min-width: 22px; height: 22px;
+    border: 1px solid #1a1a1a; border-radius: 50%; font-size: 12px; line-height: 20px; text-align: center;
+    background: #1a1a1a; color: #fff; padding: 0 5px;
+  }
+  .pick-item.active .order-badge { display: inline-block; }
+
+  /* 数量加减选择器 */
+  .qty-box { display: none; align-items: center; justify-content: center; gap: 16px; margin-top: 20px; }
+  .pick-item.active .qty-box { display: flex; }
+  .qty-btn {
+    width: 38px; height: 38px; border: 1px solid #1a1a1a; border-radius: 2px; background: #fff;
+    color: #1a1a1a; font-size: 20px; cursor: pointer; font-family: inherit; padding: 0;
+    display: flex; align-items: center; justify-content: center; transition: all .15s ease;
+  }
+  .qty-btn:hover { background: #1a1a1a; color: #fff; }
+  .qty-num { min-width: 30px; font-size: 17px; font-weight: 600; text-align: center; }
+  .qty-unit { font-size: 11px; color: #999; letter-spacing: 1px; margin-left: 2px; }
+
+  .summary-line {
+    font-size: 14px; color: #666; padding-bottom: 16px; margin-bottom: 30px;
+    border-bottom: 1px solid #1a1a1a; text-align: center;
+  }
+  .summary-line b { font-size: 18px; font-weight: 500; color: #1a1a1a; margin-left: 6px; }
+
+  .next-btn {
+    width: 100%; background: #1a1a1a; color: #fff; border: 1px solid #1a1a1a;
+    padding: 16px; border-radius: 2px; cursor: pointer; font-size: 14px; letter-spacing: 2px;
+    transition: all 0.2s ease;
+  }
+  .next-btn:hover { background: #000; border-color: #000; }
+
+  .policy-note { margin-top: 22px; padding-top: 14px; border-top: 1px solid #f0f0f0; font-size: 11px; color: #9a9a9a; line-height: 1.9; letter-spacing: .2px; text-align: center; }
+
+  /* 导入方案 */
+  .import-toggle { width:100%; border:1px solid #1a1a1a; background:#fff; color:#1a1a1a; border-radius:2px; padding:13px; font-size:12px; letter-spacing:2px; cursor:pointer; font-family:inherit; margin-bottom:26px; transition:all .2s; }
+  .import-toggle:hover { background:#1a1a1a; color:#fff; }
+  .import-panel { display:none; margin-bottom:30px; }
+  .import-panel.show { display:block; }
+  .import-textarea { width:100%; min-height:200px; border:1px solid #d9d9d9; border-radius:2px; padding:14px; font-size:13px; font-family:inherit; line-height:1.7; outline:none; resize:vertical; background:#fff; color:#1a1a1a; }
+  .import-textarea:focus { border-color:#1a1a1a; }
+  .import-actions { display:flex; gap:10px; margin:14px 0; }
+  .import-actions button { flex:1; padding:14px; border-radius:2px; font-size:13px; letter-spacing:1px; cursor:pointer; font-family:inherit; transition:all .2s; }
+  .parse-btn { background:#1a1a1a; color:#fff; border:1px solid #1a1a1a; }
+  .parse-btn:hover { background:#000; }
+  .clear-btn { background:#fff; color:#1a1a1a; border:1px solid #d9d9d9; }
+  .clear-btn:hover { border-color:#1a1a1a; }
+  .import-report { display:none; border:1px solid #d9d9d9; border-radius:2px; padding:16px; background:#fcfcfc; }
+  .import-report.show { display:block; }
+  .report-piece { padding-bottom:14px; margin-bottom:14px; border-bottom:1px solid #ececec; }
+  .report-piece:last-child { border-bottom:none; margin-bottom:0; padding-bottom:0; }
+  .report-head { font-size:14px; font-weight:600; letter-spacing:1px; margin-bottom:8px; }
+  .report-ok { font-size:12px; color:#555; line-height:1.9; }
+  .report-issue { font-size:12px; color:#a32; line-height:1.9; }
+  .confirm-import { display:none; width:100%; background:#1a1a1a; color:#fff; border:1px solid #1a1a1a; padding:16px; border-radius:2px; font-size:14px; letter-spacing:2px; cursor:pointer; font-family:inherit; margin-top:16px; }
+  .confirm-import.show { display:block; }
+  .confirm-import:hover { background:#000; }
+</style>
+</head>
+<body>
+  <div class="page-frame">
+    <div class="brand-header">
+      <div class="brand-name">BUFFALO BOXING</div>
+      <div class="brand-series">Darwin Custom Series</div>
+    </div>
+
+    <div class="page-title">选择定制产品</div>
+    <div class="page-sub">单选一件或多选组成套装；点加减可一次定多副同款，按所选顺序逐件配置</div>
+
+    
+    <button class="import-toggle" id="importToggle" type="button">导入已有方案 · 粘贴方案文本</button>
+    <div class="import-panel" id="importPanel">
+      <textarea class="import-textarea" id="importText" placeholder="把之前复制的整套或单件方案文本粘贴到这里，点解析后自动还原选项；识别不出来的会提示需手工补全"></textarea>
+      <div class="import-actions">
+        <button class="parse-btn" id="parseBtn" type="button">解析方案</button>
+        <button class="clear-btn" id="clearBtn" type="button">清空</button>
+      </div>
+      <div class="import-report" id="importReport"></div>
+      <button class="confirm-import" id="confirmImport" type="button">确认导入并进入配置</button>
+    </div>
+
+<div class="pick-list">
+      <div class="pick-item" data-key="glove" data-price="1699">
+        <span class="order-badge" id="badge-glove"></span>
+        <div class="pick-name">拳套</div>
+        <div class="pick-en">Boxing Gloves</div>
+        <div class="pick-price">起价<b>¥1699</b></div>
+        <div class="qty-box">
+          <button class="qty-btn qty-minus" type="button">−</button>
+          <span><span class="qty-num">1</span><span class="qty-unit">副</span></span>
+          <button class="qty-btn qty-plus" type="button">+</button>
+        </div>
+      </div>
+
+      <div class="pick-item" data-key="head" data-price="1299">
+        <span class="order-badge" id="badge-head"></span>
+        <div class="pick-name">护头</div>
+        <div class="pick-en">Head Guard</div>
+        <div class="pick-price">起价<b>¥1299</b></div>
+        <div class="qty-box">
+          <button class="qty-btn qty-minus" type="button">−</button>
+          <span><span class="qty-num">1</span><span class="qty-unit">个</span></span>
+          <button class="qty-btn qty-plus" type="button">+</button>
+        </div>
+      </div>
+
+      <div class="pick-item" data-key="groin" data-price="1299">
+        <span class="order-badge" id="badge-groin"></span>
+        <div class="pick-name">护裆</div>
+        <div class="pick-en">Groin Guard</div>
+        <div class="pick-price">起价<b>¥1299</b></div>
+        <div class="qty-box">
+          <button class="qty-btn qty-minus" type="button">−</button>
+          <span><span class="qty-num">1</span><span class="qty-unit">个</span></span>
+          <button class="qty-btn qty-plus" type="button">+</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-line">
+      <span id="countText">未选择产品 · 起价合计</span>
+      <b id="totalText">¥0</b>
+    </div>
+
+    <button class="next-btn" id="nextBtn">NEXT · 进入配置</button>
+
+    <div class="policy-note">国内所有地区顺丰包邮；下单后约一个月交付，工期不随件数叠加，无付费加急；定制产品非质量问题不退不换。</div>
+  </div>
+
+  <script>
+    const items = document.querySelectorAll('.pick-item');
+    const countText = document.getElementById('countText');
+    const totalText = document.getElementById('totalText');
+    const nextBtn = document.getElementById('nextBtn');
+    const PRICE = { glove: 1699, head: 1299, groin: 1299 };
+    const ENTRY = { glove: 'pages/g1.size.html', head: 'pages/h1.head-size.html', groin: 'pages/c1.groin-size.html' };
+    const MAX_QTY = 10;
+    let qty = { glove: 0, head: 0, groin: 0 };
+    let selectedOrder = []; // 装备首次选中的顺序
+
+    function setQty(k, n) {
+      n = Math.max(0, Math.min(MAX_QTY, n));
+      const was = qty[k];
+      qty[k] = n;
+      if (was === 0 && n > 0) selectedOrder.push(k);
+      if (n === 0) selectedOrder = selectedOrder.filter(t => t !== k);
+    }
+
+    function expandedList() {
+      const list = [];
+      selectedOrder.forEach(t => {
+        for (let i = 0; i < qty[t]; i++) list.push(t);
+      });
+      return list;
+    }
+
+    function refresh() {
+      let total = 0, grandN = 0, seq = 0;
+      const startSeq = {};
+      selectedOrder.forEach(t => {
+        startSeq[t] = seq + 1;
+        seq += qty[t];
+        total += qty[t] * PRICE[t];
+        grandN += qty[t];
+      });
+      items.forEach(it => {
+        const k = it.dataset.key;
+        const on = qty[k] > 0;
+        it.classList.toggle('active', on);
+        document.getElementById('badge-' + k).textContent = on ? startSeq[k] : '';
+        it.querySelector('.qty-num').textContent = qty[k] > 0 ? qty[k] : 1;
+      });
+      countText.textContent = grandN === 0 ? '未选择产品 · 起价合计'
+        : (grandN >= 2 ? '共 ' + grandN + ' 件 · 起价合计' : '单件 · 起价合计');
+      totalText.textContent = '¥' + total.toLocaleString();
+    }
+
+    // 卡片整体点击：选中(1) / 取消(0)
+    items.forEach(it => {
+      it.addEventListener('click', e => {
+        if (e.target.closest('.qty-btn')) return; // 加减按钮单独处理
+        const k = it.dataset.key;
+        setQty(k, qty[k] > 0 ? 0 : 1);
+        refresh();
+      });
+    });
+
+    // 加减按钮
+    items.forEach(it => {
+      const k = it.dataset.key;
+      it.querySelector('.qty-plus').addEventListener('click', e => {
+        e.stopPropagation();
+        if (qty[k] >= MAX_QTY) { alert('同款最多定制 ' + MAX_QTY + ' 件，更多请联系客服'); return; }
+        setQty(k, qty[k] + 1); refresh();
+      });
+      it.querySelector('.qty-minus').addEventListener('click', e => {
+        e.stopPropagation();
+        setQty(k, qty[k] - 1); refresh();
+      });
+    });
+
+    // 重建 bb_suit，同时按类型+序号迁移旧件前缀数据，避免返回后清零
+    function rebuildSuitPreserve(expanded){
+      let old=null;
+      try{ old=JSON.parse(localStorage.getItem('bb_suit')); }catch(e){ old=null; }
+      const oldByType={};
+      if(old && Array.isArray(old.items)){
+        old.items.forEach((it,idx)=>{ (oldByType[it.type]=oldByType[it.type]||[]).push(idx); });
+      }
+      // 收集旧前缀数据
+      const oldData={};
+      Object.keys(localStorage).forEach(k=>{
+        const m=k.match(/^bb_(\d+)_(.+)$/);
+        if(m){ const oi=parseInt(m[1],10); (oldData[oi]=oldData[oi]||{})[m[2]]=localStorage.getItem(k); }
+      });
+      // 清空旧前缀
+      Object.keys(localStorage).forEach(k=>{ if(/^bb_\d+_/.test(k))localStorage.removeItem(k); });
+      // 按类型游标迁移到新索引
+      const cursors={};
+      expanded.forEach((t,newIdx)=>{
+        const used=cursors[t]||0;
+        const queue=oldByType[t]||[];
+        if(used<queue.length){
+          const data=oldData[queue[used]]||{};
+          Object.keys(data).forEach(baseKey=>{ localStorage.setItem('bb_'+newIdx+'_'+baseKey,data[baseKey]); });
+        }
+        cursors[t]=used+1;
+      });
+      // 从首页 NEXT 进入总是从第一件开始，游标重置为 0（避免与实际页面错位而误显“复制上一副”）
+      const suit={mode:expanded.length>=2?'suit':'single',items:expanded.map(t=>({type:t})),current:0,finished:[]};
+      localStorage.setItem('bb_suit',JSON.stringify(suit));
+    }
+
+    nextBtn.addEventListener('click', () => {
+      const expanded = expandedList();
+      if (expanded.length === 0) { alert('请先选择至少一件产品'); return; }
+      rebuildSuitPreserve(expanded);
+      window.location.href = ENTRY[expanded[0]];
+    });
+
+    // 从已存在的 bb_suit 恢复加购件数与顺序（返回首页不清零）
+    (function restoreFromSuit(){
+      let suit=null;
+      try{ suit=JSON.parse(localStorage.getItem('bb_suit')); }catch(e){ suit=null; }
+      if(!suit || !Array.isArray(suit.items) || !suit.items.length)return;
+      suit.items.forEach(it=>{ if(qty[it.type]!==undefined) setQty(it.type, qty[it.type]+1); });
+    })();
+
+    refresh();
+  
+    /* ===== 方案文本反解析导入 ===== */
+    const NAME_HEX = {
+      '纯白':'#FFFFFF','奶昔白':'#F5F0EB','金棕':'#9D5F3B','大象灰':'#746148','午夜蓝':'#1E2E44',
+      '黑色':'#000000','风衣灰':'#B3A59A','橙色':'#F27D3B','太阳黄':'#F2C12E','小鸡黄':'#F9E77F',
+      '橄榄绿':'#404234','微风蓝':'#BDE0F2','tiffany蓝':'#A0E7E5','克莱因蓝':'#0D32C4','亚麻蓝':'#91A3B1',
+      '马拉茶':'#C0A086','鼠尾草绿':'#8C8969','积雨云灰':'#808080','大红':'#BE3033','樱花粉':'#EEB9C9',
+      '蔷薇粉':'#DF6981','柠檬黄':'#FFD700','杏色':'#C6AEA6','海鸥灰':'#C0C0C0','深咖':'#402D2D',
+      '酒红':'#6A2A30','深邃蓝':'#294162','花瓣粉':'#E4A3BB','漫画绿':'#3FBF72','焦糖棕':'#80412D',
+      '野牛皮':'#452E22'
+    };
+    const LEATHERS = ['Swift牛皮','Swift牛皮+野牛皮','Swift牛皮+鲨鱼皮','Swift牛皮+鳄鱼皮','Swift牛皮+鸵鸟皮','Swift牛皮+蜥蜴皮'];
+    const TYPE_KEY = {'拳套':'glove','护头':'head','护裆':'groin'};
+    const BASE_PRICE = {
+      glove:{'Swift牛皮':1699,'Swift牛皮+野牛皮':1899,'Swift牛皮+鲨鱼皮':3599,'Swift牛皮+鳄鱼皮':3999,'Swift牛皮+鸵鸟皮':3999,'Swift牛皮+蜥蜴皮':3999},
+      head:{'Swift牛皮':1299,'Swift牛皮+野牛皮':1499,'Swift牛皮+鲨鱼皮':3399,'Swift牛皮+鳄鱼皮':3399,'Swift牛皮+鸵鸟皮':3399,'Swift牛皮+蜥蜴皮':3399},
+      groin:{'Swift牛皮':1299,'Swift牛皮+野牛皮':1499}
+    };
+    const norm = s => (s||'').replace(/\s+/g,'').trim();
+    function findColorInLine(line){
+      let best=null,bestLen=0;
+      Object.keys(NAME_HEX).forEach(n=>{ if(line.indexOf(n)>=0 && n.length>bestLen){best=NAME_HEX[n];bestLen=n.length;} });
+      return best;
+    }
+    function parseLogoLine(type,line,co){
+      if(line.indexOf('Logo')<0) return false;
+      if(/文字\s*Logo/.test(line)){
+        co.logoType='text';
+        if(/自定义文字/.test(line)){
+          co.textContent='custom';
+          const cm=line.match(/「([^」]*)」/);
+          if(cm)co.textLogoCustom=cm[1];
+        } else co.textContent='brand';
+        co.textLogoFont=/花体/.test(line)?'cursive':'normal';
+        if(/烫银/.test(line))co.textPrint='silver';
+        else if(/原色/.test(line))co.textPrint='original';
+        else co.textPrint='gold';
+        return true;
+      }
+      if(/其他颜色\s*Logo/.test(line)){
+        co.logoType='colored';
+        const hex=findColorInLine(line); if(hex)co.coloredLogo=hex;
+        if(type!=='groin')co.logoStitch=/内缝/.test(line)?'inner':'outer';
+        return true;
+      }
+      if(/刺绣\s*Logo/.test(line)){co.logoType='embroidery';return true;}
+      if(/无\s*Logo/.test(line)){co.logoType='none';return true;}
+      if(/原色\s*Logo/.test(line)){
+        co.logoType='original';
+        if(type!=='groin')co.logoStitch=/内缝/.test(line)?'inner':'outer';
+        return true;
+      }
+      return false;
+    }
+
+    function parseWristLine(line,co){
+      let m=line.match(/^左手[：:]\s*(.+)/), side=null;
+      if(m)side='left';
+      else { m=line.match(/^右手[：:]\s*(.+)/); if(m)side='right'; }
+      if(!side)return false;
+      const body=m[1];
+      if(/未定制|未烫印/.test(body))return true;
+      const cm=body.match(/「([^」]*)」/);
+      if(/汉字/.test(body)){
+        if(cm)co[side+'Ch']=cm[1];
+        co[side+'ChFont']=/宋体/.test(body)?'song':'hand';
+      }else{
+        if(cm)co[side+'Eng']=cm[1];
+        co[side+'EngFont']=/花体/.test(body)?'cursive':'normal';
+      }
+      co[side+'Print']=/烫银/.test(body)?'silver':(/原色/.test(body)?'original':'gold');
+      return true;
+    }
+
+    function splitBlocks(text){
+      const re = /【\s*第\s*\d+\s*件\s*·\s*(拳套|护头|护裆)\s*】/g;
+      const marks=[]; let m;
+      while((m=re.exec(text))) marks.push({type:TYPE_KEY[m[1]],start:m.index,contentStart:re.lastIndex});
+      if(marks.length){
+        return marks.map((mk,i)=>({type:mk.type,body:text.slice(mk.contentStart,i+1<marks.length?marks[i+1].start:text.length)}));
+      }
+      const type = /护头/.test(text)?'head':/护裆/.test(text)?'groin':'glove';
+      return [{type:TYPE_KEY[type]===undefined?'glove':TYPE_KEY[type],body:text}];
+    }
+
+    function parseBlock(type, body){
+      const lines=body.split(/\r?\n/);
+      const r={type,fields:{},issues:[],areaColors:{},customOptions:{}};
+      let inColor=false;
+      for(const rawLine of lines){
+        const line=rawLine.trim();
+        if(/各区域配色/.test(line)){inColor=true;continue;}
+        if(inColor && line==='')continue;
+        const cm=line.match(/^(\d+)\s*号[^：:]*[：:]\s*(.+?)\s*$/);
+        if(inColor && cm){
+          const no=cm[1], cname=norm(cm[2]), hex=NAME_HEX[cname];
+          if(hex) r.areaColors[no]=hex;
+          else r.issues.push(no+'号颜色「'+cm[2].trim()+'」未识别，需手工选择');
+          continue;
+        }
+        if(inColor && line && !/^\d/.test(line) && !/[：:]/.test(line)) inColor=false;
+        let g=line.match(/皮革类型[：:]\s*(.+)/);
+        if(g){ const lt=norm(g[1]); if(LEATHERS.indexOf(lt)>=0) r.fields.leatherType=lt; else r.issues.push('皮革类型「'+g[1].trim()+'」未识别，需手工选择'); continue; }
+        g=line.match(/拳套尺寸[：:]\s*([\d.]+)/); if(g){r.fields.size=g[1];continue;}
+        g=line.match(/头围尺寸[：:]\s*([\d.]+)/); if(g){r.fields.size=g[1];continue;}
+        g=line.match(/拼色方式[：:]\s*(三拼|双拼)/); if(g){r.fields.mode=g[1];continue;}
+        g=line.match(/身高[：:]\s*([\d.]+)/); if(g){r.fields.height=g[1];continue;}
+        g=line.match(/体重[：:]\s*([\d.]+)/); if(g){r.fields.weight=g[1];continue;}
+        g=line.match(/腰围[：:]\s*([\d.]+)/); if(g){r.fields.waist=g[1];continue;}
+        if(parseLogoLine(type,line,r.customOptions))continue;
+        if(type==='glove' && parseWristLine(line,r.customOptions))continue;
+      }
+      return r;
+    }
+
+    let parsedPieces=null;
+    const importToggle=document.getElementById('importToggle');
+    const importPanel=document.getElementById('importPanel');
+    const importText=document.getElementById('importText');
+    const importReport=document.getElementById('importReport');
+    const confirmImport=document.getElementById('confirmImport');
+    importToggle.addEventListener('click',()=>{importPanel.classList.toggle('show');});
+    document.getElementById('clearBtn').addEventListener('click',()=>{
+      importText.value=''; importReport.classList.remove('show'); confirmImport.classList.remove('show'); parsedPieces=null;
+    });
+    document.getElementById('parseBtn').addEventListener('click',()=>{
+      const txt=importText.value.trim();
+      if(!txt){alert('请先粘贴方案文本');return;}
+      const blocks=splitBlocks(txt);
+      parsedPieces=blocks.map(b=>parseBlock(b.type,b.body));
+      let html='';
+      parsedPieces.forEach((p,i)=>{
+        const typeName=p.type==='glove'?'拳套':p.type==='head'?'护头':'护裆';
+        const f=p.fields;
+        const okLines=[];
+        if(f.size) okLines.push(p.type==='glove'?'尺寸 '+f.size+' oz':'头围 '+f.size+' cm');
+        if(f.height) okLines.push('身高 '+f.height+' / 体重 '+f.weight+' / 腰围 '+f.waist+' cm');
+        if(f.mode) okLines.push('拼色方式 '+f.mode);
+        if(f.leatherType) okLines.push('皮革 '+f.leatherType);
+        if(p.customOptions && p.customOptions.logoType){
+          const ltMap={text:'文字 Logo',colored:'其他颜色 Logo',original:'原色 Logo',none:'无 Logo',embroidery:'刺绣 Logo'};
+          okLines.push('Logo '+ (ltMap[p.customOptions.logoType]||p.customOptions.logoType));
+        }
+        if(p.type==='glove' && (p.customOptions.leftEng||p.customOptions.leftCh||p.customOptions.rightEng||p.customOptions.rightCh)){
+          okLines.push('手腕内侧印字已识别');
+        }
+        okLines.push('识别配色区域 '+Object.keys(p.areaColors).length+' 个');
+        html+='<div class="report-piece"><div class="report-head">第 '+(i+1)+' 件 · '+typeName+'</div>';
+        okLines.forEach(t=>{html+='<div class="report-ok">'+t+'</div>';});
+        if(p.issues.length) p.issues.forEach(t=>{html+='<div class="report-issue">'+t+'</div>';});
+        else html+='<div class="report-ok">全部字段识别成功</div>';
+        html+='</div>';
+      });
+      importReport.innerHTML=html; importReport.classList.add('show');
+      confirmImport.classList.add('show');
+    });
+
+    confirmImport.addEventListener('click',()=>{
+      if(!parsedPieces||!parsedPieces.length)return;
+      const items=parsedPieces.map(p=>({type:p.type}));
+      const suit={mode:items.length>=2?'suit':'single',items:items,current:0,finished:[]};
+      Object.keys(localStorage).forEach(k=>{ if(/^bb_\d+_/.test(k))localStorage.removeItem(k); });
+      localStorage.setItem('bb_suit',JSON.stringify(suit));
+      parsedPieces.forEach((p,idx)=>{
+        const pre='bb_'+idx+'_';
+        const f=p.fields;
+        if(f.size) localStorage.setItem(pre+'size',f.size);
+        if(f.height){localStorage.setItem(pre+'height',f.height);localStorage.setItem(pre+'weight',f.weight);localStorage.setItem(pre+'waist',f.waist);}
+        if(f.mode) localStorage.setItem(pre+'mode',f.mode);
+        if(f.leatherType){
+          localStorage.setItem(pre+'leatherType',f.leatherType);
+          const bp=(BASE_PRICE[p.type]||{})[f.leatherType];
+          if(bp)localStorage.setItem(pre+'basePrice',String(bp));
+        }
+        localStorage.setItem(pre+'areaColors',JSON.stringify(p.areaColors));
+        localStorage.setItem(pre+'colorExtra','0');
+        localStorage.setItem(pre+'hasVisitedColorPage','true');
+        if(p.customOptions && p.customOptions.logoType) localStorage.setItem(pre+'customOptions',JSON.stringify(p.customOptions));
+      });
+      window.location.href=ENTRY[parsedPieces[0].type];
+    });
+</script>
+</body>
+</html>
