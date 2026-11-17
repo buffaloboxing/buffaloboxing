@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>配色预览 · BUFFALO BOXING 护头定制</title>
+<title>配色預覽 · BUFFALO BOXING 護頭定製</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -40,7 +40,7 @@
   .color-dot.selected { box-shadow: 0 0 0 2px #1a1a1a, 0 0 0 4px rgba(26,26,26,.1); transform: scale(1.06); }
   .color-cap { font-size: 10px; color: #888; text-align: center; line-height: 1.2; }
 
-  /* 野牛皮专用色块 */
+  /* 野牛皮專用色塊 */
   .wild-box { display: none; margin: 10px 0 16px; padding: 14px; border: 1px solid #1a1a1a; border-radius: 2px; background: #fff; }
   .wild-box.show { display: flex; align-items: center; gap: 12px; cursor: pointer; }
   .wild-swatch { width: 36px; height: 36px; border-radius: 50%; flex: 0 0 auto; background: #452E22; border: 1px solid rgba(0,0,0,.15); box-shadow: 0 0 0 2px transparent; transition: all .18s; }
@@ -64,7 +64,7 @@
 
   .toast { position: fixed; left: 50%; bottom: 60px; transform: translateX(-50%); background: #1a1a1a; color: #fff; font-size: 13px; padding: 11px 20px; border-radius: 2px; opacity: 0; pointer-events: none; transition: opacity .25s; z-index: 40; white-space: nowrap; }
   .toast.show { opacity: .95; }
-  /* 稀有皮软提醒弹窗 */
+  /* 稀有皮軟提醒彈窗 */
   .rare-modal-mask { position: fixed; inset: 0; background: rgba(0,0,0,.45); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px; }
   .rare-modal-mask.show { display: flex; }
   .rare-modal { background: #fff; border: 1px solid #1a1a1a; border-radius: 2px; max-width: 420px; width: 100%; padding: 28px 26px; }
@@ -91,6 +91,44 @@
     .gn-link.gn-bundle { border-color:#1a1a1a; color:#1a1a1a; display:none; }
     .gn-link.gn-bundle:hover { background:#1a1a1a; color:#fff; }
 </style>
+<style>
+  /* === BB currency + brand footer === */
+  .bb-ccy{display:flex;justify-content:center;margin:0 0 24px;}
+  .bb-ccy-btn{border:1px solid #1a1a1a;background:#fff;color:#666;padding:9px 18px;font-size:11px;letter-spacing:2px;cursor:pointer;font-family:inherit;transition:all .15s;}
+  .bb-ccy-btn:first-child{border-right:none;border-radius:2px 0 0 2px;}
+  .bb-ccy-btn:last-child{border-radius:0 2px 2px 0;}
+  .bb-ccy-btn.active{background:#1a1a1a;color:#fff;}
+  .bb-c{font-weight:500;}
+  .bb-brand-footer{text-align:center;margin-top:22px;padding-top:16px;border-top:1px solid #1a1a1a;}
+  .bb-brand-footer .bb-slogan{font-size:10px;letter-spacing:4px;color:#666;text-transform:uppercase;}
+  .bb-brand-footer .bb-sub{font-size:8px;letter-spacing:2px;color:#bbb;margin-top:6px;text-transform:uppercase;}
+</style>
+<script>
+(function(){
+  var RATE={twd:4.9432,hkd:1.1769};
+  var c=localStorage.getItem('bb_ccy')||'twd';
+  if(!RATE[c])c='twd';
+  window.BB_CCY=c;
+  window.bbMoney=function(cny){
+    var n=Math.round(Number(cny)*RATE[window.BB_CCY]);
+    var sym=window.BB_CCY==='twd'?'NT$':'HK$';
+    return sym+n.toLocaleString('en-US');
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    var nodes=document.querySelectorAll('.bb-c');
+    for(var i=0;i<nodes.length;i++){nodes[i].textContent=window.bbMoney(nodes[i].getAttribute('data-cny'));}
+    var btns=document.querySelectorAll('.bb-ccy-btn');
+    for(var j=0;j<btns.length;j++){btns[j].classList.toggle('active',btns[j].getAttribute('data-c')===window.BB_CCY);}
+    var bar=document.getElementById('bbCcyBar');
+    if(bar){bar.addEventListener('click',function(e){
+      var b=e.target.closest('.bb-ccy-btn');if(!b)return;
+      var nc=b.getAttribute('data-c');if(nc===window.BB_CCY)return;
+      localStorage.setItem('bb_ccy',nc);location.reload();
+    });}
+  });
+})();
+</script>
+
 </head>
 <body>
   <div class="page-frame">
@@ -98,59 +136,69 @@
       <div class="brand-name">BUFFALO BOXING</div>
       <div class="brand-series">Head Guard · Darwin Custom</div>
     </div>
+<div class="bb-ccy" id="bbCcyBar">
+      <button type="button" class="bb-ccy-btn" data-c="twd">台幣 TWD</button>
+      <button type="button" class="bb-ccy-btn" data-c="hkd">港幣 HKD</button>
+    </div>
+
 
     <div class="step-tag">Step 04 / 06</div>
-    <div class="step-nav" id="stepNav"><button type="button" class="step-nav-item" data-href="h1.head-size.html"><span class="sn-num">1</span>头围</button><button type="button" class="step-nav-item" data-href="h2.head-leather.html"><span class="sn-num">2</span>皮革</button><button type="button" class="step-nav-item" data-href="h3.head-mode.html"><span class="sn-num">3</span>模式</button><button type="button" class="step-nav-item current" data-href="h4.head-color.html"><span class="sn-num">4</span>配色</button><button type="button" class="step-nav-item" data-href="h5.head-customize.html"><span class="sn-num">5</span>印字</button><button type="button" class="step-nav-item" data-href="h6.head-result.html"><span class="sn-num">6</span>结果</button></div>
-<div class="page-title" id="pageTitle">配色预览</div>
+    <div class="step-nav" id="stepNav"><button type="button" class="step-nav-item" data-href="h1.head-size.html"><span class="sn-num">1</span>頭圍</button><button type="button" class="step-nav-item" data-href="h2.head-leather.html"><span class="sn-num">2</span>皮革</button><button type="button" class="step-nav-item" data-href="h3.head-mode.html"><span class="sn-num">3</span>模式</button><button type="button" class="step-nav-item current" data-href="h4.head-color.html"><span class="sn-num">4</span>配色</button><button type="button" class="step-nav-item" data-href="h5.head-customize.html"><span class="sn-num">5</span>印字</button><button type="button" class="step-nav-item" data-href="h6.head-result.html"><span class="sn-num">6</span>結果</button></div>
+<div class="page-title" id="pageTitle">配色預覽</div>
 
-    <div class="current-price">当前价格 <b>¥<span id="totalPrice">1299</span></b></div>
+    <div class="current-price">當前價格 <span id="totalPrice" class="bb-c" data-cny="1299" style="font-weight:700;"></span></div>
 
     <div class="canvas-container">
-      <div class="loading-tip" id="loadingTip">预览图加载中...</div>
+      <div class="loading-tip" id="loadingTip">預覽圖加載中...</div>
       <div id="canvasContainer"></div>
     </div>
 
-    <div class="block-label">选择上色区域</div>
+    <div class="block-label">選擇上色區域</div>
     <select id="zoneSelect"></select>
 
-    <div class="block-label">选择颜色</div>
+    <div class="block-label">選擇顏色</div>
     <div class="wild-box" id="wildBox">
       <span class="wild-swatch" id="wildSwatch"></span>
-      <span class="wild-meta">野牛皮<span class="sub">选择后即代表野牛皮，不占用免费颜色额度；护头任意区域可用</span></span>
+      <span class="wild-meta">野牛皮<span class="sub">選擇後即代表野牛皮，不佔用免費顏色額度；護頭任意區域可用</span></span>
     </div>
-    <div class="mem-row" id="memColorRow"><span class="mem-label">最近使用颜色 · 点一下应用到当前区域</span><div class="mem-swatches" id="memColorDots"></div></div>
+    <div class="mem-row" id="memColorRow"><span class="mem-label">最近使用顏色 · 點一下應用到當前區域</span><div class="mem-swatches" id="memColorDots"></div></div>
 <div class="color-grid" id="colorGrid"></div>
 
-    <button class="solid-btn" id="solidBtn">一键纯色 · 应用到全部区域</button>
+    <button class="solid-btn" id="solidBtn">一鍵純色 · 應用到全部區域</button>
 
-    <div class="extra-line">已用颜色 <b id="extraText">0 种 · 额外 ¥0</b></div>
+    <div class="extra-line">已用顏色 <b id="extraText">0 種 · 額外 <span class="bb-c" data-cny="0"></span></b></div>
     <div class="rule-note" id="ruleNote"></div>
 
-    <div class="block-label" style="margin-top:26px;">皮革特殊说明</div>
+    <div class="block-label" style="margin-top:26px;">皮革特殊說明</div>
     <div id="leatherTip" class="alert-box" style="display:none;"></div>
 
     <div class="btn-group">
       <button class="prev-btn" id="prevBtn">BACK · 返回</button>
-      <button class="next-btn" id="nextBtn">NEXT · 烫印内容</button>
+      <button class="next-btn" id="nextBtn">NEXT · 燙印內容</button>
     </div>
 
     <div class="rare-modal-mask" id="rareModalMask">
       <div class="rare-modal">
         <div class="rare-modal-title" id="rareModalTitle"></div>
         <div class="rare-modal-body" id="rareModalBody"></div>
-        <button class="rare-modal-btn" id="rareModalOk" type="button">我了解了</button>
+        <button class="rare-modal-btn" id="rareModalOk" type="button">我瞭解了</button>
       </div>
     </div>
   </div>
 
   <div class="toast" id="toast"><div class="global-nav">
-      <a class="gn-link" href="../index.html">返回定制工具首页 · 加选/改数量</a>
-      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套装汇总</a>
+      <a class="gn-link" href="../index.html">返回定製工具首頁 · 加選/改數量</a>
+      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套裝彙總</a>
     </div>
+<div class="bb-brand-footer">
+      <div class="bb-slogan">CRAFT IS HUMAN</div>
+      <div class="bb-sub">BUFFALO BOXING</div>
+    </div>
+
     </div>
 
   <script>
-    /* ===== 统一存储封装（每件独立前缀） ===== */
+    /* ===== 統一存儲封裝（每件獨立前綴） ===== */
     const BBSUIT_KEY = 'bb_suit';
     function BB_suit(){ try{ return JSON.parse(localStorage.getItem(BBSUIT_KEY)) || null; }catch(e){ return null; } }
     function BB_prefix(){
@@ -165,7 +213,7 @@
       remove(k){ localStorage.removeItem(BB_prefix() + k); }
     };
 
-    /* ==================== 模式与区域配置 ==================== */
+    /* ==================== 模式與區域配置 ==================== */
     const getMode = () => {
       const m = new URLSearchParams(location.search).get('mode');
       return (m === 'split' || m === 'triple') ? m : 'triple';
@@ -176,12 +224,12 @@
       split: {
         layers: 7,
         big: [1, 2, 7],
-        zones: { 1: '左边', 2: '右边', 3: '左耳耳朵条', 4: '左耳', 5: '右耳耳朵条', 6: '右耳', 7: '包边' }
+        zones: { 1: '左邊', 2: '右邊', 3: '左耳耳朵條', 4: '左耳', 5: '右耳耳朵條', 6: '右耳', 7: '包邊' }
       },
       triple: {
         layers: 5,
         big: [1, 2, 5],
-        zones: { 1: '中间', 2: '两侧', 3: '耳朵条', 4: '耳朵', 5: '包边' }
+        zones: { 1: '中間', 2: '兩側', 3: '耳朵條', 4: '耳朵', 5: '包邊' }
       }
     };
     const CFG = MODE_CONFIG[MODE];
@@ -190,16 +238,16 @@
     const WILD_COLOR = '#452E22';
 
     document.getElementById('pageTitle').textContent =
-      '配色预览 · ' + (MODE === 'split' ? '双拼' : '三拼');
+      '配色預覽 · ' + (MODE === 'split' ? '雙拼' : '三拼');
 
     /* ==================== 色卡 ==================== */
     const COLORS = [
-      ['#FFFFFF','纯白'],['#F5F0EB','奶昔白'],['#9D5F3B','金棕'],['#746148','大象灰'],['#1E2E44','午夜蓝'],
-      ['#000000','黑色'],['#80412D','焦糖棕'],['#3FBF72','漫画绿'],['#B3A59A','风衣灰'],['#F27D3B','橙色'],
-      ['#F2C12E','太阳黄'],['#F9E77F','小鸡黄'],['#404234','橄榄绿'],['#BDE0F2','微风蓝'],['#A0E7E5','tiffany蓝'],
-      ['#0D32C4','克莱因蓝'],['#91A3B1','亚麻蓝'],['#C0A086','马拉茶色'],['#8C8969','鼠尾草绿'],['#808080','积雨云灰'],
-      ['#BE3033','大红'],['#EEB9C9','樱花粉'],['#DF6981','蔷薇粉'],['#E4A3BB','花瓣粉'],['#6A2A30','酒红'],
-      ['#FFD700','柠檬黄'],['#C6AEA6','杏色'],['#294162','深邃蓝'],['#C0C0C0','海鸥灰'],['#402D2D','深咖']
+      ['#FFFFFF','純白'],['#F5F0EB','奶昔白'],['#9D5F3B','金棕'],['#746148','大象灰'],['#1E2E44','午夜藍'],
+      ['#000000','黑色'],['#80412D','焦糖棕'],['#3FBF72','漫畫綠'],['#B3A59A','風衣灰'],['#F27D3B','橙色'],
+      ['#F2C12E','太陽黃'],['#F9E77F','小雞黃'],['#404234','橄欖綠'],['#BDE0F2','微風藍'],['#A0E7E5','tiffany藍'],
+      ['#0D32C4','克萊因藍'],['#91A3B1','亞麻藍'],['#C0A086','馬拉茶色'],['#8C8969','鼠尾草綠'],['#808080','積雨雲灰'],
+      ['#BE3033','大紅'],['#EEB9C9','櫻花粉'],['#DF6981','薔薇粉'],['#E4A3BB','花瓣粉'],['#6A2A30','酒紅'],
+      ['#FFD700','檸檬黃'],['#C6AEA6','杏色'],['#294162','深邃藍'],['#C0C0C0','海鷗灰'],['#402D2D','深咖']
     ];
 
 const LAYER_DATA = {
@@ -221,7 +269,7 @@ const LAYER_DATA = {
   ],
 };
 
-    /* ==================== 状态与画布 ==================== */
+    /* ==================== 狀態與畫布 ==================== */
     const zoneColors = {};
     for (let i = 1; i <= CFG.layers; i++) zoneColors[i] = null;
     let current = 1;
@@ -251,7 +299,7 @@ const LAYER_DATA = {
       return new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = () => resolve(img);
-        img.onerror = () => reject(new Error('加载失败: ' + src));
+        img.onerror = () => reject(new Error('加載失敗: ' + src));
         img.src = src;
       });
     }
@@ -302,13 +350,13 @@ const LAYER_DATA = {
       renderLayer(idx);
     }
 
-    /* ==================== 区域下拉 ==================== */
+    /* ==================== 區域下拉 ==================== */
     function renderSelect() {
       zoneSelect.innerHTML = '';
       for (let i = 1; i <= CFG.layers; i++) {
         const o = document.createElement('option');
         o.value = i;
-        o.textContent = `区域 ${i} · ${CFG.zones[i]}`;
+        o.textContent = `區域 ${i} · ${CFG.zones[i]}`;
         if (i === current) o.selected = true;
         zoneSelect.appendChild(o);
       }
@@ -338,7 +386,7 @@ const LAYER_DATA = {
       syncSelection();
     }
 
-    /* 野牛皮色块：护头任意区域可用 */
+    /* 野牛皮色塊：護頭任意區域可用 */
     function setupWildBox() {
       wildBox.classList.toggle('show', isWild);
       wildBox.onclick = () => {
@@ -359,7 +407,7 @@ const LAYER_DATA = {
       renderColors();
     });
 
-    /* ==================== 一键纯色 ==================== */
+    /* ==================== 一鍵純色 ==================== */
     function showToast(msg) {
       toast.textContent = msg;
       toast.classList.add('show');
@@ -368,23 +416,23 @@ const LAYER_DATA = {
 
     document.getElementById('solidBtn').onclick = () => {
       const c = zoneColors[current];
-      if (!c) { showToast('请先在色卡选择一个颜色'); return; }
+      if (!c) { showToast('請先在色卡選擇一個顏色'); return; }
       for (let i = 1; i <= CFG.layers; i++) {
         zoneColors[i] = c;
         tintLayer(i - 1, c);
       }
       renderColors(); calc();
       checkRareConflict();
-      showToast('已将全部区域设为同一颜色');
+      showToast('已將全部區域設爲同一顏色');
     };
 
-    /* ==================== 计费 ==================== */
+    /* ==================== 計費 ==================== */
     const leatherType = LS.get('leatherType') || '';
     const basePrice = parseInt(LS.get('basePrice'), 10) || BASE_PRICE;
     const isWild = leatherType.includes('野牛皮');
-    const isRare = /鲨鱼|鳄鱼|鸵鸟|蜥蜴/.test(leatherType);
+    const isRare = /鯊魚|鱷魚|鴕鳥|蜥蜴/.test(leatherType);
 
-    // 稀有皮：三拼 1 号额头恒保留稀有皮；3 号耳朵条与 1 号同色才视为稀有皮，异色按普通牛皮
+    // 稀有皮：三拼 1 號額頭恆保留稀有皮；3 號耳朵條與 1 號同色才視爲稀有皮，異色按普通牛皮
     const rareAnchor = zoneColors[1];
     const isRareZone = (i) => {
       if (!isRare || MODE !== 'triple') return false;
@@ -411,14 +459,14 @@ const LAYER_DATA = {
       const extra = (overBig + overSmall) * 150;
 
       const totalUsed = new Set([...bigColors, ...smallColors]);
-      extraText.textContent = `${totalUsed.size} 种 · 额外 ¥${extra}`;
-      totalPrice.textContent = basePrice + extra;
+      extraText.textContent = `${totalUsed.size} 種 · 額外 ${bbMoney(extra)}`;
+      totalPrice.textContent = bbMoney(basePrice + extra);
 
       LS.set('areaColors', JSON.stringify(zoneColors));
       LS.set('colorExtra', extra);
     }
 
-    /* ==================== 稀有皮软提醒（护头版，不阻断） ==================== */
+    /* ==================== 稀有皮軟提醒（護頭版，不阻斷） ==================== */
     let rareMismatchShown = false;
     let rareOverflowShown = false;
     const RARE_FIXED_H = [1, 3];
@@ -436,8 +484,8 @@ const LAYER_DATA = {
       if (uniq.length >= 2 && !rareMismatchShown) {
         rareMismatchShown = true;
         showRareModal(
-          '稀有皮应用区域颜色不同',
-          '默认价格里稀有皮常规应用区域为三拼护头的 1 号（额头中间）与 3 号（耳朵条）。这两个区域选相同颜色，即代表都用稀有皮；若选不同颜色，护头以三拼中间额头 1 号区域为准，其它异色区域用牛皮制作。'
+          '稀有皮應用區域顏色不同',
+          '默認價格裏稀有皮常規應用區域爲三拼護頭的 1 號（額頭中間）與 3 號（耳朵條）。這兩個區域選相同顏色，即代表都用稀有皮；若選不同顏色，護頭以三拼中間額頭 1 號區域爲準，其它異色區域用牛皮製作。'
         );
         return;
       }
@@ -447,30 +495,30 @@ const LAYER_DATA = {
         if (inOther && !rareOverflowShown) {
           rareOverflowShown = true;
           showRareModal(
-            '其它区域同色仍按牛皮制作',
-            '1/3 号区域选同色默认使用稀有皮，其它区域即使选了相同颜色，也默认用牛皮制作。若您希望在其它区域也使用稀有皮，请联系客服说明，由客服根据用量提供报价。'
+            '其它區域同色仍按牛皮製作',
+            '1/3 號區域選同色默認使用稀有皮，其它區域即使選了相同顏色，也默認用牛皮製作。若您希望在其它區域也使用稀有皮，請聯繫客服說明，由客服根據用量提供報價。'
           );
         }
       }
     }
 
-    /* ==================== 规则与皮革提示 ==================== */
+    /* ==================== 規則與皮革提示 ==================== */
     const smallZoneIds = [];
     for (let z = 1; z <= CFG.layers; z++) { if (!CFG.big.includes(z)) smallZoneIds.push(z); }
     ruleNote.innerHTML =
-      '· 主色区域（' + CFG.big.map(b => b + '号').join('、') + '）可免费选 2 种颜色<br>' +
-      '· 小区域（' + smallZoneIds.map(b => b + '号').join('、') + '），可在 2 主色之外再免费选 1 种颜色<br>' +
-      '· 每超出 1 种颜色 +¥150；特殊皮革不占用免费颜色额度';
+      '· 主色區域（' + CFG.big.map(b => b + '號').join('、') + '）可免費選 2 種顏色<br>' +
+      '· 小區域（' + smallZoneIds.map(b => b + '號').join('、') + '），可在 2 主色之外再免費選 1 種顏色<br>' +
+      '· 每超出 1 種顏色 +' + bbMoney(150) + '；特殊皮革不佔用免費顏色額度';
 
     if (isWild) {
-      leatherTip.textContent = '野牛皮使用独立专用色卡：在上方选择「野牛皮」即代表此区域应用野牛皮，不占用免费颜色额度，护头任意区域均可使用。野牛皮比普通牛皮多 1 种免费颜色名额（大区域可免费 3 种、小区域可免费 2 种）。原色烫印仅在三拼中间为野牛皮时可选。';
+      leatherTip.textContent = '野牛皮使用獨立專用色卡：在上方選擇「野牛皮」即代表此區域應用野牛皮，不佔用免費顏色額度，護頭任意區域均可使用。野牛皮比普通牛皮多 1 種免費顏色名額（大區域可免費 3 種、小區域可免費 2 種）。原色燙印僅在三拼中間爲野牛皮時可選。';
       leatherTip.style.display = 'block';
-    } else if (/鲨鱼|鳄鱼|鸵鸟|蜥蜴/.test(leatherType)) {
-      leatherTip.textContent = '稀有皮革（野牛皮除外）无固定色卡，可先选相近颜色代表，后续由客服核对皮料。默认价格仅支持在三拼护头的 1 号（额头中间）与 3 号（耳朵条）区域选择；如需增加选择范围，或叠加使用不同特殊皮，请继续选择颜色后联系客服说明获取报价。稀有皮仅支持文字 Logo 烫印。';
+    } else if (/鯊魚|鱷魚|鴕鳥|蜥蜴/.test(leatherType)) {
+      leatherTip.textContent = '稀有皮革（野牛皮除外）無固定色卡，可先選相近顏色代表，後續由客服覈對皮料。默認價格僅支持在三拼護頭的 1 號（額頭中間）與 3 號（耳朵條）區域選擇；如需增加選擇範圍，或疊加使用不同特殊皮，請繼續選擇顏色後聯繫客服說明獲取報價。稀有皮僅支持文字 Logo 燙印。';
       leatherTip.style.display = 'block';
     }
 
-    /* ==================== 导航 ==================== */
+    /* ==================== 導航 ==================== */
     document.getElementById('prevBtn').onclick = () => {
       window.location.href = 'h3.head-mode.html';
     };
@@ -478,7 +526,7 @@ const LAYER_DATA = {
       if (!isWild) return true;
       const used = Object.values(zoneColors).some(c => c === WILD_COLOR);
       if (!used) {
-        alert('您在皮革页选择了野牛皮，请在配色中使用「野牛皮」，至少为一个区域选择野牛皮。');
+        alert('您在皮革頁選擇了野牛皮，請在配色中使用「野牛皮」，至少爲一個區域選擇野牛皮。');
         return false;
       }
       return true;
@@ -497,7 +545,7 @@ const LAYER_DATA = {
             if (saved[i]) { zoneColors[i] = saved[i]; }
           }
         }
-      } catch (e) { /* 忽略损坏数据 */ }
+      } catch (e) { /* 忽略損壞數據 */ }
     }
 
     renderSelect();
@@ -507,13 +555,13 @@ const LAYER_DATA = {
     renderMemColors();
     calc();
     initImages().then(() => {
-      // 图片就绪后，对已选区域重新染色
+      // 圖片就緒後，對已選區域重新染色
       for (let i = 1; i <= CFG.layers; i++) {
         if (zoneColors[i]) tintLayer(i - 1, zoneColors[i]);
       }
     }).catch(err => {
       console.error(err);
-      loadingTip.textContent = '图片加载失败，请刷新页面重试';
+      loadingTip.textContent = '圖片加載失敗，請刷新頁面重試';
     });
       document.getElementById('stepNav').addEventListener('click', function(e){
       const it = e.target.closest('.step-nav-item');
@@ -521,7 +569,7 @@ const LAYER_DATA = {
       try { if (window.__bbSave) window.__bbSave(); } catch(err){}
       window.location.href = it.dataset.href;
     });
-    /* ===== 全局记忆库 bb_memory（跨装备共享，不随件前缀隔离） ===== */
+    /* ===== 全局記憶庫 bb_memory（跨裝備共享，不隨件前綴隔離） ===== */
     function MEM_get(){ try{ return JSON.parse(localStorage.getItem('bb_memory')) || {colors:[],texts:[],logo:null}; }catch(e){ return {colors:[],texts:[],logo:null}; } }
     function MEM_save(m){ localStorage.setItem('bb_memory', JSON.stringify(m)); }
     function MEM_addColor(hex){

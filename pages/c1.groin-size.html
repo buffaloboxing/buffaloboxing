@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>1. 身体数据 · BUFFALO BOXING 护裆定制</title>
+<title>1. 身體數據 · BUFFALO BOXING 護襠定製</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -19,7 +19,7 @@
   .step-tag { font-size: 11px; letter-spacing: 3px; color: #999; text-transform: uppercase; margin-bottom: 10px; }
   .page-title { font-size: 20px; font-weight: 500; margin-bottom: 26px; color: #1a1a1a; letter-spacing: 1px; }
 
-  /* 性别选择 */
+  /* 性別選擇 */
   .gender-row { display: flex; gap: 12px; margin-bottom: 34px; }
   .gender-card {
     flex: 1; border: 1px solid #d9d9d9; border-radius: 2px; padding: 20px 10px; text-align: center;
@@ -67,6 +67,44 @@
     .gn-link.gn-bundle { border-color:#1a1a1a; color:#1a1a1a; display:none; }
     .gn-link.gn-bundle:hover { background:#1a1a1a; color:#fff; }
 </style>
+<style>
+  /* === BB currency + brand footer === */
+  .bb-ccy{display:flex;justify-content:center;margin:0 0 24px;}
+  .bb-ccy-btn{border:1px solid #1a1a1a;background:#fff;color:#666;padding:9px 18px;font-size:11px;letter-spacing:2px;cursor:pointer;font-family:inherit;transition:all .15s;}
+  .bb-ccy-btn:first-child{border-right:none;border-radius:2px 0 0 2px;}
+  .bb-ccy-btn:last-child{border-radius:0 2px 2px 0;}
+  .bb-ccy-btn.active{background:#1a1a1a;color:#fff;}
+  .bb-c{font-weight:500;}
+  .bb-brand-footer{text-align:center;margin-top:22px;padding-top:16px;border-top:1px solid #1a1a1a;}
+  .bb-brand-footer .bb-slogan{font-size:10px;letter-spacing:4px;color:#666;text-transform:uppercase;}
+  .bb-brand-footer .bb-sub{font-size:8px;letter-spacing:2px;color:#bbb;margin-top:6px;text-transform:uppercase;}
+</style>
+<script>
+(function(){
+  var RATE={twd:4.9432,hkd:1.1769};
+  var c=localStorage.getItem('bb_ccy')||'twd';
+  if(!RATE[c])c='twd';
+  window.BB_CCY=c;
+  window.bbMoney=function(cny){
+    var n=Math.round(Number(cny)*RATE[window.BB_CCY]);
+    var sym=window.BB_CCY==='twd'?'NT$':'HK$';
+    return sym+n.toLocaleString('en-US');
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    var nodes=document.querySelectorAll('.bb-c');
+    for(var i=0;i<nodes.length;i++){nodes[i].textContent=window.bbMoney(nodes[i].getAttribute('data-cny'));}
+    var btns=document.querySelectorAll('.bb-ccy-btn');
+    for(var j=0;j<btns.length;j++){btns[j].classList.toggle('active',btns[j].getAttribute('data-c')===window.BB_CCY);}
+    var bar=document.getElementById('bbCcyBar');
+    if(bar){bar.addEventListener('click',function(e){
+      var b=e.target.closest('.bb-ccy-btn');if(!b)return;
+      var nc=b.getAttribute('data-c');if(nc===window.BB_CCY)return;
+      localStorage.setItem('bb_ccy',nc);location.reload();
+    });}
+  });
+})();
+</script>
+
 </head>
 <body>
   <div class="page-frame">
@@ -74,20 +112,25 @@
       <div class="brand-name">BUFFALO BOXING</div>
       <div class="brand-series">Groin Guard · Darwin Custom</div>
     </div>
+<div class="bb-ccy" id="bbCcyBar">
+      <button type="button" class="bb-ccy-btn" data-c="twd">台幣 TWD</button>
+      <button type="button" class="bb-ccy-btn" data-c="hkd">港幣 HKD</button>
+    </div>
+
 
     <div class="step-tag">Step 01 / 05</div>
-    <div class="step-nav" id="stepNav"><button type="button" class="step-nav-item current" data-href="c1.groin-size.html"><span class="sn-num">1</span>数据</button><button type="button" class="step-nav-item" data-href="c2.groin-leather.html"><span class="sn-num">2</span>皮革</button><button type="button" class="step-nav-item" data-href="c3.groin-color.html"><span class="sn-num">3</span>配色</button><button type="button" class="step-nav-item" data-href="c4.groin-customize.html"><span class="sn-num">4</span>Logo</button><button type="button" class="step-nav-item" data-href="c5.groin-result.html"><span class="sn-num">5</span>结果</button></div>
-<div class="page-title">选择类型与身体数据</div>
-<button class="copy-prev-btn" id="copyPrevBtn" type="button" style="display:none;">一键复制上一副配置，再按需修改</button>
+    <div class="step-nav" id="stepNav"><button type="button" class="step-nav-item current" data-href="c1.groin-size.html"><span class="sn-num">1</span>數據</button><button type="button" class="step-nav-item" data-href="c2.groin-leather.html"><span class="sn-num">2</span>皮革</button><button type="button" class="step-nav-item" data-href="c3.groin-color.html"><span class="sn-num">3</span>配色</button><button type="button" class="step-nav-item" data-href="c4.groin-customize.html"><span class="sn-num">4</span>Logo</button><button type="button" class="step-nav-item" data-href="c5.groin-result.html"><span class="sn-num">5</span>結果</button></div>
+<div class="page-title">選擇類型與身體數據</div>
+<button class="copy-prev-btn" id="copyPrevBtn" type="button" style="display:none;">一鍵複製上一副配置，再按需修改</button>
 
     <div class="gender-row">
       <div class="gender-card active" id="genderMale">
-        <div class="gender-name">男性护裆</div>
+        <div class="gender-name">男性護襠</div>
         <div class="gender-sub">Men</div>
       </div>
       <div class="gender-card disabled" id="genderFemale">
-        <div class="gender-name">女性护裆</div>
-        <div class="gender-sub">开发中</div>
+        <div class="gender-name">女性護襠</div>
+        <div class="gender-sub">開發中</div>
       </div>
     </div>
 
@@ -97,37 +140,42 @@
       <span class="unit">cm</span>
     </div>
 
-    <label class="field-label" for="fWeight">体重</label>
+    <label class="field-label" for="fWeight">體重</label>
     <div class="input-wrap">
       <input type="number" id="fWeight" min="50" step="0.5" placeholder="例如 70">
       <span class="unit">kg</span>
     </div>
 
-    <label class="field-label" for="fWaist">腰围</label>
+    <label class="field-label" for="fWaist">腰圍</label>
     <div class="input-wrap">
       <input type="number" id="fWaist" min="60" step="0.5" placeholder="例如 80">
       <span class="unit">cm</span>
     </div>
 
     <div class="note">
-      数据无需十分精准，护裆有一定可调节范围；如不确定可按日常尺码填写，客服会再核对。<br>
-      身高不低于 150cm、体重不低于 50kg、腰围不低于 60cm，均不设上限。
+      數據無需十分精準，護襠有一定可調節範圍；如不確定可按日常尺碼填寫，客服會再覈對。<br>
+      身高不低於 150cm、體重不低於 50kg、腰圍不低於 60cm，均不設上限。
     </div>
 
     <div class="btn-group">
       <button class="prev-btn" id="prevBtn">BACK · 返回</button>
-      <button class="next-btn" id="nextBtn">NEXT · 选择皮革</button>
+      <button class="next-btn" id="nextBtn">NEXT · 選擇皮革</button>
     </div>
   </div>
 
   <div class="toast" id="toast"><div class="global-nav">
-      <a class="gn-link" href="../index.html">返回定制工具首页 · 加选/改数量</a>
-      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套装汇总</a>
+      <a class="gn-link" href="../index.html">返回定製工具首頁 · 加選/改數量</a>
+      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套裝彙總</a>
     </div>
+<div class="bb-brand-footer">
+      <div class="bb-slogan">CRAFT IS HUMAN</div>
+      <div class="bb-sub">BUFFALO BOXING</div>
+    </div>
+
     </div>
 
   <script>
-    /* ===== 统一存储封装（每件独立前缀） ===== */
+    /* ===== 統一存儲封裝（每件獨立前綴） ===== */
     const BBSUIT_KEY = 'bb_suit';
     function BB_suit(){ try{ return JSON.parse(localStorage.getItem(BBSUIT_KEY)) || null; }catch(e){ return null; } }
     function BB_prefix(){
@@ -150,24 +198,24 @@
     const toast = document.getElementById('toast');
     function showToast(m){ toast.textContent = m; toast.classList.add('show'); setTimeout(()=>toast.classList.remove('show'),1700); }
 
-    document.getElementById('genderMale').addEventListener('click', () => showToast('当前为男性护裆定制'));
-    document.getElementById('genderFemale').addEventListener('click', () => showToast('女性护裆正在开发中，敬请期待'));
+    document.getElementById('genderMale').addEventListener('click', () => showToast('當前爲男性護襠定製'));
+    document.getElementById('genderFemale').addEventListener('click', () => showToast('女性護襠正在開發中，敬請期待'));
 
     prevBtn.addEventListener('click', () => { window.location.href = '../index.html'; });
     nextBtn.addEventListener('click', () => {
       const h = parseFloat(fHeight.value), w = parseFloat(fWeight.value), wa = parseFloat(fWaist.value);
-      if (!h || h < 150) { alert('请填写有效的身高（不低于 150 cm）'); return; }
-      if (!w || w < 50) { alert('请填写有效的体重（不低于 50 kg）'); return; }
-      if (!wa || wa < 60) { alert('请填写有效的腰围（不低于 60 cm）'); return; }
+      if (!h || h < 150) { alert('請填寫有效的身高（不低於 150 cm）'); return; }
+      if (!w || w < 50) { alert('請填寫有效的體重（不低於 50 kg）'); return; }
+      if (!wa || wa < 60) { alert('請填寫有效的腰圍（不低於 60 cm）'); return; }
       LS.set('height', h); LS.set('weight', w); LS.set('waist', wa);
       window.location.href = 'c2.groin-leather.html';
     });
 
-    // 恢复已填
+    // 恢復已填
     if (LS.get('height')) fHeight.value = LS.get('height');
     if (LS.get('weight')) fWeight.value = LS.get('weight');
     if (LS.get('waist')) fWaist.value = LS.get('waist');
-      /* ===== 一键复制上一副配置（同款多件） ===== */
+      /* ===== 一鍵複製上一副配置（同款多件） ===== */
     (function initCopyPrev(){
       const suit = BB_suit();
       if (!suit || !Array.isArray(suit.items)) return;

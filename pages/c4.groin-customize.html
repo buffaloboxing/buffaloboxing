@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Logo 与图案 · BUFFALO BOXING 护裆定制</title>
+<title>Logo 與圖案 · BUFFALO BOXING 護襠定製</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -74,6 +74,44 @@
     .gn-link.gn-bundle { border-color:#1a1a1a; color:#1a1a1a; display:none; }
     .gn-link.gn-bundle:hover { background:#1a1a1a; color:#fff; }
 </style>
+<style>
+  /* === BB currency + brand footer === */
+  .bb-ccy{display:flex;justify-content:center;margin:0 0 24px;}
+  .bb-ccy-btn{border:1px solid #1a1a1a;background:#fff;color:#666;padding:9px 18px;font-size:11px;letter-spacing:2px;cursor:pointer;font-family:inherit;transition:all .15s;}
+  .bb-ccy-btn:first-child{border-right:none;border-radius:2px 0 0 2px;}
+  .bb-ccy-btn:last-child{border-radius:0 2px 2px 0;}
+  .bb-ccy-btn.active{background:#1a1a1a;color:#fff;}
+  .bb-c{font-weight:500;}
+  .bb-brand-footer{text-align:center;margin-top:22px;padding-top:16px;border-top:1px solid #1a1a1a;}
+  .bb-brand-footer .bb-slogan{font-size:10px;letter-spacing:4px;color:#666;text-transform:uppercase;}
+  .bb-brand-footer .bb-sub{font-size:8px;letter-spacing:2px;color:#bbb;margin-top:6px;text-transform:uppercase;}
+</style>
+<script>
+(function(){
+  var RATE={twd:4.9432,hkd:1.1769};
+  var c=localStorage.getItem('bb_ccy')||'twd';
+  if(!RATE[c])c='twd';
+  window.BB_CCY=c;
+  window.bbMoney=function(cny){
+    var n=Math.round(Number(cny)*RATE[window.BB_CCY]);
+    var sym=window.BB_CCY==='twd'?'NT$':'HK$';
+    return sym+n.toLocaleString('en-US');
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    var nodes=document.querySelectorAll('.bb-c');
+    for(var i=0;i<nodes.length;i++){nodes[i].textContent=window.bbMoney(nodes[i].getAttribute('data-cny'));}
+    var btns=document.querySelectorAll('.bb-ccy-btn');
+    for(var j=0;j<btns.length;j++){btns[j].classList.toggle('active',btns[j].getAttribute('data-c')===window.BB_CCY);}
+    var bar=document.getElementById('bbCcyBar');
+    if(bar){bar.addEventListener('click',function(e){
+      var b=e.target.closest('.bb-ccy-btn');if(!b)return;
+      var nc=b.getAttribute('data-c');if(nc===window.BB_CCY)return;
+      localStorage.setItem('bb_ccy',nc);location.reload();
+    });}
+  });
+})();
+</script>
+
 </head>
 <body>
   <div class="page-frame">
@@ -81,62 +119,72 @@
       <div class="brand-name">BUFFALO BOXING</div>
       <div class="brand-series">Groin Guard · Darwin Custom</div>
     </div>
+<div class="bb-ccy" id="bbCcyBar">
+      <button type="button" class="bb-ccy-btn" data-c="twd">台幣 TWD</button>
+      <button type="button" class="bb-ccy-btn" data-c="hkd">港幣 HKD</button>
+    </div>
+
 
     <div class="step-tag">Step 04 / 05</div>
-    <div class="step-nav" id="stepNav"><button type="button" class="step-nav-item" data-href="c1.groin-size.html"><span class="sn-num">1</span>数据</button><button type="button" class="step-nav-item" data-href="c2.groin-leather.html"><span class="sn-num">2</span>皮革</button><button type="button" class="step-nav-item" data-href="c3.groin-color.html"><span class="sn-num">3</span>配色</button><button type="button" class="step-nav-item current" data-href="c4.groin-customize.html"><span class="sn-num">4</span>Logo</button><button type="button" class="step-nav-item" data-href="c5.groin-result.html"><span class="sn-num">5</span>结果</button></div>
-<div class="page-title">Logo 与图案</div>
-    <div class="current-price">当前价格 <span>¥<span id="currentPrice">0</span></span></div>
+    <div class="step-nav" id="stepNav"><button type="button" class="step-nav-item" data-href="c1.groin-size.html"><span class="sn-num">1</span>數據</button><button type="button" class="step-nav-item" data-href="c2.groin-leather.html"><span class="sn-num">2</span>皮革</button><button type="button" class="step-nav-item" data-href="c3.groin-color.html"><span class="sn-num">3</span>配色</button><button type="button" class="step-nav-item current" data-href="c4.groin-customize.html"><span class="sn-num">4</span>Logo</button><button type="button" class="step-nav-item" data-href="c5.groin-result.html"><span class="sn-num">5</span>結果</button></div>
+<div class="page-title">Logo 與圖案</div>
+    <div class="current-price">當前價格 <span id="currentPrice" class="bb-c" data-cny="0" style=""></span></div>
 
-    <!-- 01 主 Logo（固定外缝，无文字 Logo） -->
+    <!-- 01 主 Logo（固定外縫，無文字 Logo） -->
     <div class="section">
       <div class="section-title">01 / Logo</div>
-<button class="mem-logo-btn" id="memLogoBtn" type="button">同上一件 Logo 设置 · 一键套用</button>
-      <span class="option-label">Logo 款式（均为外缝）</span>
+<button class="mem-logo-btn" id="memLogoBtn" type="button">同上一件 Logo 設置 · 一鍵套用</button>
+      <span class="option-label">Logo 款式（均爲外縫）</span>
       <div class="radio-group" id="logoTypeGroup">
-        <label class="radio-item"><input type="radio" name="logoType" value="original" checked> 原色 Logo（外缝）</label>
-        <label class="radio-item"><input type="radio" name="logoType" value="colored"> 其他颜色 Logo（选色外缝）</label>
-        <label class="radio-item"><input type="radio" name="logoType" value="none"> 无 Logo</label>
-        <label class="radio-item"><input type="radio" name="logoType" value="embroidery"> 刺绣 Logo（单独报价）</label>
+        <label class="radio-item"><input type="radio" name="logoType" value="original" checked> 原色 Logo（外縫）</label>
+        <label class="radio-item"><input type="radio" name="logoType" value="colored"> 其他顏色 Logo（選色外縫）</label>
+        <label class="radio-item"><input type="radio" name="logoType" value="none"> 無 Logo</label>
+        <label class="radio-item"><input type="radio" name="logoType" value="embroidery"> 刺繡 Logo（單獨報價）</label>
       </div>
-      <div class="warning" id="embroideryLogoNote">刺绣 Logo 需联系客服，按图案复杂度单独报价，不计入自动总价。</div>
+      <div class="warning" id="embroideryLogoNote">刺繡 Logo 需聯繫客服，按圖案複雜度單獨報價，不計入自動總價。</div>
 
-      <!-- 其他颜色 Logo 子选项 -->
+      <!-- 其他顏色 Logo 子選項 -->
       <div class="sub-box" id="coloredLogoBox">
-        <span class="option-label">选择 Logo 颜色</span>
+        <span class="option-label">選擇 Logo 顏色</span>
         <select id="coloredLogoSelect"></select>
         <div class="note" id="coloredLogoNote"></div>
       </div>
 
-      <!-- 图案来源（外缝类） -->
+      <!-- 圖案來源（外縫類） -->
       <div class="sub-box" id="replaceBox">
-        <span class="option-label">图案来源</span>
+        <span class="option-label">圖案來源</span>
         <div class="radio-group">
           <label class="radio-item"><input type="radio" name="logoReplace" value="no" checked> 保留品牌 Logo</label>
-          <label class="radio-item"><input type="radio" name="logoReplace" value="yes"> 替换为自有图案 <span class="price-tag">+¥70</span></label>
+          <label class="radio-item"><input type="radio" name="logoReplace" value="yes"> 替換爲自有圖案 <span class="price-tag">+<span class="bb-c" data-cny="70"></span></span></label>
         </div>
-        <div class="note">替换需提供线稿图。</div>
+        <div class="note">替換需提供線稿圖。</div>
       </div>
     </div>
 
-    <!-- 02 正面图案（左/右各一个） -->
+    <!-- 02 正面圖案（左/右各一個） -->
     <div class="section">
-      <div class="section-title">02 / 正面图案</div>
-      <div class="note" style="margin:0 0 14px;">可在正面左侧、正面右侧各添加一个图案。烫印 ¥30/个，计入自动总价；刺绣 ¥100–300/个，按图案复杂度联系客服报价，不计入自动总价。</div>
+      <div class="section-title">02 / 正面圖案</div>
+      <div class="note" style="margin:0 0 14px;">可在正面左側、正面右側各添加一個圖案。燙印 <span class="bb-c" data-cny="30"></span>/個，計入自動總價；刺繡 <span class="bb-c" data-cny="100"></span>–<span class="bb-c" data-cny="300"></span>/個，按圖案複雜度聯繫客服報價，不計入自動總價。</div>
       <div id="patternBox"></div>
     </div>
 
     <div class="btn-group">
       <button class="prev-btn" id="prevBtn">BACK · 返回配色</button>
-      <button class="next-btn" id="nextBtn">NEXT · 方案确认</button>
+      <button class="next-btn" id="nextBtn">NEXT · 方案確認</button>
     </div>
   <div class="global-nav">
-      <a class="gn-link" href="../index.html">返回定制工具首页 · 加选/改数量</a>
-      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套装汇总</a>
+      <a class="gn-link" href="../index.html">返回定製工具首頁 · 加選/改數量</a>
+      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套裝彙總</a>
     </div>
+<div class="bb-brand-footer">
+      <div class="bb-slogan">CRAFT IS HUMAN</div>
+      <div class="bb-sub">BUFFALO BOXING</div>
+    </div>
+
     </div>
 
   <script>
-    /* ===== 统一存储封装（每件独立前缀） ===== */
+    /* ===== 統一存儲封裝（每件獨立前綴） ===== */
     const BBSUIT_KEY = 'bb_suit';
     function BB_suit(){ try{ return JSON.parse(localStorage.getItem(BBSUIT_KEY)) || null; }catch(e){ return null; } }
     function BB_prefix(){
@@ -151,16 +199,16 @@
       remove(k){ localStorage.removeItem(BB_prefix() + k); }
     };
 
-    /* ============ 基础状态 ============ */
+    /* ============ 基礎狀態 ============ */
     const leatherType = LS.get('leatherType') || '';
     const isWild = leatherType.includes('野牛皮');
     const COLORS = [
-      ['#FFFFFF','纯白'],['#F5F0EB','奶昔白'],['#9D5F3B','金棕'],['#746148','大象灰'],['#1E2E44','午夜蓝'],
-      ['#000000','黑色'],['#80412D','焦糖棕'],['#3FBF72','漫画绿'],['#B3A59A','风衣灰'],['#F27D3B','橙色'],
-      ['#F2C12E','太阳黄'],['#F9E77F','小鸡黄'],['#404234','橄榄绿'],['#BDE0F2','微风蓝'],['#A0E7E5','tiffany蓝'],
-      ['#0D32C4','克莱因蓝'],['#91A3B1','亚麻蓝'],['#C0A086','马拉茶色'],['#8C8969','鼠尾草绿'],['#808080','积雨云灰'],
-      ['#BE3033','大红'],['#EEB9C9','樱花粉'],['#DF6981','蔷薇粉'],['#E4A3BB','花瓣粉'],['#6A2A30','酒红'],
-      ['#FFD700','柠檬黄'],['#C6AEA6','杏色'],['#294162','深邃蓝'],['#C0C0C0','海鸥灰'],['#402D2D','深咖']
+      ['#FFFFFF','純白'],['#F5F0EB','奶昔白'],['#9D5F3B','金棕'],['#746148','大象灰'],['#1E2E44','午夜藍'],
+      ['#000000','黑色'],['#80412D','焦糖棕'],['#3FBF72','漫畫綠'],['#B3A59A','風衣灰'],['#F27D3B','橙色'],
+      ['#F2C12E','太陽黃'],['#F9E77F','小雞黃'],['#404234','橄欖綠'],['#BDE0F2','微風藍'],['#A0E7E5','tiffany藍'],
+      ['#0D32C4','克萊因藍'],['#91A3B1','亞麻藍'],['#C0A086','馬拉茶色'],['#8C8969','鼠尾草綠'],['#808080','積雨雲灰'],
+      ['#BE3033','大紅'],['#EEB9C9','櫻花粉'],['#DF6981','薔薇粉'],['#E4A3BB','花瓣粉'],['#6A2A30','酒紅'],
+      ['#FFD700','檸檬黃'],['#C6AEA6','杏色'],['#294162','深邃藍'],['#C0C0C0','海鷗灰'],['#402D2D','深咖']
     ];
 
     let areaColors = {};
@@ -180,15 +228,15 @@
       const inUse = usedHex.has(hex);
       const o = document.createElement('option');
       o.value = hex;
-      o.textContent = nm + ' · ' + (inUse ? '护裆已选（免费）' : '新颜色（+¥50）');
+      o.textContent = nm + ' · ' + (inUse ? '護襠已選（免費）' : '新顏色（+' + bbMoney(50) + '）');
       coloredSelect.appendChild(o);
     });
     const coloredNote = document.getElementById('coloredLogoNote');
     function refreshColoredNote() {
       const hex = coloredSelect.value;
       coloredNote.textContent = usedHex.has(hex)
-        ? '该颜色护裆已使用，Logo 不额外收费。'
-        : '该颜色护裆未使用，Logo 额外 +¥50。';
+        ? '該顏色護襠已使用，Logo 不額外收費。'
+        : '該顏色護襠未使用，Logo 額外 +' + bbMoney(50) + '。';
     }
     coloredSelect.addEventListener('change', () => { refreshColoredNote(); calc(); });
 
@@ -197,8 +245,8 @@
       return el ? el.value : 'original';
     };
 
-    /* ============ 正面图案（固定两位置，每位置一个） ============ */
-    const PATTERN_POS = [['frontLeft','正面左侧'],['frontRight','正面右侧']];
+    /* ============ 正面圖案（固定兩位置，每位置一個） ============ */
+    const PATTERN_POS = [['frontLeft','正面左側'],['frontRight','正面右側']];
     let patterns = {
       frontLeft: { craft: 'none', print: 'gold' },
       frontRight: { craft: 'none', print: 'gold' }
@@ -214,27 +262,27 @@
         const craftName = 'craft_' + key;
         const printName = 'print_' + key;
         const originalOption = isWild
-          ? '<label class="radio-item"><input type="radio" name="' + printName + '" value="original" ' + (st.print==='original'?'checked':'') + '> 原色（野牛皮专用）</label>'
+          ? '<label class="radio-item"><input type="radio" name="' + printName + '" value="original" ' + (st.print==='original'?'checked':'') + '> 原色（野牛皮專用）</label>'
           : '';
         card.innerHTML =
           '<div class="pattern-name">' + nm + '</div>' +
-          '<span class="option-label">工艺</span>' +
+          '<span class="option-label">工藝</span>' +
           '<div class="radio-group">' +
             '<label class="radio-item"><input type="radio" name="' + craftName + '" value="none" ' + (st.craft==='none'?'checked':'') + '> 不添加</label>' +
-            '<label class="radio-item"><input type="radio" name="' + craftName + '" value="hot" ' + (st.craft==='hot'?'checked':'') + '> 烫印（¥30）</label>' +
-            '<label class="radio-item"><input type="radio" name="' + craftName + '" value="embroidery" ' + (st.craft==='embroidery'?'checked':'') + '> 刺绣</label>' +
+            '<label class="radio-item"><input type="radio" name="' + craftName + '" value="hot" ' + (st.craft==='hot'?'checked':'') + '> 燙印（' + bbMoney(30) + '）</label>' +
+            '<label class="radio-item"><input type="radio" name="' + craftName + '" value="embroidery" ' + (st.craft==='embroidery'?'checked':'') + '> 刺繡</label>' +
           '</div>' +
           '<div class="pattern-detail' + (st.craft==='hot'?' show':'') + '">' +
-            '<span class="option-label">烫印颜色</span>' +
+            '<span class="option-label">燙印顏色</span>' +
             '<div class="radio-group">' +
-              '<label class="radio-item"><input type="radio" name="' + printName + '" value="gold" ' + (st.print==='gold'?'checked':'') + '> 烫金</label>' +
-              '<label class="radio-item"><input type="radio" name="' + printName + '" value="silver" ' + (st.print==='silver'?'checked':'') + '> 烫银</label>' +
+              '<label class="radio-item"><input type="radio" name="' + printName + '" value="gold" ' + (st.print==='gold'?'checked':'') + '> 燙金</label>' +
+              '<label class="radio-item"><input type="radio" name="' + printName + '" value="silver" ' + (st.print==='silver'?'checked':'') + '> 燙銀</label>' +
               originalOption +
             '</div>' +
-            '<div class="note">仅支持简单线稿图。</div>' +
+            '<div class="note">僅支持簡單線稿圖。</div>' +
           '</div>' +
           '<div class="pattern-detail' + (st.craft==='embroidery'?' show':'') + '">' +
-            '<div class="note">刺绣按图案复杂度报价 ¥100–300/个，联系客服确认，不计入自动总价。</div>' +
+            '<div class="note">刺繡按圖案複雜度報價 ' + bbMoney(100) + '–' + bbMoney(300) + '/個，聯繫客服確認，不計入自動總價。</div>' +
           '</div>';
         box.appendChild(card);
       });
@@ -253,7 +301,7 @@
       }
     });
 
-    /* ============ Logo 款式切换 ============ */
+    /* ============ Logo 款式切換 ============ */
     function onLogoTypeChange() {
       const v = logoTypeValue();
       coloredBox.classList.toggle('show', v === 'colored');
@@ -266,7 +314,7 @@
       r.addEventListener('change', calc);
     });
 
-    /* ============ 计费 ============ */
+    /* ============ 計費 ============ */
     function calc() {
       let customExtra = 0;
       const lt = logoTypeValue();
@@ -275,7 +323,7 @@
       if (replaceEl && replaceEl.value === 'yes') customExtra += 70;
       PATTERN_POS.forEach(([key]) => { if (patterns[key].craft === 'hot') customExtra += 30; });
       LS.set('customExtra', customExtra);
-      currentPriceEl.textContent = basePrice + colorExtra + customExtra;
+      currentPriceEl.textContent = bbMoney(basePrice + colorExtra + customExtra);
     }
 
     /* ============ 保存 ============ */
@@ -291,7 +339,7 @@
       MEM_setLogo({logoType:data.logoType,coloredLogo:data.coloredLogo,logoReplace:data.logoReplace});
     }
 
-    /* ============ 恢复 ============ */
+    /* ============ 恢復 ============ */
     function restoreOptions() {
       let data;
       try { data = JSON.parse(LS.get('customOptions')); } catch (e) { return; }
@@ -314,7 +362,7 @@
       refreshColoredNote();
     }
 
-    /* ============ 导航 ============ */
+    /* ============ 導航 ============ */
     document.getElementById('prevBtn').onclick = () => {
       saveOptions();
       window.location.href = 'c3.groin-color.html';
@@ -337,10 +385,10 @@
       try { if (window.__bbSave) window.__bbSave(); } catch(err){}
       window.location.href = it.dataset.href;
     });
-    /* ===== 全局记忆库 bb_memory（跨装备共享，不随件前缀隔离） ===== */
+    /* ===== 全局記憶庫 bb_memory（跨裝備共享，不隨件前綴隔離） ===== */
     function MEM_get(){ try{ return JSON.parse(localStorage.getItem('bb_memory')) || {colors:[],texts:[],logo:null}; }catch(e){ return {colors:[],texts:[],logo:null}; } }
     function MEM_save(m){ localStorage.setItem('bb_memory', JSON.stringify(m)); }
-    /* ===== 记忆库扩展：文字与 Logo 快照 ===== */
+    /* ===== 記憶庫擴展：文字與 Logo 快照 ===== */
     function MEM_addText(t){
       t=(t||'').trim(); if(!t) return;
       const m=MEM_get();
@@ -351,7 +399,7 @@
     function MEM_setLogo(snap){ const m=MEM_get(); m.logo=snap; MEM_save(m); }
     function applyMemLogo(){
       const snap=MEM_get().logo;
-      if(!snap){ alert('还没有可沿用的 Logo 设置，请先完成上一件'); return; }
+      if(!snap){ alert('還沒有可沿用的 Logo 設置，請先完成上一件'); return; }
       const setRadio=(name,val)=>{
         if(!val) return;
         const el=document.querySelector('input[name="'+name+'"][value="'+val+'"]');

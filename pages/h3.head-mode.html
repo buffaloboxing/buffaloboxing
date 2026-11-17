@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>拼色方式 · BUFFALO BOXING 护头定制</title>
+<title>拼色方式 · BUFFALO BOXING 護頭定製</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -51,6 +51,44 @@
     .gn-link.gn-bundle { border-color:#1a1a1a; color:#1a1a1a; display:none; }
     .gn-link.gn-bundle:hover { background:#1a1a1a; color:#fff; }
 </style>
+<style>
+  /* === BB currency + brand footer === */
+  .bb-ccy{display:flex;justify-content:center;margin:0 0 24px;}
+  .bb-ccy-btn{border:1px solid #1a1a1a;background:#fff;color:#666;padding:9px 18px;font-size:11px;letter-spacing:2px;cursor:pointer;font-family:inherit;transition:all .15s;}
+  .bb-ccy-btn:first-child{border-right:none;border-radius:2px 0 0 2px;}
+  .bb-ccy-btn:last-child{border-radius:0 2px 2px 0;}
+  .bb-ccy-btn.active{background:#1a1a1a;color:#fff;}
+  .bb-c{font-weight:500;}
+  .bb-brand-footer{text-align:center;margin-top:22px;padding-top:16px;border-top:1px solid #1a1a1a;}
+  .bb-brand-footer .bb-slogan{font-size:10px;letter-spacing:4px;color:#666;text-transform:uppercase;}
+  .bb-brand-footer .bb-sub{font-size:8px;letter-spacing:2px;color:#bbb;margin-top:6px;text-transform:uppercase;}
+</style>
+<script>
+(function(){
+  var RATE={twd:4.9432,hkd:1.1769};
+  var c=localStorage.getItem('bb_ccy')||'twd';
+  if(!RATE[c])c='twd';
+  window.BB_CCY=c;
+  window.bbMoney=function(cny){
+    var n=Math.round(Number(cny)*RATE[window.BB_CCY]);
+    var sym=window.BB_CCY==='twd'?'NT$':'HK$';
+    return sym+n.toLocaleString('en-US');
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    var nodes=document.querySelectorAll('.bb-c');
+    for(var i=0;i<nodes.length;i++){nodes[i].textContent=window.bbMoney(nodes[i].getAttribute('data-cny'));}
+    var btns=document.querySelectorAll('.bb-ccy-btn');
+    for(var j=0;j<btns.length;j++){btns[j].classList.toggle('active',btns[j].getAttribute('data-c')===window.BB_CCY);}
+    var bar=document.getElementById('bbCcyBar');
+    if(bar){bar.addEventListener('click',function(e){
+      var b=e.target.closest('.bb-ccy-btn');if(!b)return;
+      var nc=b.getAttribute('data-c');if(nc===window.BB_CCY)return;
+      localStorage.setItem('bb_ccy',nc);location.reload();
+    });}
+  });
+})();
+</script>
+
 </head>
 <body>
   <div class="page-frame">
@@ -58,42 +96,52 @@
       <div class="brand-name">BUFFALO BOXING</div>
       <div class="brand-series">Head Guard · Darwin Custom</div>
     </div>
+<div class="bb-ccy" id="bbCcyBar">
+      <button type="button" class="bb-ccy-btn" data-c="twd">台幣 TWD</button>
+      <button type="button" class="bb-ccy-btn" data-c="hkd">港幣 HKD</button>
+    </div>
+
 
     <div class="step-tag">Step 03 / 06</div>
-    <div class="step-nav" id="stepNav"><button type="button" class="step-nav-item" data-href="h1.head-size.html"><span class="sn-num">1</span>头围</button><button type="button" class="step-nav-item" data-href="h2.head-leather.html"><span class="sn-num">2</span>皮革</button><button type="button" class="step-nav-item current" data-href="h3.head-mode.html"><span class="sn-num">3</span>模式</button><button type="button" class="step-nav-item" data-href="h4.head-color.html"><span class="sn-num">4</span>配色</button><button type="button" class="step-nav-item" data-href="h5.head-customize.html"><span class="sn-num">5</span>印字</button><button type="button" class="step-nav-item" data-href="h6.head-result.html"><span class="sn-num">6</span>结果</button></div>
-<div class="page-title">选择拼色方式</div>
+    <div class="step-nav" id="stepNav"><button type="button" class="step-nav-item" data-href="h1.head-size.html"><span class="sn-num">1</span>頭圍</button><button type="button" class="step-nav-item" data-href="h2.head-leather.html"><span class="sn-num">2</span>皮革</button><button type="button" class="step-nav-item current" data-href="h3.head-mode.html"><span class="sn-num">3</span>模式</button><button type="button" class="step-nav-item" data-href="h4.head-color.html"><span class="sn-num">4</span>配色</button><button type="button" class="step-nav-item" data-href="h5.head-customize.html"><span class="sn-num">5</span>印字</button><button type="button" class="step-nav-item" data-href="h6.head-result.html"><span class="sn-num">6</span>結果</button></div>
+<div class="page-title">選擇拼色方式</div>
 
-    <div class="rare-mode-note" id="rareModeNote">稀有皮革默认价格仅支持三拼护头，可选 1 号（额头中间）与 3 号（耳朵条）区域；双拼或其他区域需联系客服单独报价。</div>
+    <div class="rare-mode-note" id="rareModeNote">稀有皮革默認價格僅支持三拼護頭，可選 1 號（額頭中間）與 3 號（耳朵條）區域；雙拼或其他區域需聯繫客服單獨報價。</div>
     <div class="mode-list" id="modeList">
       <div class="mode-item" id="splitItem" data-mode="split">
-        <img class="mode-fig" src="../images/head/split-overview.png" alt="双拼示意图">
+        <img class="mode-fig" src="../images/head/split-overview.png" alt="雙拼示意圖">
         <div class="mode-meta">
-          <div class="mode-name">双拼</div>
-          <div class="mode-en">Split · 左右对拼</div>
-          <div class="mode-parts" id="splitLockNote" style="display:none;">稀有皮默认价不支持双拼，需联系客服报价</div>
+          <div class="mode-name">雙拼</div>
+          <div class="mode-en">Split · 左右對拼</div>
+          <div class="mode-parts" id="splitLockNote" style="display:none;">稀有皮默認價不支持雙拼，需聯繫客服報價</div>
         </div>
       </div>
       <div class="mode-item active" data-mode="triple">
-        <img class="mode-fig" src="../images/head/triple-overview.png" alt="三拼示意图">
+        <img class="mode-fig" src="../images/head/triple-overview.png" alt="三拼示意圖">
         <div class="mode-meta">
           <div class="mode-name">三拼</div>
-          <div class="mode-en">Triple · 中间与两侧</div>
+          <div class="mode-en">Triple · 中間與兩側</div>
         </div>
       </div>
     </div>
 
     <div class="btn-group">
       <button class="prev-btn" id="prevBtn">BACK · 返回</button>
-      <button class="next-btn" id="nextBtn">NEXT · 配色选择</button>
+      <button class="next-btn" id="nextBtn">NEXT · 配色選擇</button>
     </div>
   <div class="global-nav">
-      <a class="gn-link" href="../index.html">返回定制工具首页 · 加选/改数量</a>
-      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套装汇总</a>
+      <a class="gn-link" href="../index.html">返回定製工具首頁 · 加選/改數量</a>
+      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套裝彙總</a>
     </div>
+<div class="bb-brand-footer">
+      <div class="bb-slogan">CRAFT IS HUMAN</div>
+      <div class="bb-sub">BUFFALO BOXING</div>
+    </div>
+
     </div>
 
   <script>
-    /* ===== 统一存储封装（每件独立前缀） ===== */
+    /* ===== 統一存儲封裝（每件獨立前綴） ===== */
     const BBSUIT_KEY = 'bb_suit';
     function BB_suit(){ try{ return JSON.parse(localStorage.getItem(BBSUIT_KEY)) || null; }catch(e){ return null; } }
     function BB_prefix(){
@@ -109,7 +157,7 @@
     };
 
     const leatherType = LS.get('leatherType') || '';
-    const isRare = /鲨鱼|鳄鱼|鸵鸟|蜥蜴/.test(leatherType);
+    const isRare = /鯊魚|鱷魚|鴕鳥|蜥蜴/.test(leatherType);
     let mode = 'triple';
     const modeList = document.getElementById('modeList');
 

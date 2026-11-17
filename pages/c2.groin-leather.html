@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>2. 选择皮革 · BUFFALO BOXING 护裆定制</title>
+<title>2. 選擇皮革 · BUFFALO BOXING 護襠定製</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -52,6 +52,44 @@
     .gn-link.gn-bundle { border-color:#1a1a1a; color:#1a1a1a; display:none; }
     .gn-link.gn-bundle:hover { background:#1a1a1a; color:#fff; }
 </style>
+<style>
+  /* === BB currency + brand footer === */
+  .bb-ccy{display:flex;justify-content:center;margin:0 0 24px;}
+  .bb-ccy-btn{border:1px solid #1a1a1a;background:#fff;color:#666;padding:9px 18px;font-size:11px;letter-spacing:2px;cursor:pointer;font-family:inherit;transition:all .15s;}
+  .bb-ccy-btn:first-child{border-right:none;border-radius:2px 0 0 2px;}
+  .bb-ccy-btn:last-child{border-radius:0 2px 2px 0;}
+  .bb-ccy-btn.active{background:#1a1a1a;color:#fff;}
+  .bb-c{font-weight:500;}
+  .bb-brand-footer{text-align:center;margin-top:22px;padding-top:16px;border-top:1px solid #1a1a1a;}
+  .bb-brand-footer .bb-slogan{font-size:10px;letter-spacing:4px;color:#666;text-transform:uppercase;}
+  .bb-brand-footer .bb-sub{font-size:8px;letter-spacing:2px;color:#bbb;margin-top:6px;text-transform:uppercase;}
+</style>
+<script>
+(function(){
+  var RATE={twd:4.9432,hkd:1.1769};
+  var c=localStorage.getItem('bb_ccy')||'twd';
+  if(!RATE[c])c='twd';
+  window.BB_CCY=c;
+  window.bbMoney=function(cny){
+    var n=Math.round(Number(cny)*RATE[window.BB_CCY]);
+    var sym=window.BB_CCY==='twd'?'NT$':'HK$';
+    return sym+n.toLocaleString('en-US');
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    var nodes=document.querySelectorAll('.bb-c');
+    for(var i=0;i<nodes.length;i++){nodes[i].textContent=window.bbMoney(nodes[i].getAttribute('data-cny'));}
+    var btns=document.querySelectorAll('.bb-ccy-btn');
+    for(var j=0;j<btns.length;j++){btns[j].classList.toggle('active',btns[j].getAttribute('data-c')===window.BB_CCY);}
+    var bar=document.getElementById('bbCcyBar');
+    if(bar){bar.addEventListener('click',function(e){
+      var b=e.target.closest('.bb-ccy-btn');if(!b)return;
+      var nc=b.getAttribute('data-c');if(nc===window.BB_CCY)return;
+      localStorage.setItem('bb_ccy',nc);location.reload();
+    });}
+  });
+})();
+</script>
+
 </head>
 <body>
   <div class="page-frame">
@@ -59,18 +97,23 @@
       <div class="brand-name">BUFFALO BOXING</div>
       <div class="brand-series">Groin Guard · Darwin Custom</div>
     </div>
+<div class="bb-ccy" id="bbCcyBar">
+      <button type="button" class="bb-ccy-btn" data-c="twd">台幣 TWD</button>
+      <button type="button" class="bb-ccy-btn" data-c="hkd">港幣 HKD</button>
+    </div>
+
 
     <div class="step-tag">Step 02 / 05</div>
-    <div class="step-nav" id="stepNav"><button type="button" class="step-nav-item" data-href="c1.groin-size.html"><span class="sn-num">1</span>数据</button><button type="button" class="step-nav-item current" data-href="c2.groin-leather.html"><span class="sn-num">2</span>皮革</button><button type="button" class="step-nav-item" data-href="c3.groin-color.html"><span class="sn-num">3</span>配色</button><button type="button" class="step-nav-item" data-href="c4.groin-customize.html"><span class="sn-num">4</span>Logo</button><button type="button" class="step-nav-item" data-href="c5.groin-result.html"><span class="sn-num">5</span>结果</button></div>
-<div class="page-title">选择皮革类型</div>
-    <div class="current-price">基础价格 <span>¥<span id="currentPrice">1299</span></span></div>
+    <div class="step-nav" id="stepNav"><button type="button" class="step-nav-item" data-href="c1.groin-size.html"><span class="sn-num">1</span>數據</button><button type="button" class="step-nav-item current" data-href="c2.groin-leather.html"><span class="sn-num">2</span>皮革</button><button type="button" class="step-nav-item" data-href="c3.groin-color.html"><span class="sn-num">3</span>配色</button><button type="button" class="step-nav-item" data-href="c4.groin-customize.html"><span class="sn-num">4</span>Logo</button><button type="button" class="step-nav-item" data-href="c5.groin-result.html"><span class="sn-num">5</span>結果</button></div>
+<div class="page-title">選擇皮革類型</div>
+    <div class="current-price">基礎價格 <span id="currentPrice" class="bb-c" data-cny="1299" style=""></span></div>
 
     <div class="leather-list" id="leatherList">
       <div class="leather-item active" data-type="swift" data-price="1299">
-        <span class="leather-name">Swift 牛皮</span><span class="price-tag">¥1299</span>
+        <span class="leather-name">Swift 牛皮</span><span class="price-tag"><span class="bb-c" data-cny="1299"></span></span>
       </div>
       <div class="leather-item" data-type="wild" data-price="1499">
-        <span class="leather-name">Swift 牛皮 + 野牛皮</span><span class="price-tag">¥1499</span>
+        <span class="leather-name">Swift 牛皮 + 野牛皮</span><span class="price-tag"><span class="bb-c" data-cny="1499"></span></span>
       </div>
     </div>
 
@@ -78,16 +121,21 @@
 
     <div class="btn-group">
       <button class="prev-btn" id="prevBtn">BACK · 返回</button>
-      <button class="next-btn" id="nextBtn">NEXT · 颜色搭配</button>
+      <button class="next-btn" id="nextBtn">NEXT · 顏色搭配</button>
     </div>
   <div class="global-nav">
-      <a class="gn-link" href="../index.html">返回定制工具首页 · 加选/改数量</a>
-      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套装汇总</a>
+      <a class="gn-link" href="../index.html">返回定製工具首頁 · 加選/改數量</a>
+      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套裝彙總</a>
     </div>
+<div class="bb-brand-footer">
+      <div class="bb-slogan">CRAFT IS HUMAN</div>
+      <div class="bb-sub">BUFFALO BOXING</div>
+    </div>
+
     </div>
 
   <script>
-    /* ===== 统一存储封装（每件独立前缀） ===== */
+    /* ===== 統一存儲封裝（每件獨立前綴） ===== */
     const BBSUIT_KEY = 'bb_suit';
     function BB_suit(){ try{ return JSON.parse(localStorage.getItem(BBSUIT_KEY)) || null; }catch(e){ return null; } }
     function BB_prefix(){
@@ -103,7 +151,7 @@
     };
 
     const TYPE_NAME = { swift: 'Swift 牛皮', wild: 'Swift 牛皮 + 野牛皮' };
-    const WILD_TIP = '野牛皮在配色页使用独立专用色卡，选择「野牛皮」即代表此区域应用野牛皮，不占用免费颜色额度，护裆任意区域均可使用。原色烫印仅在对应区域为野牛皮时可选。';
+    const WILD_TIP = '野牛皮在配色頁使用獨立專用色卡，選擇「野牛皮」即代表此區域應用野牛皮，不佔用免費顏色額度，護襠任意區域均可使用。原色燙印僅在對應區域爲野牛皮時可選。';
 
     let selected = { type: 'swift', price: 1299 };
     const list = document.getElementById('leatherList');
@@ -121,7 +169,7 @@
       list.querySelectorAll('.leather-item').forEach(x => x.classList.remove('active'));
       it.classList.add('active');
       selected = { type: it.dataset.type, price: parseInt(it.dataset.price, 10) };
-      currentPrice.textContent = selected.price;
+      currentPrice.textContent = bbMoney(selected.price);
       refreshTip();
     });
 
@@ -132,7 +180,7 @@
       window.location.href = 'c3.groin-color.html';
     };
 
-    // 恢复已选
+    // 恢復已選
     (function restore() {
       const savedName = LS.get('leatherType');
       if (!savedName) return;
@@ -144,7 +192,7 @@
         list.querySelectorAll('.leather-item').forEach(x => x.classList.remove('active'));
         el.classList.add('active');
         selected = { type, price: parseInt(el.dataset.price, 10) };
-        currentPrice.textContent = selected.price;
+        currentPrice.textContent = bbMoney(selected.price);
         refreshTip();
       }
     })();

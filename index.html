@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>选择定制产品 · BUFFALO BOXING</title>
+<title>選擇定製產品 · BUFFALO BOXING</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%231a1a1a'/%3E%3Ctext x='16' y='22' font-family='Arial' font-size='18' font-weight='bold' fill='%23fff' text-anchor='middle'%3EB%3C/text%3E%3C/svg%3E">
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -54,7 +54,7 @@
   }
   .pick-item.active .order-badge { display: inline-block; }
 
-  /* 数量加减选择器 */
+  /* 數量加減選擇器 */
   .qty-box { display: none; align-items: center; justify-content: center; gap: 16px; margin-top: 20px; }
   .pick-item.active .qty-box { display: flex; }
   .qty-btn {
@@ -81,7 +81,7 @@
 
   .policy-note { margin-top: 22px; padding-top: 14px; border-top: 1px solid #f0f0f0; font-size: 11px; color: #9a9a9a; line-height: 1.9; letter-spacing: .2px; text-align: center; }
 
-  /* 导入方案 */
+  /* 導入方案 */
   .import-toggle { width:100%; border:1px solid #1a1a1a; background:#fff; color:#1a1a1a; border-radius:2px; padding:13px; font-size:12px; letter-spacing:2px; cursor:pointer; font-family:inherit; margin-bottom:26px; transition:all .2s; }
   .import-toggle:hover { background:#1a1a1a; color:#fff; }
   .import-panel { display:none; margin-bottom:30px; }
@@ -105,6 +105,44 @@
   .confirm-import.show { display:block; }
   .confirm-import:hover { background:#000; }
 </style>
+<style>
+  /* === BB currency + brand footer === */
+  .bb-ccy{display:flex;justify-content:center;margin:0 0 24px;}
+  .bb-ccy-btn{border:1px solid #1a1a1a;background:#fff;color:#666;padding:9px 18px;font-size:11px;letter-spacing:2px;cursor:pointer;font-family:inherit;transition:all .15s;}
+  .bb-ccy-btn:first-child{border-right:none;border-radius:2px 0 0 2px;}
+  .bb-ccy-btn:last-child{border-radius:0 2px 2px 0;}
+  .bb-ccy-btn.active{background:#1a1a1a;color:#fff;}
+  .bb-c{font-weight:500;}
+  .bb-brand-footer{text-align:center;margin-top:22px;padding-top:16px;border-top:1px solid #1a1a1a;}
+  .bb-brand-footer .bb-slogan{font-size:10px;letter-spacing:4px;color:#666;text-transform:uppercase;}
+  .bb-brand-footer .bb-sub{font-size:8px;letter-spacing:2px;color:#bbb;margin-top:6px;text-transform:uppercase;}
+</style>
+<script>
+(function(){
+  var RATE={twd:4.9432,hkd:1.1769};
+  var c=localStorage.getItem('bb_ccy')||'twd';
+  if(!RATE[c])c='twd';
+  window.BB_CCY=c;
+  window.bbMoney=function(cny){
+    var n=Math.round(Number(cny)*RATE[window.BB_CCY]);
+    var sym=window.BB_CCY==='twd'?'NT$':'HK$';
+    return sym+n.toLocaleString('en-US');
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    var nodes=document.querySelectorAll('.bb-c');
+    for(var i=0;i<nodes.length;i++){nodes[i].textContent=window.bbMoney(nodes[i].getAttribute('data-cny'));}
+    var btns=document.querySelectorAll('.bb-ccy-btn');
+    for(var j=0;j<btns.length;j++){btns[j].classList.toggle('active',btns[j].getAttribute('data-c')===window.BB_CCY);}
+    var bar=document.getElementById('bbCcyBar');
+    if(bar){bar.addEventListener('click',function(e){
+      var b=e.target.closest('.bb-ccy-btn');if(!b)return;
+      var nc=b.getAttribute('data-c');if(nc===window.BB_CCY)return;
+      localStorage.setItem('bb_ccy',nc);location.reload();
+    });}
+  });
+})();
+</script>
+
 </head>
 <body>
   <div class="page-frame">
@@ -112,20 +150,25 @@
       <div class="brand-name">BUFFALO BOXING</div>
       <div class="brand-series">Darwin Custom Series</div>
     </div>
+<div class="bb-ccy" id="bbCcyBar">
+      <button type="button" class="bb-ccy-btn" data-c="twd">台幣 TWD</button>
+      <button type="button" class="bb-ccy-btn" data-c="hkd">港幣 HKD</button>
+    </div>
 
-    <div class="page-title">选择定制产品</div>
-    <div class="page-sub">单选一件或多选组成套装；点加减可一次定多副同款，按所选顺序逐件配置</div>
+
+    <div class="page-title">選擇定製產品</div>
+    <div class="page-sub">單選一件或多選組成套裝；點加減可一次定多副同款，按所選順序逐件配置</div>
 
     
-    <button class="import-toggle" id="importToggle" type="button">导入已有方案 · 粘贴方案文本</button>
+    <button class="import-toggle" id="importToggle" type="button">導入已有方案 · 粘貼方案文本</button>
     <div class="import-panel" id="importPanel">
-      <textarea class="import-textarea" id="importText" placeholder="把之前复制的整套或单件方案文本粘贴到这里，点解析后自动还原选项；识别不出来的会提示需手工补全"></textarea>
+      <textarea class="import-textarea" id="importText" placeholder="把之前複製的整套或單件方案文本粘貼到這裏，點解析後自動還原選項；識別不出來的會提示需手工補全"></textarea>
       <div class="import-actions">
         <button class="parse-btn" id="parseBtn" type="button">解析方案</button>
         <button class="clear-btn" id="clearBtn" type="button">清空</button>
       </div>
       <div class="import-report" id="importReport"></div>
-      <button class="confirm-import" id="confirmImport" type="button">确认导入并进入配置</button>
+      <button class="confirm-import" id="confirmImport" type="button">確認導入並進入配置</button>
     </div>
 
 <div class="pick-list">
@@ -133,7 +176,7 @@
         <span class="order-badge" id="badge-glove"></span>
         <div class="pick-name">拳套</div>
         <div class="pick-en">Boxing Gloves</div>
-        <div class="pick-price">起价<b>¥1699</b></div>
+        <div class="pick-price">起價<b><span class="bb-c" data-cny="1699"></span></b></div>
         <div class="qty-box">
           <button class="qty-btn qty-minus" type="button">−</button>
           <span><span class="qty-num">1</span><span class="qty-unit">副</span></span>
@@ -143,37 +186,37 @@
 
       <div class="pick-item" data-key="head" data-price="1299">
         <span class="order-badge" id="badge-head"></span>
-        <div class="pick-name">护头</div>
+        <div class="pick-name">護頭</div>
         <div class="pick-en">Head Guard</div>
-        <div class="pick-price">起价<b>¥1299</b></div>
+        <div class="pick-price">起價<b><span class="bb-c" data-cny="1299"></span></b></div>
         <div class="qty-box">
           <button class="qty-btn qty-minus" type="button">−</button>
-          <span><span class="qty-num">1</span><span class="qty-unit">个</span></span>
+          <span><span class="qty-num">1</span><span class="qty-unit">個</span></span>
           <button class="qty-btn qty-plus" type="button">+</button>
         </div>
       </div>
 
       <div class="pick-item" data-key="groin" data-price="1299">
         <span class="order-badge" id="badge-groin"></span>
-        <div class="pick-name">护裆</div>
+        <div class="pick-name">護襠</div>
         <div class="pick-en">Groin Guard</div>
-        <div class="pick-price">起价<b>¥1299</b></div>
+        <div class="pick-price">起價<b><span class="bb-c" data-cny="1299"></span></b></div>
         <div class="qty-box">
           <button class="qty-btn qty-minus" type="button">−</button>
-          <span><span class="qty-num">1</span><span class="qty-unit">个</span></span>
+          <span><span class="qty-num">1</span><span class="qty-unit">個</span></span>
           <button class="qty-btn qty-plus" type="button">+</button>
         </div>
       </div>
     </div>
 
     <div class="summary-line">
-      <span id="countText">未选择产品 · 起价合计</span>
-      <b id="totalText">¥0</b>
+      <span id="countText">未選擇產品 · 起價合計</span>
+      <b id="totalText"><span class="bb-c" data-cny="0"></span></b>
     </div>
 
-    <button class="next-btn" id="nextBtn">NEXT · 进入配置</button>
+    <button class="next-btn" id="nextBtn">NEXT · 進入配置</button>
 
-    <div class="policy-note">国内所有地区顺丰包邮；下单后约一个月交付，工期不随件数叠加，无付费加急；定制产品非质量问题不退不换。</div>
+    <div class="policy-note">運費已包含在內，無任何額外費用；下單後約 5–7 週交付，工期不隨件數疊加，無付費加急；定製產品非質量問題不退不換。</div>
   </div>
 
   <script>
@@ -185,7 +228,7 @@
     const ENTRY = { glove: 'pages/g1.size.html', head: 'pages/h1.head-size.html', groin: 'pages/c1.groin-size.html' };
     const MAX_QTY = 10;
     let qty = { glove: 0, head: 0, groin: 0 };
-    let selectedOrder = []; // 装备首次选中的顺序
+    let selectedOrder = []; // 裝備首次選中的順序
 
     function setQty(k, n) {
       n = Math.max(0, Math.min(MAX_QTY, n));
@@ -219,27 +262,27 @@
         document.getElementById('badge-' + k).textContent = on ? startSeq[k] : '';
         it.querySelector('.qty-num').textContent = qty[k] > 0 ? qty[k] : 1;
       });
-      countText.textContent = grandN === 0 ? '未选择产品 · 起价合计'
-        : (grandN >= 2 ? '共 ' + grandN + ' 件 · 起价合计' : '单件 · 起价合计');
-      totalText.textContent = '¥' + total.toLocaleString();
+      countText.textContent = grandN === 0 ? '未選擇產品 · 起價合計'
+        : (grandN >= 2 ? '共 ' + grandN + ' 件 · 起價合計' : '單件 · 起價合計');
+      totalText.textContent = bbMoney(total);
     }
 
-    // 卡片整体点击：选中(1) / 取消(0)
+    // 卡片整體點擊：選中(1) / 取消(0)
     items.forEach(it => {
       it.addEventListener('click', e => {
-        if (e.target.closest('.qty-btn')) return; // 加减按钮单独处理
+        if (e.target.closest('.qty-btn')) return; // 加減按鈕單獨處理
         const k = it.dataset.key;
         setQty(k, qty[k] > 0 ? 0 : 1);
         refresh();
       });
     });
 
-    // 加减按钮
+    // 加減按鈕
     items.forEach(it => {
       const k = it.dataset.key;
       it.querySelector('.qty-plus').addEventListener('click', e => {
         e.stopPropagation();
-        if (qty[k] >= MAX_QTY) { alert('同款最多定制 ' + MAX_QTY + ' 件，更多请联系客服'); return; }
+        if (qty[k] >= MAX_QTY) { alert('同款最多定製 ' + MAX_QTY + ' 件，更多請聯繫客服'); return; }
         setQty(k, qty[k] + 1); refresh();
       });
       it.querySelector('.qty-minus').addEventListener('click', e => {
@@ -248,7 +291,7 @@
       });
     });
 
-    // 重建 bb_suit，同时按类型+序号迁移旧件前缀数据，避免返回后清零
+    // 重建 bb_suit，同時按類型+序號遷移舊件前綴數據，避免返回後清零
     function rebuildSuitPreserve(expanded){
       let old=null;
       try{ old=JSON.parse(localStorage.getItem('bb_suit')); }catch(e){ old=null; }
@@ -256,15 +299,15 @@
       if(old && Array.isArray(old.items)){
         old.items.forEach((it,idx)=>{ (oldByType[it.type]=oldByType[it.type]||[]).push(idx); });
       }
-      // 收集旧前缀数据
+      // 收集舊前綴數據
       const oldData={};
       Object.keys(localStorage).forEach(k=>{
         const m=k.match(/^bb_(\d+)_(.+)$/);
         if(m){ const oi=parseInt(m[1],10); (oldData[oi]=oldData[oi]||{})[m[2]]=localStorage.getItem(k); }
       });
-      // 清空旧前缀
+      // 清空舊前綴
       Object.keys(localStorage).forEach(k=>{ if(/^bb_\d+_/.test(k))localStorage.removeItem(k); });
-      // 按类型游标迁移到新索引
+      // 按類型遊標遷移到新索引
       const cursors={};
       expanded.forEach((t,newIdx)=>{
         const used=cursors[t]||0;
@@ -275,19 +318,19 @@
         }
         cursors[t]=used+1;
       });
-      // 从首页 NEXT 进入总是从第一件开始，游标重置为 0（避免与实际页面错位而误显“复制上一副”）
+      // 從首頁 NEXT 進入總是從第一件開始，遊標重置爲 0（避免與實際頁面錯位而誤顯“複製上一副”）
       const suit={mode:expanded.length>=2?'suit':'single',items:expanded.map(t=>({type:t})),current:0,finished:[]};
       localStorage.setItem('bb_suit',JSON.stringify(suit));
     }
 
     nextBtn.addEventListener('click', () => {
       const expanded = expandedList();
-      if (expanded.length === 0) { alert('请先选择至少一件产品'); return; }
+      if (expanded.length === 0) { alert('請先選擇至少一件產品'); return; }
       rebuildSuitPreserve(expanded);
       window.location.href = ENTRY[expanded[0]];
     });
 
-    // 从已存在的 bb_suit 恢复加购件数与顺序（返回首页不清零）
+    // 從已存在的 bb_suit 恢復加購件數與順序（返回首頁不清零）
     (function restoreFromSuit(){
       let suit=null;
       try{ suit=JSON.parse(localStorage.getItem('bb_suit')); }catch(e){ suit=null; }
@@ -297,21 +340,21 @@
 
     refresh();
   
-    /* ===== 方案文本反解析导入 ===== */
+    /* ===== 方案文本反解析導入 ===== */
     const NAME_HEX = {
-      '纯白':'#FFFFFF','奶昔白':'#F5F0EB','金棕':'#9D5F3B','大象灰':'#746148','午夜蓝':'#1E2E44',
-      '黑色':'#000000','风衣灰':'#B3A59A','橙色':'#F27D3B','太阳黄':'#F2C12E','小鸡黄':'#F9E77F',
-      '橄榄绿':'#404234','微风蓝':'#BDE0F2','tiffany蓝':'#A0E7E5','克莱因蓝':'#0D32C4','亚麻蓝':'#91A3B1',
-      '马拉茶':'#C0A086','鼠尾草绿':'#8C8969','积雨云灰':'#808080','大红':'#BE3033','樱花粉':'#EEB9C9',
-      '蔷薇粉':'#DF6981','柠檬黄':'#FFD700','杏色':'#C6AEA6','海鸥灰':'#C0C0C0','深咖':'#402D2D',
-      '酒红':'#6A2A30','深邃蓝':'#294162','花瓣粉':'#E4A3BB','漫画绿':'#3FBF72','焦糖棕':'#80412D',
+      '純白':'#FFFFFF','奶昔白':'#F5F0EB','金棕':'#9D5F3B','大象灰':'#746148','午夜藍':'#1E2E44',
+      '黑色':'#000000','風衣灰':'#B3A59A','橙色':'#F27D3B','太陽黃':'#F2C12E','小雞黃':'#F9E77F',
+      '橄欖綠':'#404234','微風藍':'#BDE0F2','tiffany藍':'#A0E7E5','克萊因藍':'#0D32C4','亞麻藍':'#91A3B1',
+      '馬拉茶':'#C0A086','鼠尾草綠':'#8C8969','積雨雲灰':'#808080','大紅':'#BE3033','櫻花粉':'#EEB9C9',
+      '薔薇粉':'#DF6981','檸檬黃':'#FFD700','杏色':'#C6AEA6','海鷗灰':'#C0C0C0','深咖':'#402D2D',
+      '酒紅':'#6A2A30','深邃藍':'#294162','花瓣粉':'#E4A3BB','漫畫綠':'#3FBF72','焦糖棕':'#80412D',
       '野牛皮':'#452E22'
     };
-    const LEATHERS = ['Swift牛皮','Swift牛皮+野牛皮','Swift牛皮+鲨鱼皮','Swift牛皮+鳄鱼皮','Swift牛皮+鸵鸟皮','Swift牛皮+蜥蜴皮'];
-    const TYPE_KEY = {'拳套':'glove','护头':'head','护裆':'groin'};
+    const LEATHERS = ['Swift牛皮','Swift牛皮+野牛皮','Swift牛皮+鯊魚皮','Swift牛皮+鱷魚皮','Swift牛皮+鴕鳥皮','Swift牛皮+蜥蜴皮'];
+    const TYPE_KEY = {'拳套':'glove','護頭':'head','護襠':'groin'};
     const BASE_PRICE = {
-      glove:{'Swift牛皮':1699,'Swift牛皮+野牛皮':1899,'Swift牛皮+鲨鱼皮':3599,'Swift牛皮+鳄鱼皮':3999,'Swift牛皮+鸵鸟皮':3999,'Swift牛皮+蜥蜴皮':3999},
-      head:{'Swift牛皮':1299,'Swift牛皮+野牛皮':1499,'Swift牛皮+鲨鱼皮':3399,'Swift牛皮+鳄鱼皮':3399,'Swift牛皮+鸵鸟皮':3399,'Swift牛皮+蜥蜴皮':3399},
+      glove:{'Swift牛皮':1699,'Swift牛皮+野牛皮':1899,'Swift牛皮+鯊魚皮':3599,'Swift牛皮+鱷魚皮':3999,'Swift牛皮+鴕鳥皮':3999,'Swift牛皮+蜥蜴皮':3999},
+      head:{'Swift牛皮':1299,'Swift牛皮+野牛皮':1499,'Swift牛皮+鯊魚皮':3399,'Swift牛皮+鱷魚皮':3399,'Swift牛皮+鴕鳥皮':3399,'Swift牛皮+蜥蜴皮':3399},
       groin:{'Swift牛皮':1299,'Swift牛皮+野牛皮':1499}
     };
     const norm = s => (s||'').replace(/\s+/g,'').trim();
@@ -324,28 +367,28 @@
       if(line.indexOf('Logo')<0) return false;
       if(/文字\s*Logo/.test(line)){
         co.logoType='text';
-        if(/自定义文字/.test(line)){
+        if(/自定義文字/.test(line)){
           co.textContent='custom';
           const cm=line.match(/「([^」]*)」/);
           if(cm)co.textLogoCustom=cm[1];
         } else co.textContent='brand';
-        co.textLogoFont=/花体/.test(line)?'cursive':'normal';
-        if(/烫银/.test(line))co.textPrint='silver';
+        co.textLogoFont=/花體/.test(line)?'cursive':'normal';
+        if(/燙銀/.test(line))co.textPrint='silver';
         else if(/原色/.test(line))co.textPrint='original';
         else co.textPrint='gold';
         return true;
       }
-      if(/其他颜色\s*Logo/.test(line)){
+      if(/其他顏色\s*Logo/.test(line)){
         co.logoType='colored';
         const hex=findColorInLine(line); if(hex)co.coloredLogo=hex;
-        if(type!=='groin')co.logoStitch=/内缝/.test(line)?'inner':'outer';
+        if(type!=='groin')co.logoStitch=/內縫/.test(line)?'inner':'outer';
         return true;
       }
-      if(/刺绣\s*Logo/.test(line)){co.logoType='embroidery';return true;}
-      if(/无\s*Logo/.test(line)){co.logoType='none';return true;}
+      if(/刺繡\s*Logo/.test(line)){co.logoType='embroidery';return true;}
+      if(/無\s*Logo/.test(line)){co.logoType='none';return true;}
       if(/原色\s*Logo/.test(line)){
         co.logoType='original';
-        if(type!=='groin')co.logoStitch=/内缝/.test(line)?'inner':'outer';
+        if(type!=='groin')co.logoStitch=/內縫/.test(line)?'inner':'outer';
         return true;
       }
       return false;
@@ -357,27 +400,27 @@
       else { m=line.match(/^右手[：:]\s*(.+)/); if(m)side='right'; }
       if(!side)return false;
       const body=m[1];
-      if(/未定制|未烫印/.test(body))return true;
+      if(/未定製|未燙印/.test(body))return true;
       const cm=body.match(/「([^」]*)」/);
-      if(/汉字/.test(body)){
+      if(/漢字/.test(body)){
         if(cm)co[side+'Ch']=cm[1];
-        co[side+'ChFont']=/宋体/.test(body)?'song':'hand';
+        co[side+'ChFont']=/宋體/.test(body)?'song':'hand';
       }else{
         if(cm)co[side+'Eng']=cm[1];
-        co[side+'EngFont']=/花体/.test(body)?'cursive':'normal';
+        co[side+'EngFont']=/花體/.test(body)?'cursive':'normal';
       }
-      co[side+'Print']=/烫银/.test(body)?'silver':(/原色/.test(body)?'original':'gold');
+      co[side+'Print']=/燙銀/.test(body)?'silver':(/原色/.test(body)?'original':'gold');
       return true;
     }
 
     function splitBlocks(text){
-      const re = /【\s*第\s*\d+\s*件\s*·\s*(拳套|护头|护裆)\s*】/g;
+      const re = /【\s*第\s*\d+\s*件\s*·\s*(拳套|護頭|護襠)\s*】/g;
       const marks=[]; let m;
       while((m=re.exec(text))) marks.push({type:TYPE_KEY[m[1]],start:m.index,contentStart:re.lastIndex});
       if(marks.length){
         return marks.map((mk,i)=>({type:mk.type,body:text.slice(mk.contentStart,i+1<marks.length?marks[i+1].start:text.length)}));
       }
-      const type = /护头/.test(text)?'head':/护裆/.test(text)?'groin':'glove';
+      const type = /護頭/.test(text)?'head':/護襠/.test(text)?'groin':'glove';
       return [{type:TYPE_KEY[type]===undefined?'glove':TYPE_KEY[type],body:text}];
     }
 
@@ -387,24 +430,24 @@
       let inColor=false;
       for(const rawLine of lines){
         const line=rawLine.trim();
-        if(/各区域配色/.test(line)){inColor=true;continue;}
+        if(/各區域配色/.test(line)){inColor=true;continue;}
         if(inColor && line==='')continue;
-        const cm=line.match(/^(\d+)\s*号[^：:]*[：:]\s*(.+?)\s*$/);
+        const cm=line.match(/^(\d+)\s*號[^：:]*[：:]\s*(.+?)\s*$/);
         if(inColor && cm){
           const no=cm[1], cname=norm(cm[2]), hex=NAME_HEX[cname];
           if(hex) r.areaColors[no]=hex;
-          else r.issues.push(no+'号颜色「'+cm[2].trim()+'」未识别，需手工选择');
+          else r.issues.push(no+'號顏色「'+cm[2].trim()+'」未識別，需手工選擇');
           continue;
         }
         if(inColor && line && !/^\d/.test(line) && !/[：:]/.test(line)) inColor=false;
-        let g=line.match(/皮革类型[：:]\s*(.+)/);
-        if(g){ const lt=norm(g[1]); if(LEATHERS.indexOf(lt)>=0) r.fields.leatherType=lt; else r.issues.push('皮革类型「'+g[1].trim()+'」未识别，需手工选择'); continue; }
+        let g=line.match(/皮革類型[：:]\s*(.+)/);
+        if(g){ const lt=norm(g[1]); if(LEATHERS.indexOf(lt)>=0) r.fields.leatherType=lt; else r.issues.push('皮革類型「'+g[1].trim()+'」未識別，需手工選擇'); continue; }
         g=line.match(/拳套尺寸[：:]\s*([\d.]+)/); if(g){r.fields.size=g[1];continue;}
-        g=line.match(/头围尺寸[：:]\s*([\d.]+)/); if(g){r.fields.size=g[1];continue;}
-        g=line.match(/拼色方式[：:]\s*(三拼|双拼)/); if(g){r.fields.mode=g[1];continue;}
+        g=line.match(/頭圍尺寸[：:]\s*([\d.]+)/); if(g){r.fields.size=g[1];continue;}
+        g=line.match(/拼色方式[：:]\s*(三拼|雙拼)/); if(g){r.fields.mode=g[1];continue;}
         g=line.match(/身高[：:]\s*([\d.]+)/); if(g){r.fields.height=g[1];continue;}
-        g=line.match(/体重[：:]\s*([\d.]+)/); if(g){r.fields.weight=g[1];continue;}
-        g=line.match(/腰围[：:]\s*([\d.]+)/); if(g){r.fields.waist=g[1];continue;}
+        g=line.match(/體重[：:]\s*([\d.]+)/); if(g){r.fields.weight=g[1];continue;}
+        g=line.match(/腰圍[：:]\s*([\d.]+)/); if(g){r.fields.waist=g[1];continue;}
         if(parseLogoLine(type,line,r.customOptions))continue;
         if(type==='glove' && parseWristLine(line,r.customOptions))continue;
       }
@@ -423,30 +466,30 @@
     });
     document.getElementById('parseBtn').addEventListener('click',()=>{
       const txt=importText.value.trim();
-      if(!txt){alert('请先粘贴方案文本');return;}
+      if(!txt){alert('請先粘貼方案文本');return;}
       const blocks=splitBlocks(txt);
       parsedPieces=blocks.map(b=>parseBlock(b.type,b.body));
       let html='';
       parsedPieces.forEach((p,i)=>{
-        const typeName=p.type==='glove'?'拳套':p.type==='head'?'护头':'护裆';
+        const typeName=p.type==='glove'?'拳套':p.type==='head'?'護頭':'護襠';
         const f=p.fields;
         const okLines=[];
-        if(f.size) okLines.push(p.type==='glove'?'尺寸 '+f.size+' oz':'头围 '+f.size+' cm');
-        if(f.height) okLines.push('身高 '+f.height+' / 体重 '+f.weight+' / 腰围 '+f.waist+' cm');
+        if(f.size) okLines.push(p.type==='glove'?'尺寸 '+f.size+' oz':'頭圍 '+f.size+' cm');
+        if(f.height) okLines.push('身高 '+f.height+' / 體重 '+f.weight+' / 腰圍 '+f.waist+' cm');
         if(f.mode) okLines.push('拼色方式 '+f.mode);
         if(f.leatherType) okLines.push('皮革 '+f.leatherType);
         if(p.customOptions && p.customOptions.logoType){
-          const ltMap={text:'文字 Logo',colored:'其他颜色 Logo',original:'原色 Logo',none:'无 Logo',embroidery:'刺绣 Logo'};
+          const ltMap={text:'文字 Logo',colored:'其他顏色 Logo',original:'原色 Logo',none:'無 Logo',embroidery:'刺繡 Logo'};
           okLines.push('Logo '+ (ltMap[p.customOptions.logoType]||p.customOptions.logoType));
         }
         if(p.type==='glove' && (p.customOptions.leftEng||p.customOptions.leftCh||p.customOptions.rightEng||p.customOptions.rightCh)){
-          okLines.push('手腕内侧印字已识别');
+          okLines.push('手腕內側印字已識別');
         }
-        okLines.push('识别配色区域 '+Object.keys(p.areaColors).length+' 个');
+        okLines.push('識別配色區域 '+Object.keys(p.areaColors).length+' 個');
         html+='<div class="report-piece"><div class="report-head">第 '+(i+1)+' 件 · '+typeName+'</div>';
         okLines.forEach(t=>{html+='<div class="report-ok">'+t+'</div>';});
         if(p.issues.length) p.issues.forEach(t=>{html+='<div class="report-issue">'+t+'</div>';});
-        else html+='<div class="report-ok">全部字段识别成功</div>';
+        else html+='<div class="report-ok">全部字段識別成功</div>';
         html+='</div>';
       });
       importReport.innerHTML=html; importReport.classList.add('show');

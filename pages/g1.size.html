@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-Hant">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BUFFALO BOXING拳击装备定制方案</title>
+  <title>BUFFALO BOXING拳擊裝備定製方案</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { 
@@ -15,14 +15,14 @@
       color: #1a1a1a;
       line-height: 1.6;
     }
-    /* 复古黑边外框容器 */
+    /* 復古黑邊外框容器 */
     .page-frame {
       background: #ffffff;
       border: 1px solid #1a1a1a;
       border-radius: 2px;
       padding: 48px 40px;
     }
-    /* 品牌头部 */
+    /* 品牌頭部 */
     .brand-header {
       text-align: center;
       margin-bottom: 48px;
@@ -49,7 +49,7 @@
       color: #1a1a1a;
       letter-spacing: 1px;
     }
-    /* 统一尺寸按钮：两列等宽网格 */
+    /* 統一尺寸按鈕：兩列等寬網格 */
     .size-list { 
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -125,6 +125,44 @@
     .gn-link.gn-bundle { border-color:#1a1a1a; color:#1a1a1a; display:none; }
     .gn-link.gn-bundle:hover { background:#1a1a1a; color:#fff; }
 </style>
+<style>
+  /* === BB currency + brand footer === */
+  .bb-ccy{display:flex;justify-content:center;margin:0 0 24px;}
+  .bb-ccy-btn{border:1px solid #1a1a1a;background:#fff;color:#666;padding:9px 18px;font-size:11px;letter-spacing:2px;cursor:pointer;font-family:inherit;transition:all .15s;}
+  .bb-ccy-btn:first-child{border-right:none;border-radius:2px 0 0 2px;}
+  .bb-ccy-btn:last-child{border-radius:0 2px 2px 0;}
+  .bb-ccy-btn.active{background:#1a1a1a;color:#fff;}
+  .bb-c{font-weight:500;}
+  .bb-brand-footer{text-align:center;margin-top:22px;padding-top:16px;border-top:1px solid #1a1a1a;}
+  .bb-brand-footer .bb-slogan{font-size:10px;letter-spacing:4px;color:#666;text-transform:uppercase;}
+  .bb-brand-footer .bb-sub{font-size:8px;letter-spacing:2px;color:#bbb;margin-top:6px;text-transform:uppercase;}
+</style>
+<script>
+(function(){
+  var RATE={twd:4.9432,hkd:1.1769};
+  var c=localStorage.getItem('bb_ccy')||'twd';
+  if(!RATE[c])c='twd';
+  window.BB_CCY=c;
+  window.bbMoney=function(cny){
+    var n=Math.round(Number(cny)*RATE[window.BB_CCY]);
+    var sym=window.BB_CCY==='twd'?'NT$':'HK$';
+    return sym+n.toLocaleString('en-US');
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    var nodes=document.querySelectorAll('.bb-c');
+    for(var i=0;i<nodes.length;i++){nodes[i].textContent=window.bbMoney(nodes[i].getAttribute('data-cny'));}
+    var btns=document.querySelectorAll('.bb-ccy-btn');
+    for(var j=0;j<btns.length;j++){btns[j].classList.toggle('active',btns[j].getAttribute('data-c')===window.BB_CCY);}
+    var bar=document.getElementById('bbCcyBar');
+    if(bar){bar.addEventListener('click',function(e){
+      var b=e.target.closest('.bb-ccy-btn');if(!b)return;
+      var nc=b.getAttribute('data-c');if(nc===window.BB_CCY)return;
+      localStorage.setItem('bb_ccy',nc);location.reload();
+    });}
+  });
+})();
+</script>
+
 </head>
 <body>
   <div class="page-frame">
@@ -132,17 +170,22 @@
       <div class="brand-name">BUFFALO BOXING</div>
       <div class="brand-series">Darwin Custom Series</div>
     </div>
+<div class="bb-ccy" id="bbCcyBar">
+      <button type="button" class="bb-ccy-btn" data-c="twd">台幣 TWD</button>
+      <button type="button" class="bb-ccy-btn" data-c="hkd">港幣 HKD</button>
+    </div>
+
 
     <div class="step-nav" id="stepNav">
       <button type="button" class="step-nav-item current" data-href="g1.size.html"><span class="sn-num">1</span>尺寸</button>
       <button type="button" class="step-nav-item" data-href="g2.leather.html"><span class="sn-num">2</span>皮革</button>
       <button type="button" class="step-nav-item" data-href="g3.color.html"><span class="sn-num">3</span>配色</button>
       <button type="button" class="step-nav-item" data-href="g4.customize.html"><span class="sn-num">4</span>印字</button>
-      <button type="button" class="step-nav-item" data-href="g5.result.html"><span class="sn-num">5</span>结果</button>
+      <button type="button" class="step-nav-item" data-href="g5.result.html"><span class="sn-num">5</span>結果</button>
     </div>
 
-    <div class="page-title">选择拳套尺寸 / OZ</div>
-<button class="copy-prev-btn" id="copyPrevBtn" type="button" style="display:none;">一键复制上一副配置，再按需修改</button>
+    <div class="page-title">選擇拳套尺寸 / OZ</div>
+<button class="copy-prev-btn" id="copyPrevBtn" type="button" style="display:none;">一鍵複製上一副配置，再按需修改</button>
     <div class="size-list" id="sizeList">
       <div class="size-item" data-size="8">8 oz</div>
       <div class="size-item" data-size="10">10 oz</div>
@@ -150,15 +193,20 @@
       <div class="size-item" data-size="14">14 oz</div>
       <div class="size-item" data-size="16">16 oz</div>
     </div>
-    <button class="next-btn" id="nextBtn">NEXT · 选择皮革</button>
+    <button class="next-btn" id="nextBtn">NEXT · 選擇皮革</button>
   <div class="global-nav">
-      <a class="gn-link" href="../index.html">返回定制工具首页 · 加选/改数量</a>
-      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套装汇总</a>
+      <a class="gn-link" href="../index.html">返回定製工具首頁 · 加選/改數量</a>
+      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套裝彙總</a>
     </div>
+<div class="bb-brand-footer">
+      <div class="bb-slogan">CRAFT IS HUMAN</div>
+      <div class="bb-sub">BUFFALO BOXING</div>
+    </div>
+
     </div>
 
   <script>
-    /* ===== 统一存储封装（每件独立前缀） ===== */
+    /* ===== 統一存儲封裝（每件獨立前綴） ===== */
     const BBSUIT_KEY = 'bb_suit';
     function BB_suit(){ try{ return JSON.parse(localStorage.getItem(BBSUIT_KEY)) || null; }catch(e){ return null; } }
     function BB_prefix(){
@@ -177,7 +225,7 @@
     const nextBtn = document.getElementById('nextBtn');
     let selectedSize = '';
 
-    // 读取已选尺寸（如果有）
+    // 讀取已選尺寸（如果有）
     const savedSize = LS.get('size');
     if (savedSize) {
       document.querySelector(`.size-item[data-size="${savedSize}"]`).classList.add('active');
@@ -198,11 +246,11 @@
         LS.set('size', selectedSize);
         window.location.href = 'g2.leather.html';
       } else {
-        alert('请先选择尺寸');
+        alert('請先選擇尺寸');
       }
     });
 
-    /* ===== 步骤导航：跳转前保存 ===== */
+    /* ===== 步驟導航：跳轉前保存 ===== */
     window.__bbSave = function(){ if (selectedSize) LS.set('size', selectedSize); };
     document.getElementById('stepNav').addEventListener('click', function(e){
       const it = e.target.closest('.step-nav-item');
@@ -210,7 +258,7 @@
       try { if (window.__bbSave) window.__bbSave(); } catch(err){}
       window.location.href = it.dataset.href;
     });
-      /* ===== 一键复制上一副配置（同款多件） ===== */
+      /* ===== 一鍵複製上一副配置（同款多件） ===== */
     (function initCopyPrev(){
       const suit = BB_suit();
       if (!suit || !Array.isArray(suit.items)) return;

@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>方案确认 · BUFFALO BOXING 护头定制</title>
+<title>方案確認 · BUFFALO BOXING 護頭定製</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -54,6 +54,44 @@
     .gn-link.gn-bundle { border-color:#1a1a1a; color:#1a1a1a; display:none; }
     .gn-link.gn-bundle:hover { background:#1a1a1a; color:#fff; }
 </style>
+<style>
+  /* === BB currency + brand footer === */
+  .bb-ccy{display:flex;justify-content:center;margin:0 0 24px;}
+  .bb-ccy-btn{border:1px solid #1a1a1a;background:#fff;color:#666;padding:9px 18px;font-size:11px;letter-spacing:2px;cursor:pointer;font-family:inherit;transition:all .15s;}
+  .bb-ccy-btn:first-child{border-right:none;border-radius:2px 0 0 2px;}
+  .bb-ccy-btn:last-child{border-radius:0 2px 2px 0;}
+  .bb-ccy-btn.active{background:#1a1a1a;color:#fff;}
+  .bb-c{font-weight:500;}
+  .bb-brand-footer{text-align:center;margin-top:22px;padding-top:16px;border-top:1px solid #1a1a1a;}
+  .bb-brand-footer .bb-slogan{font-size:10px;letter-spacing:4px;color:#666;text-transform:uppercase;}
+  .bb-brand-footer .bb-sub{font-size:8px;letter-spacing:2px;color:#bbb;margin-top:6px;text-transform:uppercase;}
+</style>
+<script>
+(function(){
+  var RATE={twd:4.9432,hkd:1.1769};
+  var c=localStorage.getItem('bb_ccy')||'twd';
+  if(!RATE[c])c='twd';
+  window.BB_CCY=c;
+  window.bbMoney=function(cny){
+    var n=Math.round(Number(cny)*RATE[window.BB_CCY]);
+    var sym=window.BB_CCY==='twd'?'NT$':'HK$';
+    return sym+n.toLocaleString('en-US');
+  };
+  document.addEventListener('DOMContentLoaded',function(){
+    var nodes=document.querySelectorAll('.bb-c');
+    for(var i=0;i<nodes.length;i++){nodes[i].textContent=window.bbMoney(nodes[i].getAttribute('data-cny'));}
+    var btns=document.querySelectorAll('.bb-ccy-btn');
+    for(var j=0;j<btns.length;j++){btns[j].classList.toggle('active',btns[j].getAttribute('data-c')===window.BB_CCY);}
+    var bar=document.getElementById('bbCcyBar');
+    if(bar){bar.addEventListener('click',function(e){
+      var b=e.target.closest('.bb-ccy-btn');if(!b)return;
+      var nc=b.getAttribute('data-c');if(nc===window.BB_CCY)return;
+      localStorage.setItem('bb_ccy',nc);location.reload();
+    });}
+  });
+})();
+</script>
+
 </head>
 <body>
   <div class="page-frame">
@@ -61,60 +99,70 @@
       <div class="brand-name">BUFFALO BOXING</div>
       <div class="brand-series">Head Guard · Darwin Custom</div>
     </div>
+<div class="bb-ccy" id="bbCcyBar">
+      <button type="button" class="bb-ccy-btn" data-c="twd">台幣 TWD</button>
+      <button type="button" class="bb-ccy-btn" data-c="hkd">港幣 HKD</button>
+    </div>
 
-    <div class="step-nav" id="stepNav"><button type="button" class="step-nav-item" data-href="h1.head-size.html"><span class="sn-num">1</span>头围</button><button type="button" class="step-nav-item" data-href="h2.head-leather.html"><span class="sn-num">2</span>皮革</button><button type="button" class="step-nav-item" data-href="h3.head-mode.html"><span class="sn-num">3</span>模式</button><button type="button" class="step-nav-item" data-href="h4.head-color.html"><span class="sn-num">4</span>配色</button><button type="button" class="step-nav-item" data-href="h5.head-customize.html"><span class="sn-num">5</span>印字</button><button type="button" class="step-nav-item current" data-href="h6.head-result.html"><span class="sn-num">6</span>结果</button></div>
-<div class="page-title">方案确认</div>
+
+    <div class="step-nav" id="stepNav"><button type="button" class="step-nav-item" data-href="h1.head-size.html"><span class="sn-num">1</span>頭圍</button><button type="button" class="step-nav-item" data-href="h2.head-leather.html"><span class="sn-num">2</span>皮革</button><button type="button" class="step-nav-item" data-href="h3.head-mode.html"><span class="sn-num">3</span>模式</button><button type="button" class="step-nav-item" data-href="h4.head-color.html"><span class="sn-num">4</span>配色</button><button type="button" class="step-nav-item" data-href="h5.head-customize.html"><span class="sn-num">5</span>印字</button><button type="button" class="step-nav-item current" data-href="h6.head-result.html"><span class="sn-num">6</span>結果</button></div>
+<div class="page-title">方案確認</div>
 
     <div class="suit-progress" id="suitProgress"></div>
 
-    <div class="result-item"><span class="item-label">头围尺寸</span><span class="item-value" id="sizeVal">--</span></div>
-    <div class="result-item"><span class="item-label">皮革类型</span><span class="item-value" id="leatherVal">--</span></div>
+    <div class="result-item"><span class="item-label">頭圍尺寸</span><span class="item-value" id="sizeVal">--</span></div>
+    <div class="result-item"><span class="item-label">皮革類型</span><span class="item-value" id="leatherVal">--</span></div>
     <div class="result-item"><span class="item-label">拼色方式</span><span class="item-value" id="modeVal">--</span></div>
 
-    <div class="section-title">各区域配色</div>
+    <div class="section-title">各區域配色</div>
     <div id="colorList"></div>
 
-    <div class="section-title">Logo 与烫印</div>
+    <div class="section-title">Logo 與燙印</div>
     <div class="custom-section" id="logoDetail"></div>
 
-    <div class="section-title">其他定制</div>
+    <div class="section-title">其他定製</div>
     <div class="custom-section" id="otherDetail"></div>
 
-    <div class="result-item"><span class="item-label">基础价格</span><span class="item-value" id="baseVal">--</span></div>
-    <div class="result-item"><span class="item-label">配色额外费用</span><span class="item-value" id="colorExtraVal">--</span></div>
-    <div class="result-item"><span class="item-label">定制额外费用</span><span class="item-value" id="customExtraVal">--</span></div>
+    <div class="result-item"><span class="item-label">基礎價格</span><span class="item-value" id="baseVal">--</span></div>
+    <div class="result-item"><span class="item-label">配色額外費用</span><span class="item-value" id="colorExtraVal">--</span></div>
+    <div class="result-item"><span class="item-label">定製額外費用</span><span class="item-value" id="customExtraVal">--</span></div>
 
     <div class="final-price">
-      <div class="final-price-text">Estimated Total · 预估总价</div>
+      <div class="final-price-text">Estimated Total · 預估總價</div>
       <div class="final-price-num" id="totalPrice">--</div>
-      <div style="font-size:12px;color:#999;margin-top:6px;">不含刺绣单独报价</div>
+      <div style="font-size:12px;color:#999;margin-top:6px;">不含刺繡單獨報價</div>
     </div>
 
     <div class="note">
-      1. 汉字铜模、小图案烫印各 ¥30，Logo 替换制版 ¥70，均已计入自动总价<br>
-      2. 刺绣 Logo 与刺绣小图案按图案复杂度联系客服报价（¥100–300），不计入自动总价<br>
-      3. 稀有皮最终皮料与价格以客服核对为准<br>
-      4. 复制方案后可直接发送给客服对接下单，最终价格以客服确认核算为准
+      1. 漢字銅模、小圖案燙印各 <span class="bb-c" data-cny="30"></span>，Logo 替換製版 <span class="bb-c" data-cny="70"></span>，均已計入自動總價<br>
+      2. 刺繡 Logo 與刺繡小圖案按圖案複雜度聯繫客服報價（<span class="bb-c" data-cny="100"></span>–<span class="bb-c" data-cny="300"></span>），不計入自動總價<br>
+      3. 稀有皮最終皮料與價格以客服覈對爲準<br>
+      4. 複製方案後可直接發送給客服對接下單，最終價格以客服確認覈算爲準
     </div>
 
-    <div class="policy-note">国内所有地区顺丰包邮；下单后约一个月交付，工期不随件数叠加，无付费加急；定制产品非质量问题不退不换。</div>
+    <div class="policy-note">運費已包含在內，無任何額外費用；下單後約 5–7 週交付，工期不隨件數疊加，無付費加急；定製產品非質量問題不退不換。</div>
 
     <div class="btn-group">
       <button class="prev-btn" id="prevBtn">BACK · 返回修改</button>
-      <button class="copy-btn" id="copyBtn">COPY · 复制方案</button>
+      <button class="copy-btn" id="copyBtn">COPY · 複製方案</button>
     </div>
 
     <div class="suit-actions" id="suitActions">
       <button class="suit-primary" id="suitPrimaryBtn" type="button"></button>
     </div>
   <div class="global-nav">
-      <a class="gn-link" href="../index.html">返回定制工具首页 · 加选/改数量</a>
-      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套装汇总</a>
+      <a class="gn-link" href="../index.html">返回定製工具首頁 · 加選/改數量</a>
+      <a class="gn-link gn-bundle" id="gnBundle" href="../bundle.html">返回套裝彙總</a>
     </div>
+<div class="bb-brand-footer">
+      <div class="bb-slogan">CRAFT IS HUMAN</div>
+      <div class="bb-sub">BUFFALO BOXING</div>
+    </div>
+
     </div>
 
   <script>
-    /* ===== 统一存储封装（每件独立前缀） ===== */
+    /* ===== 統一存儲封裝（每件獨立前綴） ===== */
     const BBSUIT_KEY = 'bb_suit';
     function BB_suit(){ try{ return JSON.parse(localStorage.getItem(BBSUIT_KEY)) || null; }catch(e){ return null; } }
     function BB_prefix(){
@@ -130,21 +178,21 @@
     };
 
     const ZONE_NAMES = {
-      split: { 1:'左边',2:'右边',3:'左耳耳朵条',4:'左耳',5:'右耳耳朵条',6:'右耳',7:'包边' },
-      triple: { 1:'中间',2:'两侧',3:'耳朵条',4:'耳朵',5:'包边' }
+      split: { 1:'左邊',2:'右邊',3:'左耳耳朵條',4:'左耳',5:'右耳耳朵條',6:'右耳',7:'包邊' },
+      triple: { 1:'中間',2:'兩側',3:'耳朵條',4:'耳朵',5:'包邊' }
     };
     const COLOR_NAME = {
-      '#FFFFFF':'纯白','#F5F0EB':'奶昔白','#9D5F3B':'金棕','#746148':'大象灰','#1E2E44':'午夜蓝',
-      '#000000':'黑色','#80412D':'焦糖棕','#3FBF72':'漫画绿','#B3A59A':'风衣灰','#F27D3B':'橙色',
-      '#F2C12E':'太阳黄','#F9E77F':'小鸡黄','#404234':'橄榄绿','#BDE0F2':'微风蓝','#A0E7E5':'tiffany蓝',
-      '#0D32C4':'克莱因蓝','#91A3B1':'亚麻蓝','#C0A086':'马拉茶色','#8C8969':'鼠尾草绿','#808080':'积雨云灰',
-      '#BE3033':'大红','#EEB9C9':'樱花粉','#DF6981':'蔷薇粉','#E4A3BB':'花瓣粉','#6A2A30':'酒红',
-      '#FFD700':'柠檬黄','#C6AEA6':'杏色','#294162':'深邃蓝','#C0C0C0':'海鸥灰','#402D2D':'深咖',
+      '#FFFFFF':'純白','#F5F0EB':'奶昔白','#9D5F3B':'金棕','#746148':'大象灰','#1E2E44':'午夜藍',
+      '#000000':'黑色','#80412D':'焦糖棕','#3FBF72':'漫畫綠','#B3A59A':'風衣灰','#F27D3B':'橙色',
+      '#F2C12E':'太陽黃','#F9E77F':'小雞黃','#404234':'橄欖綠','#BDE0F2':'微風藍','#A0E7E5':'tiffany藍',
+      '#0D32C4':'克萊因藍','#91A3B1':'亞麻藍','#C0A086':'馬拉茶色','#8C8969':'鼠尾草綠','#808080':'積雨雲灰',
+      '#BE3033':'大紅','#EEB9C9':'櫻花粉','#DF6981':'薔薇粉','#E4A3BB':'花瓣粉','#6A2A30':'酒紅',
+      '#FFD700':'檸檬黃','#C6AEA6':'杏色','#294162':'深邃藍','#C0C0C0':'海鷗灰','#402D2D':'深咖',
       '#452E22':'野牛皮'
     };
 
     const size = LS.get('size');
-    const leather = LS.get('leatherType') || '未选择';
+    const leather = LS.get('leatherType') || '未選擇';
     const mode = LS.get('mode') || 'triple';
     const basePrice = parseInt(LS.get('basePrice'),10) || 0;
     const colorExtra = parseInt(LS.get('colorExtra'),10) || 0;
@@ -154,14 +202,14 @@
     let opt = {};
     try { opt = JSON.parse(LS.get('customOptions')) || {}; } catch (e) {}
 
-    document.getElementById('sizeVal').textContent = size ? size + ' cm' : '未选择';
+    document.getElementById('sizeVal').textContent = size ? size + ' cm' : '未選擇';
     document.getElementById('leatherVal').textContent = leather;
-    document.getElementById('modeVal').textContent = mode === 'split' ? '双拼（左右对拼）' : '三拼（中间与两侧）';
-    document.getElementById('baseVal').textContent = '¥' + basePrice;
-    document.getElementById('colorExtraVal').textContent = '¥' + colorExtra;
-    document.getElementById('customExtraVal').textContent = '¥' + customExtra;
+    document.getElementById('modeVal').textContent = mode === 'split' ? '雙拼（左右對拼）' : '三拼（中間與兩側）';
+    document.getElementById('baseVal').textContent = bbMoney(basePrice);
+    document.getElementById('colorExtraVal').textContent = bbMoney(colorExtra);
+    document.getElementById('customExtraVal').textContent = bbMoney(customExtra);
 
-    // 各区域配色
+    // 各區域配色
     const layerCount = mode === 'split' ? 7 : 5;
     const colorList = document.getElementById('colorList');
     for (let i = 1; i <= layerCount; i++) {
@@ -169,56 +217,56 @@
       const row = document.createElement('div');
       row.className = 'color-item';
       if (hex) {
-        row.innerHTML = `<span>${i}号 · ${ZONE_NAMES[mode][i]}</span>
+        row.innerHTML = `<span>${i}號 · ${ZONE_NAMES[mode][i]}</span>
           <span><span class="color-swatch" style="background:${hex};"></span>${COLOR_NAME[hex] || hex}</span>`;
       } else {
-        row.innerHTML = `<span>${i}号 · ${ZONE_NAMES[mode][i]}</span><span style="color:#ccc;">未选择</span>`;
+        row.innerHTML = `<span>${i}號 · ${ZONE_NAMES[mode][i]}</span><span style="color:#ccc;">未選擇</span>`;
       }
       colorList.appendChild(row);
     }
 
-    // Logo 与烫印
-    const printText = v => ({gold:'烫金',silver:'烫银',original:'原色烫印'}[v] || v);
-    const engFontText = v => v === 'cursive' ? '花体' : '正体';
-    const chFontText = v => v === 'song' ? '宋体' : '手写体';
-    const mixedFontText = v => v === 'cursive' ? '花体/手写体' : '正字体/宋体';
-    const SMALL_POS_NAME = {leftEar:'左耳',rightEar:'右耳',foreLeft:'额头左侧',foreRight:'额头右侧',other:'其它区域'};
+    // Logo 與燙印
+    const printText = v => ({gold:'燙金',silver:'燙銀',original:'原色燙印'}[v] || v);
+    const engFontText = v => v === 'cursive' ? '花體' : '正體';
+    const chFontText = v => v === 'song' ? '宋體' : '手寫體';
+    const mixedFontText = v => v === 'cursive' ? '花體/手寫體' : '正字體/宋體';
+    const SMALL_POS_NAME = {leftEar:'左耳',rightEar:'右耳',foreLeft:'額頭左側',foreRight:'額頭右側',other:'其它區域'};
     let logoHtml = '';
     if (opt.logoType === 'text') {
       const tc = opt.textContent || 'brand';
       if (tc === 'custom') {
-        let s = `文字 Logo（正中间）· 自定义文字「${opt.textLogoCustom}」· ${mixedFontText(opt.textLogoFont)} · ${printText(opt.textPrint)}`;
-        if (/[一-龥]/.test(opt.textLogoCustom || '')) s += '（汉字铜模 ¥30）';
+        let s = `文字 Logo（正中間）· 自定義文字「${opt.textLogoCustom}」· ${mixedFontText(opt.textLogoFont)} · ${printText(opt.textPrint)}`;
+        if (/[一-龥]/.test(opt.textLogoCustom || '')) s += '（漢字銅模 ' + bbMoney(30) + '）';
         logoHtml += `<div class="custom-detail">${s}</div>`;
       } else {
-        logoHtml += `<div class="custom-detail">文字 Logo（正中间）· 品牌文字 · ${printText(opt.textPrint)}</div>`;
+        logoHtml += `<div class="custom-detail">文字 Logo（正中間）· 品牌文字 · ${printText(opt.textPrint)}</div>`;
       }
     } else if (opt.logoType === 'colored') {
-      logoHtml += `<div class="custom-detail">其他颜色 Logo · ${COLOR_NAME[opt.coloredLogo] || opt.coloredLogo}</div>`;
+      logoHtml += `<div class="custom-detail">其他顏色 Logo · ${COLOR_NAME[opt.coloredLogo] || opt.coloredLogo}</div>`;
     } else if (opt.logoType === 'none') {
-      logoHtml += `<div class="custom-detail">无 Logo</div>`;
+      logoHtml += `<div class="custom-detail">無 Logo</div>`;
     } else if (opt.logoType === 'embroidery') {
-      logoHtml += `<div class="custom-detail">刺绣 Logo · 联系客服单独报价</div>`;
+      logoHtml += `<div class="custom-detail">刺繡 Logo · 聯繫客服單獨報價</div>`;
     } else {
-      logoHtml += `<div class="custom-detail">原色 Logo · 外缝</div>`;
+      logoHtml += `<div class="custom-detail">原色 Logo · 外縫</div>`;
     }
     if (opt.leftEng) {
-      logoHtml += `<div class="custom-detail">左耳：英文/数字「${opt.leftEng}」· ${engFontText(opt.leftEngFont)} · ${printText(opt.leftPrint)}</div>`;
+      logoHtml += `<div class="custom-detail">左耳：英文/數字「${opt.leftEng}」· ${engFontText(opt.leftEngFont)} · ${printText(opt.leftPrint)}</div>`;
     } else if (opt.leftCh) {
-      logoHtml += `<div class="custom-detail">左耳：汉字「${opt.leftCh}」· ${chFontText(opt.leftChFont)} · ${printText(opt.leftPrint)}（铜模 ¥30）</div>`;
+      logoHtml += `<div class="custom-detail">左耳：漢字「${opt.leftCh}」· ${chFontText(opt.leftChFont)} · ${printText(opt.leftPrint)}（銅模 ${bbMoney(30)}）</div>`;
     } else {
-      logoHtml += `<div class="custom-detail">左耳：未烫印</div>`;
+      logoHtml += `<div class="custom-detail">左耳：未燙印</div>`;
     }
     if (opt.rightEng) {
-      logoHtml += `<div class="custom-detail">右耳：英文/数字「${opt.rightEng}」· ${engFontText(opt.rightEngFont)} · ${printText(opt.rightPrint)}</div>`;
+      logoHtml += `<div class="custom-detail">右耳：英文/數字「${opt.rightEng}」· ${engFontText(opt.rightEngFont)} · ${printText(opt.rightPrint)}</div>`;
     } else if (opt.rightCh) {
-      logoHtml += `<div class="custom-detail">右耳：汉字「${opt.rightCh}」· ${chFontText(opt.rightChFont)} · ${printText(opt.rightPrint)}（铜模 ¥30）</div>`;
+      logoHtml += `<div class="custom-detail">右耳：漢字「${opt.rightCh}」· ${chFontText(opt.rightChFont)} · ${printText(opt.rightPrint)}（銅模 ${bbMoney(30)}）</div>`;
     } else {
-      logoHtml += `<div class="custom-detail">右耳：未烫印</div>`;
+      logoHtml += `<div class="custom-detail">右耳：未燙印</div>`;
     }
     document.getElementById('logoDetail').innerHTML = logoHtml;
 
-    // 其他定制
+    // 其他定製
     function getSmallPatterns() {
       const norm = it => ({
         pos: it.pos || 'leftEar', note: it.note || '',
@@ -230,87 +278,87 @@
     }
     const smallListData = getSmallPatterns();
     let otherHtml = '';
-    otherHtml += `<div class="custom-detail">Logo 替换：${opt.logoReplace === 'yes' ? '已选择（+¥70）' : '未选择'}</div>`;
+    otherHtml += `<div class="custom-detail">Logo 替換：${opt.logoReplace === 'yes' ? '已選擇（+${bbMoney(70)}）' : '未選擇'}</div>`;
     if (smallListData.length) {
       smallListData.forEach((it, idx) => {
         let s;
         if (it.craft === 'embroidery') {
-          s = `小图案 ${idx + 1}：刺绣（${SMALL_POS_NAME[it.pos] || it.pos}，¥100–300 联系客服，不计入自动总价）`;
+          s = `小圖案 ${idx + 1}：刺繡（${SMALL_POS_NAME[it.pos] || it.pos}，${bbMoney(100)}–${bbMoney(300)} 聯繫客服，不計入自動總價）`;
         } else {
-          s = `小图案 ${idx + 1}：烫印（${SMALL_POS_NAME[it.pos] || it.pos}，${printText(it.print)}，+¥30）`;
+          s = `小圖案 ${idx + 1}：燙印（${SMALL_POS_NAME[it.pos] || it.pos}，${printText(it.print)}，+${bbMoney(30)}）`;
         }
-        if (it.pos === 'other' && it.note) s += `，备注「${it.note}」`;
+        if (it.pos === 'other' && it.note) s += `，備註「${it.note}」`;
         otherHtml += `<div class="custom-detail">${s}</div>`;
       });
     } else {
-      otherHtml += `<div class="custom-detail">小图案：未添加</div>`;
+      otherHtml += `<div class="custom-detail">小圖案：未添加</div>`;
     }
     document.getElementById('otherDetail').innerHTML = otherHtml;
 
     const total = basePrice + colorExtra + customExtra;
-    document.getElementById('totalPrice').textContent = '¥' + total;
+    document.getElementById('totalPrice').textContent = bbMoney(total);
 
-    /* ============ 复制方案 ============ */
+    /* ============ 複製方案 ============ */
     function buildText() {
       let lines = [];
-      lines.push('BUFFALO BOXING · Darwin 系列护头定制方案');
+      lines.push('BUFFALO BOXING · Darwin 系列護頭定製方案');
       lines.push('────────────────────');
-      lines.push('头围尺寸：' + (size ? size + ' cm' : '未选择'));
-      lines.push('皮革类型：' + leather);
-      lines.push('拼色方式：' + (mode === 'split' ? '双拼（左右对拼）' : '三拼（中间与两侧）'));
-      lines.push('各区域配色：');
+      lines.push('頭圍尺寸：' + (size ? size + ' cm' : '未選擇'));
+      lines.push('皮革類型：' + leather);
+      lines.push('拼色方式：' + (mode === 'split' ? '雙拼（左右對拼）' : '三拼（中間與兩側）'));
+      lines.push('各區域配色：');
       for (let i = 1; i <= layerCount; i++) {
         const hex = areaColors[i];
-        if (hex) lines.push(`  ${i}号 ${ZONE_NAMES[mode][i]}：${COLOR_NAME[hex] || hex}`);
+        if (hex) lines.push(`  ${i}號 ${ZONE_NAMES[mode][i]}：${COLOR_NAME[hex] || hex}`);
       }
-      lines.push('Logo 与烫印：');
+      lines.push('Logo 與燙印：');
       if (opt.logoType === 'text') {
         const tc = opt.textContent || 'brand';
         if (tc === 'custom') {
-          let s = '  文字 Logo（正中间）· 自定义文字「' + opt.textLogoCustom + '」· ' + mixedFontText(opt.textLogoFont) + ' · ' + printText(opt.textPrint);
-          if (/[一-龥]/.test(opt.textLogoCustom || '')) s += '（汉字铜模 ¥30）';
+          let s = '  文字 Logo（正中間）· 自定義文字「' + opt.textLogoCustom + '」· ' + mixedFontText(opt.textLogoFont) + ' · ' + printText(opt.textPrint);
+          if (/[一-龥]/.test(opt.textLogoCustom || '')) s += '（漢字銅模 ' + bbMoney(30) + '）';
           lines.push(s);
         } else {
-          lines.push('  文字 Logo（正中间）· 品牌文字 · ' + printText(opt.textPrint));
+          lines.push('  文字 Logo（正中間）· 品牌文字 · ' + printText(opt.textPrint));
         }
       } else if (opt.logoType === 'colored') {
-        lines.push(`  其他颜色 Logo · ${COLOR_NAME[opt.coloredLogo] || opt.coloredLogo}`);
+        lines.push(`  其他顏色 Logo · ${COLOR_NAME[opt.coloredLogo] || opt.coloredLogo}`);
       } else if (opt.logoType === 'none') {
-        lines.push('  无 Logo');
+        lines.push('  無 Logo');
       } else if (opt.logoType === 'embroidery') {
-        lines.push('  刺绣 Logo · 联系客服单独报价');
+        lines.push('  刺繡 Logo · 聯繫客服單獨報價');
       } else {
-        lines.push('  原色 Logo · 外缝');
+        lines.push('  原色 Logo · 外縫');
       }
       if (opt.leftEng) {
-        lines.push(`  左耳：英文/数字「${opt.leftEng}」· ${engFontText(opt.leftEngFont)} · ${printText(opt.leftPrint)}`);
+        lines.push(`  左耳：英文/數字「${opt.leftEng}」· ${engFontText(opt.leftEngFont)} · ${printText(opt.leftPrint)}`);
       } else if (opt.leftCh) {
-        lines.push(`  左耳：汉字「${opt.leftCh}」· ${chFontText(opt.leftChFont)} · ${printText(opt.leftPrint)}（铜模 ¥30）`);
+        lines.push(`  左耳：漢字「${opt.leftCh}」· ${chFontText(opt.leftChFont)} · ${printText(opt.leftPrint)}（銅模 ${bbMoney(30)}）`);
       }
       if (opt.rightEng) {
-        lines.push(`  右耳：英文/数字「${opt.rightEng}」· ${engFontText(opt.rightEngFont)} · ${printText(opt.rightPrint)}`);
+        lines.push(`  右耳：英文/數字「${opt.rightEng}」· ${engFontText(opt.rightEngFont)} · ${printText(opt.rightPrint)}`);
       } else if (opt.rightCh) {
-        lines.push(`  右耳：汉字「${opt.rightCh}」· ${chFontText(opt.rightChFont)} · ${printText(opt.rightPrint)}（铜模 ¥30）`);
+        lines.push(`  右耳：漢字「${opt.rightCh}」· ${chFontText(opt.rightChFont)} · ${printText(opt.rightPrint)}（銅模 ${bbMoney(30)}）`);
       }
-      lines.push('其他定制：');
-      lines.push('  Logo 替换：' + (opt.logoReplace === 'yes' ? '已选择（+¥70）' : '未选择'));
+      lines.push('其他定製：');
+      lines.push('  Logo 替換：' + (opt.logoReplace === 'yes' ? '已選擇（+' + bbMoney(70) + '）' : '未選擇'));
       const copySmall = getSmallPatterns();
       if (copySmall.length) {
         copySmall.forEach((it, idx) => {
           let s;
           if (it.craft === 'embroidery') {
-            s = '  小图案 ' + (idx + 1) + '：刺绣（' + (SMALL_POS_NAME[it.pos] || it.pos) + '，¥100–300 联系客服，不计入自动总价）';
+            s = '  小圖案 ' + (idx + 1) + '：刺繡（' + (SMALL_POS_NAME[it.pos] || it.pos) + '，' + bbMoney(100) + '–' + bbMoney(300) + ' 聯繫客服，不計入自動總價）';
           } else {
-            s = '  小图案 ' + (idx + 1) + '：烫印（' + (SMALL_POS_NAME[it.pos] || it.pos) + '，' + printText(it.print) + '，+¥30）';
+            s = '  小圖案 ' + (idx + 1) + '：燙印（' + (SMALL_POS_NAME[it.pos] || it.pos) + '，' + printText(it.print) + '，+' + bbMoney(30) + '）';
           }
-          if (it.pos === 'other' && it.note) s += '，备注「' + it.note + '」';
+          if (it.pos === 'other' && it.note) s += '，備註「' + it.note + '」';
           lines.push(s);
         });
       } else {
-        lines.push('  小图案：未添加');
+        lines.push('  小圖案：未添加');
       }
-      lines.push('费用：基础 ¥' + basePrice + ' + 配色 ¥' + colorExtra + ' + 定制 ¥' + customExtra);
-      lines.push('预估总价（不含刺绣单独报价）：¥' + total);
+      lines.push('費用：基礎 ' + bbMoney(basePrice) + ' + 配色 ' + bbMoney(colorExtra) + ' + 定製 ' + bbMoney(customExtra));
+      lines.push('預估總價（不含刺繡單獨報價）：' + bbMoney(total));
       lines.push('────────────────────');
       return lines.join('\n');
     }
@@ -319,8 +367,8 @@
       const ta = document.createElement('textarea');
       ta.value = text; ta.style.position = 'fixed'; ta.style.opacity = '0';
       document.body.appendChild(ta); ta.select();
-      try { document.execCommand('copy'); alert('方案已复制，可直接发送给客服'); }
-      catch (e) { alert('复制失败，请手动复制'); }
+      try { document.execCommand('copy'); alert('方案已複製，可直接發送給客服'); }
+      catch (e) { alert('複製失敗，請手動複製'); }
       document.body.removeChild(ta);
     }
 
@@ -328,7 +376,7 @@
       const text = buildText();
       if (navigator.clipboard && window.isSecureContext) {
         navigator.clipboard.writeText(text).then(
-          () => alert('方案已复制，可直接发送给客服'),
+          () => alert('方案已複製，可直接發送給客服'),
           () => fallbackCopy(text)
         );
       } else {
@@ -340,9 +388,9 @@
       window.location.href = 'h5.head-customize.html';
     };
 
-    /* ============ 套装联动 ============ */
+    /* ============ 套裝聯動 ============ */
     const TYPE_ENTRY = { glove: 'g1.size.html', head: 'h1.head-size.html', groin: 'c1.groin-size.html' };
-    const TYPE_LABEL = { glove: '拳套', head: '护头', groin: '护裆' };
+    const TYPE_LABEL = { glove: '拳套', head: '護頭', groin: '護襠' };
     (function initSuit(){
       const suit = BB_suit();
       if(!suit || suit.mode !== 'suit' || !Array.isArray(suit.items) || suit.items.length < 2) return;
@@ -355,16 +403,16 @@
 
       const prog = document.getElementById('suitProgress');
       prog.style.display = 'block';
-      prog.textContent = '套装进度：第 ' + (N + 1) + ' 件 / 共 ' + M + ' 件（' + TYPE_LABEL[suit.items[N].type] + '）';
+      prog.textContent = '套裝進度：第 ' + (N + 1) + ' 件 / 共 ' + M + ' 件（' + TYPE_LABEL[suit.items[N].type] + '）';
 
       const actions = document.getElementById('suitActions');
       const btn = document.getElementById('suitPrimaryBtn');
       actions.style.display = 'block';
       if(N >= M - 1){
-        btn.textContent = '查看套装汇总';
+        btn.textContent = '查看套裝彙總';
         btn.onclick = () => { window.location.href = '../bundle.html'; };
       } else {
-        btn.textContent = '继续配置下一件 · ' + TYPE_LABEL[suit.items[N + 1].type];
+        btn.textContent = '繼續配置下一件 · ' + TYPE_LABEL[suit.items[N + 1].type];
         btn.onclick = () => {
           suit.current = N + 1;
           localStorage.setItem(BBSUIT_KEY, JSON.stringify(suit));
