@@ -63,6 +63,8 @@
   .bb-brand-footer{text-align:center;margin-top:22px;padding-top:16px;border-top:1px solid #1a1a1a;}
   .bb-brand-footer .bb-slogan{font-size:10px;letter-spacing:4px;color:#666;text-transform:uppercase;}
   .bb-brand-footer .bb-sub{font-size:8px;letter-spacing:2px;color:#bbb;margin-top:6px;text-transform:uppercase;}
+  .bb-pay-note{margin-top:18px;padding:14px 16px;border:1px solid #1a1a1a;border-radius:2px;font-size:11px;color:#666;line-height:1.9;letter-spacing:.2px;text-align:left;}
+  .bb-pay-note .bb-pay-title{font-size:10px;letter-spacing:3px;color:#1a1a1a;margin-bottom:8px;text-transform:uppercase;}
 </style>
 <script>
 (function(){
@@ -258,7 +260,7 @@
     document.getElementById('customExtraVal').textContent = bbMoney(customExtra);
     const total = basePrice + colorExtra + customExtra;
     document.getElementById('totalPrice').textContent = bbMoney(total);
-    var _cnyEl=document.getElementById('cnyRef');if(_cnyEl){_cnyEl.textContent='約等於 '+window.bbCNYFmt(total)+' 人民幣（金額會隨匯率調整，可用支付寶等結算）';}
+    var _cnyEl=document.getElementById('cnyRef');if(_cnyEl){_cnyEl.textContent='約等於 '+window.bbCNYFmt(total)+' 人民幣，匯率有波動，此價格僅為參考。若您可透過支付寶直接以人民幣付款，或於淘寶下單，即以本頁顯示價格結算，不另收費用；若您選擇透過 PayPal 以港幣或台幣付款，將加收總價 5% 之手續費。';}
 
     /* ============ 複製方案 ============ */
     function buildText() {
@@ -279,7 +281,7 @@
       lines.push('費用：基礎 ' + bbMoney(basePrice) + ' + 配色 ' + bbMoney(colorExtra) + ' + 定製 ' + bbMoney(customExtra));
       lines.push('預估總價：' + bbMoney(total));
       lines.push('────────────────────');
-      lines.push('= ' + window.bbCNYFmt(total) + ' 人民幣（內部核算）');
+      lines.push('約等於 ' + window.bbCNYFmt(total) + ' 人民幣');
       return lines.join('\n');
     }
 

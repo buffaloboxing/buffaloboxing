@@ -66,6 +66,8 @@
   .bb-brand-footer{text-align:center;margin-top:22px;padding-top:16px;border-top:1px solid #1a1a1a;}
   .bb-brand-footer .bb-slogan{font-size:10px;letter-spacing:4px;color:#666;text-transform:uppercase;}
   .bb-brand-footer .bb-sub{font-size:8px;letter-spacing:2px;color:#bbb;margin-top:6px;text-transform:uppercase;}
+  .bb-pay-note{margin-top:18px;padding:14px 16px;border:1px solid #1a1a1a;border-radius:2px;font-size:11px;color:#666;line-height:1.9;letter-spacing:.2px;text-align:left;}
+  .bb-pay-note .bb-pay-title{font-size:10px;letter-spacing:3px;color:#1a1a1a;margin-bottom:8px;text-transform:uppercase;}
 </style>
 <script>
 (function(){
@@ -131,6 +133,11 @@
 <div class="bb-brand-footer">
       <div class="bb-slogan">CRAFT IS HUMAN</div>
       <div class="bb-sub">BUFFALO BOXING</div>
+    </div>
+
+<div class="bb-pay-note">
+      <div class="bb-pay-title">付款方式說明</div>
+      若您可透過支付寶直接以人民幣付款，或於淘寶下單，即以本頁顯示價格結算，不另收費用；若您選擇透過 PayPal 以港幣或台幣付款，將加收總價 5% 之手續費。
     </div>
 
   </div>
@@ -495,7 +502,7 @@
       out.push(allText.join('\n'));
       out.push('════════════════════');
       out.push('套裝自動價合計（不含刺繡、特殊皮擴展等單獨報價）：' + bbMoney(grand));
-      out.push('= ' + window.bbCNYFmt(grand) + ' 人民幣（內部核算）');
+      out.push('約等於 ' + window.bbCNYFmt(grand) + ' 人民幣');
       if (allNotices.length) {
         out.push('需客服覈對 / 單獨報價項：');
         allNotices.forEach(n => out.push('· ' + n));
