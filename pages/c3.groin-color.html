@@ -103,6 +103,9 @@
     var sym=window.BB_CCY==='twd'?'NT$':'HK$';
     return sym+n.toLocaleString('en-US');
   };
+  window.bbCNYFmt=function(cny){
+    return '¥'+Math.round(Number(cny)).toLocaleString('en-US');
+  };
   document.addEventListener('DOMContentLoaded',function(){
     var nodes=document.querySelectorAll('.bb-c');
     for(var i=0;i<nodes.length;i++){nodes[i].textContent=window.bbMoney(nodes[i].getAttribute('data-cny'));}

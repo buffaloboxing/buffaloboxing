@@ -78,6 +78,9 @@
     var sym=window.BB_CCY==='twd'?'NT$':'HK$';
     return sym+n.toLocaleString('en-US');
   };
+  window.bbCNYFmt=function(cny){
+    return '¥'+Math.round(Number(cny)).toLocaleString('en-US');
+  };
   document.addEventListener('DOMContentLoaded',function(){
     var nodes=document.querySelectorAll('.bb-c');
     for(var i=0;i<nodes.length;i++){nodes[i].textContent=window.bbMoney(nodes[i].getAttribute('data-cny'));}
@@ -492,6 +495,7 @@
       out.push(allText.join('\n'));
       out.push('════════════════════');
       out.push('套裝自動價合計（不含刺繡、特殊皮擴展等單獨報價）：' + bbMoney(grand));
+      out.push('= ' + window.bbCNYFmt(grand) + ' 人民幣（內部核算）');
       if (allNotices.length) {
         out.push('需客服覈對 / 單獨報價項：');
         allNotices.forEach(n => out.push('· ' + n));

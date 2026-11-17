@@ -75,6 +75,9 @@
     var sym=window.BB_CCY==='twd'?'NT$':'HK$';
     return sym+n.toLocaleString('en-US');
   };
+  window.bbCNYFmt=function(cny){
+    return '¥'+Math.round(Number(cny)).toLocaleString('en-US');
+  };
   document.addEventListener('DOMContentLoaded',function(){
     var nodes=document.querySelectorAll('.bb-c');
     for(var i=0;i<nodes.length;i++){nodes[i].textContent=window.bbMoney(nodes[i].getAttribute('data-cny'));}
@@ -125,6 +128,7 @@
     <div class="final-price">
       <div class="final-price-text">Estimated Total · 預估總價</div>
       <div class="final-price-num" id="totalPrice">--</div>
+      <div class="final-price-cny" id="cnyRef" style="font-size:13px;color:#666;margin-top:10px;"></div>
     </div>
 
     <div class="note">
@@ -254,6 +258,7 @@
     document.getElementById('customExtraVal').textContent = bbMoney(customExtra);
     const total = basePrice + colorExtra + customExtra;
     document.getElementById('totalPrice').textContent = bbMoney(total);
+    var _cnyEl=document.getElementById('cnyRef');if(_cnyEl){_cnyEl.textContent='約等於 '+window.bbCNYFmt(total)+' 人民幣（金額會隨匯率調整，可用支付寶等結算）';}
 
     /* ============ 複製方案 ============ */
     function buildText() {
@@ -274,6 +279,7 @@
       lines.push('費用：基礎 ' + bbMoney(basePrice) + ' + 配色 ' + bbMoney(colorExtra) + ' + 定製 ' + bbMoney(customExtra));
       lines.push('預估總價：' + bbMoney(total));
       lines.push('────────────────────');
+      lines.push('= ' + window.bbCNYFmt(total) + ' 人民幣（內部核算）');
       return lines.join('\n');
     }
 
